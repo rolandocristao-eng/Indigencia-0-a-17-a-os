@@ -1,0 +1,2752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tablero de Bienestar e Indigencia en la Niñez y Adolescencia (0 a 17 años) - Ministerio de Capital Humano</title>
+
+<!-- Modern Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Chart.js & DataLabels Plugin CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+<style>
+:root {
+  --bg-dark: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #334155;
+  --border-color: #334155;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  
+  --primary: #38bdf8;
+  --primary-glow: rgba(56, 189, 248, 0.25);
+  --accent: #818cf8;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+  --info: #a78bfa;
+
+  --color-ind1: #38bdf8;
+  --color-ind2: #34d399;
+  --color-ind3: #f59e0b;
+  --color-ind4: #ec4899;
+  --color-ind5: #a855f7;
+
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --shadow-glow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0f172a; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+/* Top Header */
+.top-header {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.brand-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.brand-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: rgba(56, 189, 248, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  width: fit-content;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.main-title {
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #f8fafc 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 950px;
+}
+
+.header-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.source-badge {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.source-badge span { color: var(--text-dim); font-size: 0.7rem; }
+.source-badge strong { color: var(--primary); font-weight: 700; }
+
+/* Filter Bar */
+.filter-bar {
+  background: #1e293b;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  overflow-x: auto;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.filter-label {
+  font-size: 0.725rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+select.filter-control, input.filter-control {
+  background: #0f172a;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.38rem 0.6rem;
+  font-size: 0.775rem;
+  outline: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+select.filter-control:hover, input.filter-control:hover {
+  border-color: var(--primary);
+}
+select.filter-control:focus, input.filter-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-glow);
+}
+
+.btn-reset {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-reset:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fff;
+}
+
+.active-filter-indicator {
+  font-size: 0.75rem;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--primary);
+  padding: 0.25rem 0.65rem;
+  border-radius: 12px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Tabs Navigation */
+.tabs-nav {
+  display: flex;
+  background: #0f172a;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 2rem;
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.9rem 1.25rem;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+  background: rgba(255,255,255,0.03);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.tab-btn .badge {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 10px;
+  background: #334155;
+  color: #cbd5e1;
+}
+
+.tab-btn.active .badge {
+  background: var(--primary);
+  color: #0f172a;
+}
+
+/* Main Dashboard Area */
+.dashboard-content {
+  padding: 1.75rem 2rem;
+  flex: 1;
+}
+
+.tab-panel {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+.tab-panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Grid Layout for KPIs (5 in 1 row) */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  width: 100%;
+}
+
+.kpi-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  width: 100%;
+}
+
+@media (max-width: 1280px) {
+  .kpi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .kpi-grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.15rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--card-accent, var(--primary));
+}
+
+.kpi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  gap: 0.5rem;
+}
+
+.kpi-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.kpi-icon {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  background: rgba(255,255,255,0.05);
+}
+
+.kpi-value {
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.1;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+}
+
+.kpi-subtext {
+  font-size: 0.725rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.trend-pill {
+  font-size: 0.675rem;
+  font-weight: 700;
+  padding: 0.12rem 0.4rem;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  white-space: nowrap;
+}
+.trend-up { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+.trend-down { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+.trend-neutral { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+
+/* Grid Layout for Charts & Maps */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.grid-map-side {
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+@media (max-width: 1200px) {
+  .grid-2col, .grid-3col, .grid-map-side {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Boxes */
+.card-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.75rem;
+}
+
+.card-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.card-title-bar h3 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 300px;
+}
+
+/* SVG Argentina Map */
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.argentina-svg {
+  width: 100%;
+  height: 100%;
+  max-height: 460px;
+}
+
+.prov-path {
+  stroke: #1e293b;
+  stroke-width: 1.2;
+  transition: fill 0.2s ease, opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.prov-path:hover {
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.8));
+  z-index: 10;
+}
+
+.selected-path {
+  stroke: #fbbf24 !important;
+  stroke-width: 3px !important;
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.9));
+}
+
+/* Floating Fixed Tooltip */
+.map-tooltip {
+  position: fixed;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid var(--primary);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.825rem;
+  pointer-events: none;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+  z-index: 9999;
+  display: none;
+  backdrop-filter: blur(8px);
+  min-width: 230px;
+}
+
+.map-legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.legend-scale {
+  display: flex;
+  height: 10px;
+  width: 180px;
+  border-radius: 5px;
+  overflow: hidden;
+  background: linear-gradient(to right, hsl(0,85%,45%), hsl(60,85%,45%), hsl(120,85%,45%));
+}
+
+/* Tables */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.825rem;
+  text-align: left;
+}
+
+table.data-table th {
+  background: #0f172a;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.725rem;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+table.data-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+table.data-table tbody tr:hover {
+  background: rgba(56, 189, 248, 0.04);
+}
+
+.field-code {
+  font-family: monospace;
+  background: rgba(56, 189, 248, 0.1);
+  color: #7dd3fc;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 12px;
+  font-size: 0.725rem;
+  font-weight: 700;
+}
+.badge-good { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+.badge-warn { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+.badge-bad { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+
+/* Alert Box */
+.alert-banner {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(245, 158, 11, 0.1) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.alert-icon { font-size: 1.5rem; color: #f87171; }
+.alert-content { flex: 1; }
+.alert-title { font-weight: 700; font-size: 0.95rem; color: #fca5a5; margin-bottom: 0.35rem; }
+.alert-list { list-style: none; font-size: 0.825rem; color: var(--text-muted); display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.5rem; }
+.alert-list li { display: flex; align-items: center; gap: 0.4rem; }
+.alert-list li::before { content: "•"; color: #f87171; font-weight: bold; }
+
+/* Methodological Dictionary Box */
+.doc-box {
+  background: #1e293b;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.doc-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.doc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+.doc-item {
+  background: #0f172a;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.doc-item h4 {
+  font-size: 0.875rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.doc-item p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+/* Footer */
+footer {
+  background: #0f172a;
+  border-top: 1px solid var(--border-color);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.775rem;
+  color: var(--text-dim);
+}
+</style>
+</head>
+<body>
+
+<!-- Tooltip Container (Fixed Position) -->
+<div id="map-tooltip" class="map-tooltip"></div>
+
+<!-- Header -->
+<header class="top-header">
+  <div class="brand-section">
+    <div class="brand-tag">
+      <span>🏛️ SIIS</span> · Ministerio de Capital Humano
+    </div>
+    <h1 class="main-title">Tablero de Indigencia en la Ni&ntilde;ez y Adolescencia (0 a 17 a&ntilde;os)</h1>
+    <p class="subtitle">Monitoreo integral de 5 indicadores de bienestar e indigencia basado <strong>exclusivamente en bases administrativas efectivamente disponibles</strong> (ANSES SIIS, SENAF Alimentar/Comedores, Min. Economía RASE/ENARGAS y Educación Becas/BNH) con microdatos sint&eacute;ticos en todos los campos clave.</p>
+  </div>
+  <div class="header-badges">
+    <div class="source-badge">
+      <span>DATOS SIMULADOS</span>
+      <strong>Microdatos Sint&eacute;ticos SIIS</strong>
+    </div>
+    <div class="source-badge">
+      <span>UNIVERSO POBLACIONAL</span>
+      <strong>0 - 17 A&ntilde;os (12.8M N&Ntilde;A)</strong>
+    </div>
+  </div>
+</header>
+
+<!-- Sticky Filter Bar -->
+<div class="filter-bar">
+  <div class="filter-group">
+    <span class="filter-label">🌐 Jurisdicci&oacute;n:</span>
+    <select id="sel-prov" class="filter-control" onchange="applyFilters()">
+      <option value="ALL">Todas las Provincias (Pa&iacute;s)</option>
+      <optgroup label="Regiones">
+        <option value="REG_Centro">Regi&oacute;n Centro</option>
+        <option value="REG_NOA">Regi&oacute;n NOA</option>
+        <option value="REG_NEA">Regi&oacute;n NEA</option>
+        <option value="REG_Cuyo">Regi&oacute;n Cuyo</option>
+        <option value="REG_Patagonia">Regi&oacute;n Patagonia</option>
+      </optgroup>
+      <optgroup label="Provincias">
+        <option value="Buenos Aires">Buenos Aires</option>
+        <option value="CABA">Ciudad Aut&oacute;noma de Buenos Aires</option>
+        <option value="Catamarca">Catamarca</option>
+        <option value="Chaco">Chaco</option>
+        <option value="Chubut">Chubut</option>
+        <option value="Córdoba">C&oacute;rdoba</option>
+        <option value="Corrientes">Corrientes</option>
+        <option value="Entre Ríos">Entre R&iacute;os</option>
+        <option value="Formosa">Formosa</option>
+        <option value="Jujuy">Jujuy</option>
+        <option value="La Pampa">La Pampa</option>
+        <option value="La Rioja">La Rioja</option>
+        <option value="Mendoza">Mendoza</option>
+        <option value="Misiones">Misiones</option>
+        <option value="Neuquén">Neuqu&eacute;n</option>
+        <option value="Río Negro">R&iacute;o Negro</option>
+        <option value="Salta">Salta</option>
+        <option value="San Juan">San Juan</option>
+        <option value="San Luis">San Luis</option>
+        <option value="Santa Cruz">Santa Cruz</option>
+        <option value="Santa Fe">Santa Fe</option>
+        <option value="Santiago del Estero">Santiago del Estero</option>
+        <option value="Tierra del Fuego">Tierra del Fuego</option>
+        <option value="Tucumán">Tucum&aacute;n</option>
+      </optgroup>
+    </select>
+
+    <span class="filter-label">👶 Tramo Etario:</span>
+    <select id="sel-edad" class="filter-control" onchange="applyFilters()">
+      <option value="ALL">Todos (0 a 17 a&ntilde;os)</option>
+      <option value="0-5">0 a 5 a&ntilde;os (Primera Infancia)</option>
+      <option value="6-12">6 a 12 a&ntilde;os (Escolar Primario)</option>
+      <option value="13-17">13 a 17 a&ntilde;os (Adolescentes)</option>
+    </select>
+
+    <span class="filter-label">👥 Sexo:</span>
+    <select id="sel-sexo" class="filter-control" onchange="applyFilters()">
+      <option value="ALL">Todos</option>
+      <option value="F">Femenino</option>
+      <option value="M">Masculino</option>
+    </select>
+
+    <span class="filter-label">🛡️ Vulnerabilidad:</span>
+    <select id="sel-vuln" class="filter-control" onchange="applyFilters()">
+      <option value="ALL">Todos los Niveles</option>
+      <option value="INDIGENTE">Indigencia Extrema (CBA)</option>
+      <option value="POBRE">Pobreza No Indigente (CBT)</option>
+      <option value="VULNERABLE">Vulnerable No Pobre</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <span id="active-filter-tag" class="active-filter-indicator">⚡ Mostrando: Pa&iacute;s Completo (0-17 a&ntilde;os)</span>
+    <button class="btn-reset" onclick="resetFilters()">🔄 Restablecer Filtros</button>
+  </div>
+</div>
+
+<!-- Tabs Bar -->
+<nav class="tabs-nav">
+  <button class="tab-btn active" onclick="switchTab('tab-0')">📌 Resumen Ejecutivo</button>
+  <button class="tab-btn" onclick="switchTab('tab-1')">🪙 1. Transferencias Monetarias <span class="badge">ANSES</span></button>
+  <button class="tab-btn" onclick="switchTab('tab-2')">🍲 2. Alimentar & Comedores <span class="badge">SENAF</span></button>
+  <button class="tab-btn" onclick="switchTab('tab-3')">⚡ 3. Subsidios Energ&eacute;ticos <span class="badge">MEC</span></button>
+  <button class="tab-btn" onclick="switchTab('tab-4')">🎓 4. Becas Educativas <span class="badge">EDUCACI&Oacute;N</span></button>
+  <button class="tab-btn" onclick="switchTab('tab-5')">🏫 5. Escolarizaci&oacute;n Formal <span class="badge">EDUCACI&Oacute;N</span></button>
+  <button class="tab-btn" onclick="switchTab('tab-alerts')">🚨 Monitoreo de Alertas <span class="badge" style="background:#ef4444; color:#fff;">SISTEMA</span></button>
+  <button class="tab-btn" onclick="switchTab('tab-6')">🔬 Diccionarios y Muestras Sint&eacute;ticas</button>
+</nav>
+
+<!-- Dashboard Main Container -->
+<main class="dashboard-content">
+
+  <!-- ==================== TAB 0: RESUMEN EJECUTIVO ==================== -->
+  <section id="tab-0" class="tab-panel active">
+    
+    <!-- 5 KPIs in Single Row -->
+    <div class="kpi-grid">
+      <div class="kpi-card" style="--card-accent: var(--color-ind1);">
+        <div class="kpi-header"><span class="kpi-title">AUH/AAFF Cobertura 0-17</span><div class="kpi-icon">🪙</div></div>
+        <div class="kpi-value" id="kpi0-auh-cob">74.2%</div>
+        <div class="kpi-subtext"><span class="trend-pill trend-up">▲ 1.2%</span><span id="kpi0-auh-count">9.497.600 activos</span></div>
+      </div>
+
+      <div class="kpi-card" style="--card-accent: var(--color-ind2);">
+        <div class="kpi-header"><span class="kpi-title">Alimentar Cobertura 0-17</span><div class="kpi-icon">🍲</div></div>
+        <div class="kpi-value" id="kpi0-ali-cob">78.5%</div>
+        <div class="kpi-subtext"><span class="trend-pill trend-up">▲ 0.9%</span><span id="kpi0-ali-count">4.120.500 beneficiarios</span></div>
+      </div>
+
+      <div class="kpi-card" style="--card-accent: var(--color-ind3);">
+        <div class="kpi-header"><span class="kpi-title">Subsidio Energ&eacute;tico RASE</span><div class="kpi-icon">⚡</div></div>
+        <div class="kpi-value" id="kpi0-rase-cob">65.4%</div>
+        <div class="kpi-subtext"><span class="trend-pill trend-down" id="kpi0-rase-gap-pill">Brecha 34.6%</span><span id="kpi0-rase-count">3.850.000 hogares</span></div>
+      </div>
+
+      <div class="kpi-card" style="--card-accent: var(--color-ind4);">
+        <div class="kpi-header"><span class="kpi-title">Becas Belgrano & Vouchers</span><div class="kpi-icon">🎓</div></div>
+        <div class="kpi-value" id="kpi0-becas-cob">38.2%</div>
+        <div class="kpi-subtext"><span class="trend-pill trend-up">▲ 2.4%</span><span id="kpi0-becas-count">1.420.000 becarios</span></div>
+      </div>
+
+      <div class="kpi-card" style="--card-accent: var(--color-ind5);">
+        <div class="kpi-header"><span class="kpi-title">Escolarizaci&oacute;n Formal</span><div class="kpi-icon">🏫</div></div>
+        <div class="kpi-value" id="kpi0-esc-cob">92.8%</div>
+        <div class="kpi-subtext"><span class="trend-pill trend-neutral">Brecha 12.4 pp</span><span id="kpi0-esc-count">11.878.400 alumnos</span></div>
+      </div>
+    </div>
+
+    <!-- Alert Banner -->
+    <div class="alert-banner">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-content">
+        <div class="alert-title">Alertas Sugeridas del Sistema de Bienestar e Indigencia (0 a 17 a&ntilde;os)</div>
+        <ul class="alert-list" id="global-alerts-list">
+          <li><strong>Ca&iacute;da Mensual > 3% en Activos AUH:</strong> Detectada en 3 provincias del NOA/NEA en el &uacute;ltimo trimestre.</li>
+          <li><strong>Alertas de Cobertura AUH:</strong> Jurisdicciones por debajo del percentil 25 (CABA, Tierra del Fuego, Santa Cruz).</li>
+          <li><strong>Sem&aacute;foro Libreta AUH:</strong> 12.3% promedio nacional sin acreditaci&oacute;n de libreta (riesgo de suspensi&oacute;n).</li>
+          <li><strong>Baja en Beneficiarios Alimentar:</strong> Ca&iacute;da acumulada > 5% en localidades de alta vulnerabilidad alimentaria.</li>
+          <li><strong>Brecha de Escolarizaci&oacute;n Territorial:</strong> Disparidad > 15 puntos porcentuales entre departamentos indigentes y la media nacional.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="grid-map-side">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>🗺️ Mapa Coropl&eacute;tico de Cobertura</h3>
+          <select id="sel-map-metric" class="filter-control" onchange="renderMainMap()">
+            <option value="auh_cob">1. Cobertura AUH/AAFF (%)</option>
+            <option value="ali_cob">2. Cobertura Alimentar (%)</option>
+            <option value="rase_cob">3. Cobertura RASE Energ&eacute;tico (%)</option>
+            <option value="becas_cob">4. Cobertura Becas/Vouchers (%)</option>
+            <option value="esc_tasa">5. Tasa Escolarizaci&oacute;n Formal (%)</option>
+          </select>
+        </div>
+        <div class="map-container">
+          <svg id="svg-argentina" class="argentina-svg" viewBox="0 0 460 900" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="map-legend" id="map-legend-box">
+          <span id="legend-min-val">Bajo (50%)</span>
+          <div class="legend-scale" id="legend-scale"></div>
+          <span id="legend-max-val">Alto (95%)</span>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📊 Cobertura Multidimensional por Jurisdicci&oacute;n (0 a 17 a&ntilde;os)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-radar-overview"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Table -->
+    <div class="card-box">
+      <div class="card-title-bar">
+        <h3>📋 Matriz Consolidada de Indicadores por Provincia (0 a 17 a&ntilde;os)</h3>
+        <button class="btn-reset" style="background:#334155; color:#fff;" onclick="exportTableCSV('tbl-summary')">📥 Exportar CSV</button>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="tbl-summary">
+          <thead>
+            <tr>
+              <th>Provincia</th>
+              <th>Padr&oacute;n 0-17</th>
+              <th>AUH/PNC Cob. (%)</th>
+              <th>Alimentar Cob. (%)</th>
+              <th>RASE Cob. (%)</th>
+              <th>Becas Cob. (%)</th>
+              <th>Escolarizaci&oacute;n (%)</th>
+              <th>Brecha Escolar (pp)</th>
+              <th>Estado General</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-summary">
+            <!-- Dynamic rows via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==================== TAB 1: AUH, AAFF & PNC (ANSES) ==================== -->
+  <section id="tab-1" class="tab-panel">
+    
+    <!-- 5 KPIs in Single Row -->
+    <div class="kpi-grid">
+      <div class="kpi-card" style="--card-accent: var(--color-ind1);">
+        <div class="kpi-header"><span class="kpi-title">Activos 0-17 AUH/PNC</span><div class="kpi-icon">👶</div></div>
+        <div class="kpi-value" id="kpi1-activos">9.497.600</div>
+        <div class="kpi-subtext">Ni&ntilde;os/Adolescentes liquidados por ANSES</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind1);">
+        <div class="kpi-header"><span class="kpi-title">% Cobertura AUH/AAFF</span><div class="kpi-icon">📈</div></div>
+        <div class="kpi-value" id="kpi1-cobertura">74.2%</div>
+        <div class="kpi-subtext">Sobre padr&oacute;n total ANSES 0-17 a&ntilde;os</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind1);">
+        <div class="kpi-header"><span class="kpi-title">Monto Promedio Mensual</span><div class="kpi-icon">💵</div></div>
+        <div class="kpi-value" id="kpi1-monto">$ 124.500</div>
+        <div class="kpi-subtext">Combinado por titular con hijos 0-17</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind1);">
+        <div class="kpi-header"><span class="kpi-title">Plan 1000 D&iacute;as / Ayuda Escolar</span><div class="kpi-icon">🍼</div></div>
+        <div class="kpi-value" id="kpi1-mil-dias">3.820.000</div>
+        <div class="kpi-subtext">Complemento de asignaciones familiares</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--danger);">
+        <div class="kpi-header"><span class="kpi-title">% Sin Libreta AUH</span><div class="kpi-icon">⚠️</div></div>
+        <div class="kpi-value" id="kpi1-sin-libreta">12.3%</div>
+        <div class="kpi-subtext">Pendiente acreditaci&oacute;n salud/educaci&oacute;n</div>
+      </div>
+    </div>
+
+    <!-- Indicator Formula Tag & Details -->
+    <div class="doc-item" style="margin-bottom:1.5rem; background:#1e293b; border-color:var(--color-ind1);">
+      <h4 style="color:var(--color-ind1);">Indicador 1: Ni&ntilde;as, ni&ntilde;os y adolescentes de 0 a 17 a&ntilde;os cubiertos por transferencias monetarias no contributivas (AUH, AAFF, PNC) en hogares bajo l&iacute;nea de indigencia</h4>
+      <p style="font-size:0.825rem; color:var(--text-muted);">
+        <strong>F&oacute;rmula:</strong> <span class="field-code">% Cobertura 0-17 = (N&Ntilde;A 0-17 con alguna Prestacion_*_Fl = 1 / Total N&Ntilde;A 0-17 en padr&oacute;n ANSES) &times; 100</span> | 
+        <strong>Proxy Indigencia:</strong> <span class="field-code">(N&Ntilde;A 0-17 con AUH + AAFF + PNC activos / Total padr&oacute;n) &times; 100</span> | 
+        <strong>Fuente:</strong> ANSES Convenio SIIS CNPS.
+      </p>
+    </div>
+
+    <div class="grid-2col">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📈 Serie Temporal ANSES: Stock de Activos, Altas y Bajas (12 meses)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t1-serie"></canvas>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📊 Cobertura por Tipo de Prestaci&oacute;n (0 a 17 a&ntilde;os)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t1-tipos"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Microdata Table 1 -->
+    <div class="card-box">
+      <div class="card-title-bar">
+        <h3>🔬 Muestra de Microdatos Sint&eacute;ticos: ANSES Convenio SIIS CNPS</h3>
+        <button class="btn-reset" style="background:#334155; color:#fff;" onclick="exportTableCSV('tbl-t1-micro')">📥 Exportar CSV</button>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="tbl-t1-micro">
+          <thead>
+            <tr>
+              <th>Persona_CRP_Id</th>
+              <th>Nacimiento_Fc</th>
+              <th>Sexo_Cd</th>
+              <th>Provincia_Cd</th>
+              <th>Localidad_Tx</th>
+              <th>Relacion_F[n]_Id</th>
+              <th>Prestacion_AUH_Fl</th>
+              <th>Monto_AUH_Vl</th>
+              <th>Prestacion_AAFF_Fl</th>
+              <th>Prestacion_PNC_Madres_7_Hijos_Fl</th>
+              <th>Metodo_Cobro_Tx</th>
+              <th>Sin_Libreta_AUH_Fl</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-t1-micro">
+            <!-- Dynamic microdata rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 2: ALIMENTAR & COMEDORES (SENAF) ==================== -->
+  <section id="tab-2" class="tab-panel">
+    <div class="kpi-grid-4">
+      <div class="kpi-card" style="--card-accent: var(--color-ind2);">
+        <div class="kpi-header"><span class="kpi-title">Beneficiarios Alimentar 0-17</span><div class="kpi-icon">💳</div></div>
+        <div class="kpi-value" id="kpi2-activos">4.120.500</div>
+        <div class="kpi-subtext">N&Ntilde;A cubiertos por Prestaci&oacute;n Alimentar</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind2);">
+        <div class="kpi-header"><span class="kpi-title">% Cobertura Alimentar</span><div class="kpi-icon">📊</div></div>
+        <div class="kpi-value" id="kpi2-cobertura">78.5%</div>
+        <div class="kpi-subtext">Sobre padr&oacute;n SENAF 0-17 a&ntilde;os</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind2);">
+        <div class="kpi-header"><span class="kpi-title">Monto Promedio Titular</span><div class="kpi-icon">💰</div></div>
+        <div class="kpi-value" id="kpi2-monto">$ 98.000</div>
+        <div class="kpi-subtext">Liquidaci&oacute;n mensual por titular SENAF</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind2);">
+        <div class="kpi-header"><span class="kpi-title">Comedores Activos SENAF</span><div class="kpi-icon">🍲</div></div>
+        <div class="kpi-value" id="kpi2-comedores">4.850</div>
+        <div class="kpi-subtext">Registrados en padr&oacute;n nacional de comedores</div>
+      </div>
+    </div>
+
+    <!-- Indicator Formula Tag & Details -->
+    <div class="doc-item" style="margin-bottom:1.5rem; background:#1e293b; border-color:var(--color-ind2);">
+      <h4 style="color:var(--color-ind2);">Indicador 2: Ni&ntilde;as, ni&ntilde;os y adolescentes de 0 a 17 a&ntilde;os en hogares con seguridad alimentaria cr&iacute;tica, beneficiarios de Prestaci&oacute;n Alimentar o asistentes a comedores comunitarios</h4>
+      <p style="font-size:0.825rem; color:var(--text-muted);">
+        <strong>F&oacute;rmula:</strong> <span class="field-code">% Cobertura Alimentar 0-17 = (Beneficiarios activos Alimentar 0-17 / Total 0-17 padr&oacute;n SENAF) &times; 100</span> | 
+        <strong>Indicador Compuesto:</strong> <span class="field-code">Cobertura Alimentar + densidad de comedores por 1.000 N&Ntilde;A</span> | 
+        <strong>Fuente:</strong> SENAF Alimentar y SENAF Comedores.
+      </p>
+    </div>
+
+    <div class="grid-2col">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>🔺 Pir&aacute;mide Etaria Alimentar (0-5, 6-12, 13-17 a&ntilde;os por Sexo)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t2-piramide"></canvas>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>💰 Monto Total Alimentar por Provincia ($ Millones)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t2-monto-prov"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Microdata Table 2 -->
+    <div class="card-box">
+      <div class="card-title-bar">
+        <h3>🔬 Muestra de Microdatos Sint&eacute;ticos: SENAF Alimentar & Comedores</h3>
+        <button class="btn-reset" style="background:#334155; color:#fff;" onclick="exportTableCSV('tbl-t2-micro')">📥 Exportar CSV</button>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="tbl-t2-micro">
+          <thead>
+            <tr>
+              <th>cuil_beneficiario</th>
+              <th>fecha_nacimiento_beneficiario</th>
+              <th>sexo_beneficiario</th>
+              <th>provincia_titular</th>
+              <th>municipio_titular</th>
+              <th>monto_titular</th>
+              <th>periodo</th>
+              <th>prenatal</th>
+              <th>origen</th>
+              <th>idcomedor</th>
+              <th>nombre_comedor</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-t2-micro">
+            <!-- Dynamic microdata rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 3: SUBSIDIOS ENERGÉTICOS (RASE / MEC) ==================== -->
+  <section id="tab-3" class="tab-panel">
+    <div class="kpi-grid-4">
+      <div class="kpi-card" style="--card-accent: var(--color-ind3);">
+        <div class="kpi-header"><span class="kpi-title">Hogares con N&Ntilde;A Cubiertos</span><div class="kpi-icon">🏠</div></div>
+        <div class="kpi-value" id="kpi3-hogares">3.850.000</div>
+        <div class="kpi-subtext">Hogares con 0-17 a&ntilde;os cubiertos por RASE</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind3);">
+        <div class="kpi-header"><span class="kpi-title">% Cobertura RASE 0-17</span><div class="kpi-icon">⚡</div></div>
+        <div class="kpi-value" id="kpi3-cobertura">65.4%</div>
+        <div class="kpi-subtext">Sobre padr&oacute;n de hogares con menores 0-17</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind3);">
+        <div class="kpi-header"><span class="kpi-title">Importe Promedio Mensual</span><div class="kpi-icon">💵</div></div>
+        <div class="kpi-value" id="kpi3-monto">$ 48.200</div>
+        <div class="kpi-subtext">Subsidio promedio por hogar titular RASE</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind3);">
+        <div class="kpi-header"><span class="kpi-title">% Flia Numerosa / Discap.</span><div class="kpi-icon">👨‍👩‍👧‍👦</div></div>
+        <div class="kpi-value" id="kpi3-flia-num">32.8%</div>
+        <div class="kpi-subtext">Indicador de indigencia energ&eacute;tica</div>
+      </div>
+    </div>
+
+    <!-- Indicator Formula Tag & Details -->
+    <div class="doc-item" style="margin-bottom:1.5rem; background:#1e293b; border-color:var(--color-ind3);">
+      <h4 style="color:var(--color-ind3);">Indicador 3: Ni&ntilde;as, ni&ntilde;os y adolescentes de 0 a 17 a&ntilde;os cubiertos por subsidios energ&eacute;ticos (RASE / Programa Hogar) en hogares con vulnerabilidad econ&oacute;mica</h4>
+      <p style="font-size:0.825rem; color:var(--text-muted);">
+        <strong>F&oacute;rmula:</strong> <span class="field-code">% Cobertura Subsidio Energ&eacute;tico 0-17 = (N&Ntilde;A 0-17 en hogares con RASE/Hogar / Total 0-17) &times; 100</span> | 
+        <strong>Fuentes:</strong> Ministerio de Econom&iacute;a RASE y ENARGAS.
+      </p>
+    </div>
+
+    <div class="grid-2col">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>🔥 Subsidios Energ&eacute;ticos por Regi&oacute;n y Tipo (Luz, Gas por Red, Garrafa)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t3-servicios"></canvas>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📉 Evoluci&oacute;n Mensual: Cobertura RASE vs. Brecha de Acceso</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t3-brecha-serie"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Microdata Table 3 -->
+    <div class="card-box">
+      <div class="card-title-bar">
+        <h3>🔬 Muestra de Microdatos Sint&eacute;ticos: Ministerio de Econom&iacute;a RASE & ENARGAS</h3>
+        <button class="btn-reset" style="background:#334155; color:#fff;" onclick="exportTableCSV('tbl-t3-micro')">📥 Exportar CSV</button>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="tbl-t3-micro">
+          <thead>
+            <tr>
+              <th>CUIL</th>
+              <th>periodo</th>
+              <th>Importe_Total</th>
+              <th>Dom_Cod_Pcia</th>
+              <th>Dom_loca</th>
+              <th>Dom_C_Postal</th>
+              <th>Discapacitado</th>
+              <th>Flia_Numerosa</th>
+              <th>Codigo_Estado</th>
+              <th>Corresponde_subsid</th>
+              <th>categoria_luz</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-t3-micro">
+            <!-- Dynamic microdata rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 4: BECAS EDUCATIVAS & VOUCHERS (EDUCACIÓN) ==================== -->
+  <section id="tab-4" class="tab-panel">
+    <div class="kpi-grid-4">
+      <div class="kpi-card" style="--card-accent: var(--color-ind4);">
+        <div class="kpi-header"><span class="kpi-title">Becarios Activos Belgrano/Vouchers</span><div class="kpi-icon">🎓</div></div>
+        <div class="kpi-value" id="kpi4-activos">1.420.000</div>
+        <div class="kpi-subtext">Estudiantes 0-17 cubiertos por becas/vouchers</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind4);">
+        <div class="kpi-header"><span class="kpi-title">% Cobertura Grupo Prioritario</span><div class="kpi-icon">⭐</div></div>
+        <div class="kpi-value" id="kpi4-cobertura">78.4%</div>
+        <div class="kpi-subtext">Becarios pertenecientes a grupos prioritarios</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind4);">
+        <div class="kpi-header"><span class="kpi-title">Monto Promedio Liquidado</span><div class="kpi-icon">💵</div></div>
+        <div class="kpi-value" id="kpi4-monto">$ 65.000</div>
+        <div class="kpi-subtext">Liquidaci&oacute;n mensual por becario activo</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind4);">
+        <div class="kpi-header"><span class="kpi-title">Vouchers Educativos Activos</span><div class="kpi-icon">🏫</div></div>
+        <div class="kpi-value" id="kpi4-vouchers">840.000</div>
+        <div class="kpi-subtext">Subsidio a familias para cuotas escolares</div>
+      </div>
+    </div>
+
+    <!-- Indicator Formula Tag & Details -->
+    <div class="doc-item" style="margin-bottom:1.5rem; background:#1e293b; border-color:var(--color-ind4);">
+      <h4 style="color:var(--color-ind4);">Indicador 4: Ni&ntilde;as, ni&ntilde;os y adolescentes de 0 a 17 a&ntilde;os cubiertos por Becas Estrat&eacute;gicas Manuel Belgrano o Vouchers Educativos pertenecientes a grupos prioritarios</h4>
+      <p style="font-size:0.825rem; color:var(--text-muted);">
+        <strong>F&oacute;rmula:</strong> <span class="field-code">% Cobertura Becas 0-17 = (Beneficiarios Becas Belgrano + Vouchers 0-17 / Total 0-17 padr&oacute;n) &times; 100</span> | 
+        <strong>Fuentes:</strong> Secretar&iacute;a de Educaci&oacute;n Becas Belgrano y Vouchers Educativos.
+      </p>
+    </div>
+
+    <div class="grid-2col">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📚 Distribuci&oacute;n de Becas por Subl&iacute;nea (Alimentos, Ambiente, Computaci&oacute;n, etc.)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t4-sublineas"></canvas>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📈 Serie Temporal: Altas y Bajas de Becas Educativas (12 Meses)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t4-serie"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Microdata Table 4 -->
+    <div class="card-box">
+      <div class="card-title-bar">
+        <h3>🔬 Muestra de Microdatos Sint&eacute;ticos: Secretar&iacute;a de Educaci&oacute;n Becas & Vouchers</h3>
+        <button class="btn-reset" style="background:#334155; color:#fff;" onclick="exportTableCSV('tbl-t4-micro')">📥 Exportar CSV</button>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="tbl-t4-micro">
+          <thead>
+            <tr>
+              <th>dni</th>
+              <th>cuit</th>
+              <th>apellido_nombre</th>
+              <th>sexo</th>
+              <th>fecha_nacimiento</th>
+              <th>provincia</th>
+              <th>localidad</th>
+              <th>grupo_prioritario</th>
+              <th>sublinea_beca</th>
+              <th>monto_liquidado</th>
+              <th>periodo_liquidado</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-t4-micro">
+            <!-- Dynamic microdata rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 5: ESCOLARIZACIÓN FORMAL (BNH / EDUCACIÓN) ==================== -->
+  <section id="tab-5" class="tab-panel">
+    <div class="kpi-grid-4">
+      <div class="kpi-card" style="--card-accent: var(--color-ind5);">
+        <div class="kpi-header"><span class="kpi-title">Tasa Escolarizaci&oacute;n Nacional</span><div class="kpi-icon">🏫</div></div>
+        <div class="kpi-value" id="kpi5-tasa">92.8%</div>
+        <div class="kpi-subtext">Matriculados 0-17 sobre proyecci&oacute;n INDEC</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind5);">
+        <div class="kpi-header"><span class="kpi-title">Matriculados Sistema Formal</span><div class="kpi-icon">🎒</div></div>
+        <div class="kpi-value" id="kpi5-matriculados">11.878.400</div>
+        <div class="kpi-subtext">Registrados en Relevamiento Anual BNH</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--danger);">
+        <div class="kpi-header"><span class="kpi-title">Brecha Escolar Territorial</span><div class="kpi-icon">📉</div></div>
+        <div class="kpi-value" id="kpi5-brecha">12.4 pp</div>
+        <div class="kpi-subtext">Diferencia entre territ. vulnerables y media nac.</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: var(--color-ind5);">
+        <div class="kpi-header"><span class="kpi-title">% Matr&iacute;cula Contexto Indigencia</span><div class="kpi-icon">⚠️</div></div>
+        <div class="kpi-value" id="kpi5-indigente-pct">41.2%</div>
+        <div class="kpi-subtext">Alumnos en escuelas con alta densidad indigente</div>
+      </div>
+    </div>
+
+    <!-- Indicator Formula Tag & Details -->
+    <div class="doc-item" style="margin-bottom:1.5rem; background:#1e293b; border-color:var(--color-ind5);">
+      <h4 style="color:var(--color-ind5);">Indicador 5: Ni&ntilde;as, ni&ntilde;os y adolescentes de 0 a 17 a&ntilde;os matriculados en el sistema educativo formal (Relevamiento Anual BNH) en contextos de indigencia identificada</h4>
+      <p style="font-size:0.825rem; color:var(--text-muted);">
+        <strong>F&oacute;rmula:</strong> <span class="field-code">Tasa Escolarizaci&oacute;n 0-17 = (Matriculados Relevamiento Anual / Total 0-17 proyectado INDEC) &times; 100</span> | 
+        <strong>Brecha Cobertura:</strong> <span class="field-code">% Escolarizaci&oacute;n Nacional - % Escolarizaci&oacute;n en Territorios con Alta Indigencia</span> | 
+        <strong>Fuente:</strong> Secretar&iacute;a de Educaci&oacute;n Relevamiento Anual BNH y Cruce ANSES SIIS.
+      </p>
+    </div>
+
+    <div class="grid-2col">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📊 Matr&iacute;cula Educativa por Oferta (Jard&iacute;n, Primario, Secundario, T&eacute;cnico)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t5-ofertas"></canvas>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📉 Serie Interanual de Matr&iacute;cula por Tramo Etario (0-5, 6-12, 13-17 a&ntilde;os)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t5-tramos-serie"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Microdata Table 5 -->
+    <div class="card-box">
+      <div class="card-title-bar">
+        <h3>🔬 Muestra de Microdatos Sint&eacute;ticos: Secretar&iacute;a de Educaci&oacute;n Relevamiento Anual BNH</h3>
+        <button class="btn-reset" style="background:#334155; color:#fff;" onclick="exportTableCSV('tbl-t5-micro')">📥 Exportar CSV</button>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="tbl-t5-micro">
+          <thead>
+            <tr>
+              <th>id_persona_jurisdiccional</th>
+              <th>nro_documento</th>
+              <th>cuil</th>
+              <th>fecha_nacimiento</th>
+              <th>c_sexo</th>
+              <th>c_provincia_residencia</th>
+              <th>c_localidad_residencia</th>
+              <th>cueanexo</th>
+              <th>c_oferta_padron</th>
+              <th>c_grado</th>
+              <th>c_orientacion</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-t5-micro">
+            <!-- Dynamic microdata rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB ALERTS: MONITOREO DE ALERTAS ==================== -->
+  <section id="tab-alerts" class="tab-panel">
+    
+    <!-- 5 KPIs in Single Row -->
+    <div class="kpi-grid">
+      <div class="kpi-card" style="--card-accent: #ef4444;">
+        <div class="kpi-header"><span class="kpi-title">Alerta 1: Ca&iacute;da Activos AUH</span><div class="kpi-icon">📉</div></div>
+        <div class="kpi-value" style="color:#f87171;" id="kpi-a1-val">-3.8%</div>
+        <div class="kpi-subtext">Variaci&oacute;n trimestral en provincias NOA/NEA</div>
+      </div>
+
+      <div class="kpi-card" style="--card-accent: #f59e0b;">
+        <div class="kpi-header"><span class="kpi-title">Alerta 2: Percentil 25 Cobertura</span><div class="kpi-icon">⚠️</div></div>
+        <div class="kpi-value" style="color:#fbbf24;" id="kpi-a2-val">4 Prov.</div>
+        <div class="kpi-subtext">Jurisdicciones por debajo del 70% de cobertura</div>
+      </div>
+
+      <div class="kpi-card" style="--card-accent: #ef4444;">
+        <div class="kpi-header"><span class="kpi-title">Alerta 3: Sin Acreditaci&oacute;n Libreta</span><div class="kpi-icon">🚦</div></div>
+        <div class="kpi-value" style="color:#f87171;" id="kpi-a3-val">12.3%</div>
+        <div class="kpi-subtext">1.16M N&Ntilde;A con riesgo de suspensi&oacute;n AUH</div>
+      </div>
+
+      <div class="kpi-card" style="--card-accent: #f59e0b;">
+        <div class="kpi-header"><span class="kpi-title">Alerta 4: Ca&iacute;da Padr&oacute;n Alimentar</span><div class="kpi-icon">🍲</div></div>
+        <div class="kpi-value" style="color:#fbbf24;" id="kpi-a4-val">18 Loc.</div>
+        <div class="kpi-subtext">Localidades vulnerables con ca&iacute;da &gt; 5%</div>
+      </div>
+
+      <div class="kpi-card" style="--card-accent: #ef4444;">
+        <div class="kpi-header"><span class="kpi-title">Alerta 5: Brecha Escolar Territorial</span><div class="kpi-icon">🏫</div></div>
+        <div class="kpi-value" style="color:#f87171;" id="kpi-a5-val">15.4 pp</div>
+        <div class="kpi-subtext">Disparidad m&aacute;x. entre depto. indigente y media</div>
+      </div>
+    </div>
+
+    <!-- Header Description -->
+    <div class="doc-item" style="margin-bottom:1.5rem; background:#1e293b; border-color:#ef4444;">
+      <h4 style="color:#f87171;">🚨 Panel Especial de Monitoreo de Alertas del Sistema de Bienestar e Indigencia (0 a 17 a&ntilde;os)</h4>
+      <p style="font-size:0.825rem; color:var(--text-muted);">
+        Seguimiento anal&iacute;tico detallado de las 5 alertas cr&iacute;ticas generadas por el sistema. Todos los gr&aacute;ficos se recalculan din&aacute;micamente en funci&oacute;n de los filtros seleccionados de <strong>Jurisdicci&oacute;n</strong>, <strong>Tramo Etario</strong> y <strong>Sexo</strong>.
+      </p>
+    </div>
+
+    <!-- 5 Charts Layout -->
+    <div class="grid-2col" style="margin-bottom:1.5rem;">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>🚨 Alerta 1: Ca&iacute;da Mensual &gt; 3% en Activos AUH (Provincias NOA/NEA vs Media Nac.)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-alert-1"></canvas>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📉 Alerta 2: Cobertura AUH por Debajo del Percentil 25 (Jurisdicciones Cr&iacute;ticas)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-alert-2"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2col" style="margin-bottom:1.5rem;">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>🚦 Alerta 3: Sem&aacute;foro de Acreditaci&oacute;n de Libreta AUH (Salud / Educaci&oacute;n)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-alert-3"></canvas>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>🍲 Alerta 4: Ca&iacute;da Acumulada de Beneficiarios Alimentar en Localidades Vulnerables</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-alert-4"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-box" style="margin-bottom:1.5rem;">
+      <div class="card-title-bar">
+        <h3>🏫 Alerta 5: Disparidad de Escolarizaci&oacute;n Territorial (Departamentos Vulnerables vs. Media Provincial)</h3>
+      </div>
+      <div class="chart-container">
+        <canvas id="chart-alert-5"></canvas>
+      </div>
+    </div>
+  </section>
+  <section id="tab-6" class="tab-panel">
+    <div class="doc-box">
+      <div class="doc-title">📖 Fichas Metodol&oacute;gicas y Diccionario de Datos Administrativos SIIS (0 a 17 a&ntilde;os)</div>
+      <p style="color:var(--text-muted); font-size:0.85rem;">Documento de especificaci&oacute;n t&eacute;cnica seg&uacute;n la propuesta oficial del Ministerio de Capital Humano (Julio 2026). Todos los indicadores se construyen <strong>exclusivamente con fuentes administrativas disponibles</strong> con datos simulados en cada campo.</p>
+      
+      <div class="doc-grid">
+        <div class="doc-item">
+          <h4>1. Cobertura de Transferencias Monetarias No Contributivas (AUH, AAFF, PNC)</h4>
+          <p><strong>F&oacute;rmula:</strong> <span class="field-code">% Cobertura 0-17 = (AUH + AAFF + PNC 0-17 / Total padron ANSES 0-17) * 100</span></p>
+          <p><strong>Campos Clave:</strong> <span class="field-code">Persona_CRP_Id</span>, <span class="field-code">Nacimiento_Fc</span>, <span class="field-code">Sexo_Cd</span>, <span class="field-code">Provincia_Cd</span>, <span class="field-code">Localidad_Tx</span>, <span class="field-code">Relacion_F[n]_Id</span>, <span class="field-code">Prestacion_AUH_Fl</span>, <span class="field-code">Monto_AUH_Vl</span>, <span class="field-code">Sin_Libreta_AUH_Fl</span></p>
+        </div>
+
+        <div class="doc-item">
+          <h4>2. Cobertura de Seguridad Alimentaria (Alimentar & Comedores Comunitarios)</h4>
+          <p><strong>F&oacute;rmula:</strong> <span class="field-code">% Cobertura Alimentar 0-17 = (Beneficiarios Alimentar / Total SENAF 0-17) * 100</span></p>
+          <p><strong>Campos Clave:</strong> <span class="field-code">cuil_beneficiario</span>, <span class="field-code">fecha_nacimiento_beneficiario</span>, <span class="field-code">sexo_beneficiario</span>, <span class="field-code">provincia_titular</span>, <span class="field-code">monto_titular</span>, <span class="field-code">idcomedor</span>, <span class="field-code">nombre_comedor</span></p>
+        </div>
+
+        <div class="doc-item">
+          <h4>3. Cobertura de Subsidios Energ&eacute;ticos (RASE & Programas de Gas/Luz)</h4>
+          <p><strong>F&oacute;rmula:</strong> <span class="field-code">% Cobertura RASE 0-17 = (Hogares con 0-17 y RASE / Total Hogares con 0-17) * 100</span></p>
+          <p><strong>Campos Clave:</strong> <span class="field-code">CUIL</span>, <span class="field-code">periodo</span>, <span class="field-code">Importe_Total</span>, <span class="field-code">Dom_Cod_Pcia</span>, <span class="field-code">Flia_Numerosa</span>, <span class="field-code">Discapacitado</span>, <span class="field-code">Codigo_Estado</span>, <span class="field-code">categoria_luz</span></p>
+        </div>
+
+        <div class="doc-item">
+          <h4>4. Cobertura de Becas Educativas (Manuel Belgrano & Vouchers Educativos)</h4>
+          <p><strong>F&oacute;rmula:</strong> <span class="field-code">% Cobertura Becas 0-17 = (Becarios 0-17 / Total 0-17 padron) * 100</span></p>
+          <p><strong>Campos Clave:</strong> <span class="field-code">dni</span>, <span class="field-code">cuit</span>, <span class="field-code">apellido</span>, <span class="field-code">nombre</span>, <span class="field-code">sexo</span>, <span class="field-code">fecha_nacimiento</span>, <span class="field-code">grupo_prioritario</span>, <span class="field-code">sublinea_beca</span>, <span class="field-code">monto_liquidado</span></p>
+        </div>
+
+        <div class="doc-item" style="grid-column: span 2;">
+          <h4>5. Escolarizaci&oacute;n Formal en Contextos de Indigencia Identificada (Relevamiento Anual BNH)</h4>
+          <p><strong>F&oacute;rmula:</strong> <span class="field-code">Tasa Escolarizaci&oacute;n 0-17 = (Matriculados BNH / Proyecci&oacute;n Poblacional INDEC) * 100</span></p>
+          <p><strong>Campos Clave:</strong> <span class="field-code">id_persona_jurisdiccional</span>, <span class="field-code">nro_documento</span>, <span class="field-code">cuil</span>, <span class="field-code">fecha_nacimiento</span>, <span class="field-code">c_provincia_residencia</span>, <span class="field-code">cueanexo</span>, <span class="field-code">c_oferta_padron</span>, <span class="field-code">c_grado</span>, <span class="field-code">c_orientacion</span></p>
+          <p><strong>Nota Metodol&oacute;gica Denominador:</strong> El denominador poblacional (total 0-17 a&ntilde;os = 12.8M) se construye por cruce entre el padr&oacute;n ANSES (<span class="field-code">Persona_CRP_Id + Relacion_F[n]_Id + Nacimiento_Fc</span>) y el padr&oacute;n Alimentar SENAF (<span class="field-code">cuil_beneficiario + fecha_nacimiento_beneficiario</span>).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Ministerio de Capital Humano · Sistema de Informaci&oacute;n Integrado Social (SIIS)</p>
+  <p style="margin-top:0.3rem;">Desarrollado en base a la especificaci&oacute;n metodol&oacute;gica oficial de julio de 2026. Datos sint&eacute;ticos simulados cargados en todos los campos de diccionario para la poblaci&oacute;n de 0 a 17 a&ntilde;os.</p>
+</footer>
+
+<script>
+/* ===================== SVG MAP PATHS DATA ===================== */
+const ARG_MAP_PATHS = {
+  "Tucumán": {d:"M198.854,145.191L197.051,145.255L195.391,144.048L192.128,146.53L190.905,148.384L189.244,146.578L188.223,143.195L185.508,142.696L183.649,139.51L182.478,134.322L180.234,132.483L178.405,131.98L179.343,129.773L184.814,122.548L184.842,117.938L181.728,115.559L177.891,114.496L177.825,111.129L179.129,107.359L187.802,108.976L188.935,103.883L193.387,104.932L196.001,103.979L196.789,105.949L203.481,108.388L206.13,106.968L212.548,107.142L211.767,111.953L212.349,117.35L210.522,117.392L208.918,120.127L205.968,128.767L204.502,131.917L203.479,132.183L200.99,135.248L200.932,139.078L202.197,142.243L200.802,144.692Z", cx:194.6, cy:123.4},
+  "Tierra del Fuego": {d:"M140.748,882.859L137.159,881.804L131.756,883.169L129.333,880.809L129.466,853.586L129.572,829.177L129.678,808.341L135.422,816.379L136.92,819.91L134.227,820.39L131.182,824.155L131.182,827.602L133.448,829.717L138.478,829.503L140.345,832.992L142.68,840.362L150.394,847.913L150.836,850.88L154.935,854.64L168.444,863.906L171.171,867.792L177.346,872.123L186.053,876.267L188.739,876.808L195.624,875.508L199.438,876.118L195.216,885.669L190.153,885.805L183.474,884.65L181.994,886.605L175.134,887.579L173.247,890L169.099,889.048L165.714,886.084L161.912,884.999L152.334,883.915L147.815,884.246ZM208.699,884.95L207.249,882.706L215.534,878.706L222.073,880.471L217.138,882.643L213.823,882.598Z", cx:153.4, cy:865},
+  "San Luis": {d:"M154.905,249.345L154.389,247.733L154.359,237.287L155.079,236.316L162.718,237.327L167.543,236.984L170.628,237.969L174.915,238.409L178.194,238.045L181.04,236.869L184.808,237.669L187.014,237.195L189.491,237.334L196.031,241.28L197.256,242.634L198.327,247.624L203.968,247.36L204.778,253.068L202.127,263.684L199.63,268.539L200.549,289.862L200.509,312.114L200.485,336.756L169.813,336.701L169.444,335.948L171.787,323.954L172.009,315.203L171.349,310.528L170.317,307.445L167.286,302.432L165.921,297.186L165.676,293.456L166.974,291.63L166.821,287.962L163.312,283.351L162.523,280.828L159.068,273.997L158.28,268.916L158.192,263.177L157.64,262.076L158.162,258.392L157.141,256.001L155.49,249.858Z", cx:181.6, cy:282.5},
+  "San Juan": {d:"M97.075,247.239L95.692,246.632L94.978,241.957L96.662,240.906L97.212,238.444L95.876,237.121L93.345,236.795L90.209,229.61L90.738,223.935L91.53,220.107L92.922,218.594L94.715,218.559L96.059,217.075L95.323,214.775L96.576,208.866L99.29,203.309L103.208,201.748L105.4,196.441L103.479,193.104L103.635,186.474L102.605,185.138L102.677,182.372L101.279,178.149L101.393,176.746L103.948,173.251L105.222,173.106L107.522,165.428L107.069,162.505L108.607,160.35L108.886,156.364L115.06,158.141L118.893,161.346L119.831,164.537L123.746,168.508L124.223,172.438L123.01,174.448L121.494,183.239L122.477,184.706L128.266,183.913L132.658,185.034L135.783,186.474L141.332,191.067L141.867,192.363L149.081,198.534L150.776,201.881L154.546,205.662L156.976,209.005L158.601,210.172L160.506,213.95L159.553,217.257L160.937,218.339L159.977,224.771L161.234,228.885L165.109,232.181L167.543,236.984L162.718,237.327L155.079,236.316L154.359,237.287L154.389,247.733L154.905,249.345L152.972,246.964L150.663,246.01L145.7,245.688L141.637,241.514L137.546,242.461L132.688,241.895L132.039,244.19L127.366,243.503L123.403,241.585L121.656,241.826L119.545,239.269L113.163,241.114L110.025,242.622L108.661,246.048L102.496,247.144Z", cx:124.6, cy:212.4},
+  "Santa Fe": {d:"M296.616,269.827L296.851,271.266L294.184,274.908L292.92,278.724L290.798,278.97L289.058,277.525L285.546,276.87L283.93,279.023L268.215,296.867L245.287,296.996L255.994,279.541L263.709,266.836L267.106,263.866L267.778,259.723L265.77,255.963L264.511,251.769L261.751,248.542L260.632,245.482L258.047,243.129L258.144,237.976L257.504,233.372L259.764,231.456L265.475,210.039L262.283,208.789L258.615,206.195L259.597,203.569L260.664,196.731L264.818,170.101L268.227,147.253L294.637,147.291L309.417,147.266L325.445,147.225L324.759,149.466L321.179,151.315L321.406,156.907L320.884,161.629L318.574,170.782L315.155,174.353L312.77,175.463L311.025,179.175L310.624,184.63L309.331,189.767L311.15,193.593L309.138,199.409L309.521,200.94L310.885,203.134L310.827,207.973L307.766,213.406L302.773,221.12L301.251,222.731L299.612,226.345L293.839,232.665L289.497,233.723L288.304,243.647L288.911,247.559L287.59,251.512L287.658,254.374L288.717,260.163L291.785,266.312L295.549,268.305Z", cx:283.4, cy:210.4},
+  "Santiago del Estero": {d:"M198.854,145.191L200.802,144.692L202.197,142.243L200.932,139.078L200.99,135.248L203.479,132.183L204.502,131.917L205.968,128.767L208.918,120.127L210.522,117.392L212.349,117.35L211.767,111.953L212.548,107.142L213.701,102.972L218.369,92.676L223.816,94.48L234.365,94.634L247.436,94.734L268.111,94.689L268.255,120.384L268.227,147.253L264.818,170.101L260.664,196.731L257.231,187.765L238.456,188.033L234.523,187.8L233.192,185.609L230.326,184.734L225.988,184.969L222.162,182.956L221.418,181.137L216.877,179.728L204.606,182.873L201.489,176.681L200.828,171.259L200.437,164.034L198.622,160.933L200.653,158.266L200.649,153.356Z", cx:236.4, cy:141.4},
+  "Santa Cruz": {d:"M68.985,603.262L150.419,603.285L149.729,608.4L151.437,615.518L155.36,621.431L160.139,625.311L165.778,632.094L167.962,633.65L172.043,633.759L180.182,635.107L182.408,634.389L186.699,638.162L187.552,642.163L187.1,648.264L184.108,656.401L186.439,660.087L182.845,660.956L182.911,664.881L180.847,665.109L176.55,669.433L172.823,674.075L168.393,675.819L165.634,679.279L160.869,681.129L157.235,686.969L154.026,689.127L150.392,693.603L149.817,697.603L146.281,702.479L147.651,703.981L148.301,708.43L146.333,720.256L140.853,725.534L134.497,727.391L134.122,728.912L125.625,732.829L120.676,739.626L119.105,746.633L119.258,750.342L118.169,753.717L119.378,759.793L122.966,772.084L120.455,773.278L123.578,777.288L128.296,787.715L133.26,794.975L134.407,797.696L125.467,796.131L122.202,793.721L117.345,791.667L112.776,791.677L102.009,786.875L63.659,786.855L62.676,782.263L60.111,779.338L56.064,777.133L53.832,771.233L55.655,767.551L56.86,762.376L53.94,758.224L56.535,755.116L57,750.149L55.075,746.25L55.972,743.755L52.013,742.181L50.096,743.973L46.502,742.737L40.764,747.2L38.272,746.503L37.221,742.023L36.469,734.381L34.812,730.632L31.333,727.882L32.386,723.298L30.697,721.396L32.857,716.735L31.475,710.974L30.133,708.989L32.49,701.913L39.082,701.691L38.266,699.159L42.162,691.704L46.195,690.473L50.794,685.55L49.757,676.974L50.276,675.849L56.012,672.556L55.408,664.446L52.274,661.752L51.135,659.567L53.268,653.758L55.256,650.033L55.577,644.991L58.677,644.547L61.517,640.593L64.216,639.272L64.623,636.528L62.339,633.426L63.085,627.019L65.6,626.134L68.155,623.696L68.472,618.893L67.381,615.753L66.558,606.66Z", cx:102.7, cy:688.9},
+  "Salta": {d:"M234.365,94.634L223.816,94.48L218.369,92.676L213.701,102.972L212.548,107.142L206.13,106.968L203.481,108.388L196.789,105.949L196.001,103.979L193.387,104.932L188.935,103.883L187.802,108.976L179.129,107.359L176.802,107.337L174.951,110.522L173.453,110.343L171.588,108.22L168.973,103.22L166.406,99.867L166.083,96.011L167.308,95.003L170.571,94.852L172.266,93.577L172.773,90.698L170.712,85.962L145.956,86.279L132.339,83.601L134.953,82.686L130.705,75.181L134.249,69.043L135.686,68.893L136.998,66.727L155.404,58.44L157.107,52.113L160.715,54.438L164.946,59.31L168.405,60.911L171.727,61.469L172.23,60.713L174.614,53.035L174.779,50.479L174.061,48.032L174.751,44.399L178.784,45.273L182.502,48.181L182.488,51.841L181.666,54.947L183.105,57.891L184.497,57.656L186.862,59.446L187.277,62.175L190.526,66.877L196.54,68.977L199.807,69.091L203.401,71.08L204.347,70.815L205.867,67.917L209.89,71.497L211.81,68.803L214.074,67.318L215.758,67.159L218.714,63.409L219.129,61.872L218.664,47.166L214.86,47.094L212.792,48.977L211.166,47.124L208.815,45.885L206.046,47.155L204.624,46.558L203.473,43.317L201.355,41.322L202.077,37.113L201.351,35.977L199.001,35.838L197.523,34.736L195.443,25.532L197.477,21.228L198.433,16.437L202.861,16.716L210.418,19.003L211.334,20.03L211.751,23.245L213.039,25.536L213.215,28.349L216.258,32.448L216.689,28.382L217.828,25.502L219.761,23.275L223.483,14.405L246.023,14.331L246.52,16.885L251.955,22.418L255.565,24.577L255.649,40.383L255.607,60.557L255.709,66.637L249.464,75.015Z", cx:205.7, cy:64.6},
+  "Río Negro": {d:"M66.683,491.687L66.121,487.953L63.578,482.332L64.874,479.578L63.891,474.422L64.645,471.352L64.689,465.218L71.241,465.853L76.317,467.465L78.846,466.43L81.236,462.886L79.654,459.428L82.392,455.805L85.825,453.977L88.448,453.8L91.817,451.699L94.218,452.306L98.359,450.998L100.699,447.821L102.157,443.343L102.242,438.457L104.291,436.283L114.641,431.345L116.923,427.836L123.217,424.833L125.92,420.344L128.455,418.277L129.774,415.649L136.986,411.765L137.03,398.122L137.08,375.898L143.851,376.45L146.618,377.85L147.89,380.473L146.847,383.491L144.763,385.077L144.693,387.662L148.008,389.554L149.175,392.123L151.676,393.767L158.705,392.753L159.401,395.753L162.768,398.542L166.256,399.674L170.032,402.049L170.926,404.868L174.536,405.919L177.246,405.341L182.416,405.778L188.767,407.929L190.467,406.94L194.749,408.418L198.926,407.514L206.196,407.815L213.143,408.853L217.17,410.19L222.587,413.133L224.687,415.15L232.199,420.678L234.565,420.976L234.604,430.454L234.573,455.782L235.109,457.44L239.964,458.276L243.835,461.304L246.937,466.175L239.509,469.19L226.163,469.153L222.436,466.326L207.807,460.464L206.708,457.786L202.572,457.593L199.636,460.782L198.652,464.668L198.888,467.332L200.914,476.654L202.414,478.72L201.7,482.023L202.362,485.448L200.804,489.721L201,491.965L199.578,491.679L133.131,492.97Z", cx:157, cy:449.9},
+  "Neuquén": {d:"M93.466,340.073L94.803,341.842L94.306,344.498L96.981,346.403L97.826,349.854L102.97,354.376L103.453,356.086L106.146,357.882L105.751,361.718L109.357,365.488L112.814,366.137L116.821,365.478L120.445,367.147L121.502,370.149L124.55,371.375L126.62,370.951L132.658,374.351L137.08,375.898L137.03,398.122L136.986,411.765L129.774,415.649L128.455,418.277L125.92,420.344L123.217,424.833L116.923,427.836L114.641,431.345L104.291,436.283L102.242,438.457L102.157,443.343L100.699,447.821L98.359,450.998L94.218,452.306L91.817,451.699L88.448,453.8L85.825,453.977L82.392,455.805L79.654,459.428L81.236,462.886L78.846,466.43L76.317,467.465L71.241,465.853L64.689,465.218L64.868,462.594L62.864,457.678L64.687,455.47L66.28,449.283L68.604,447.322L65.514,443.907L66.049,441.556L68.544,439.787L69.22,437.25L67.782,431.423L67.702,428.797L72.041,428.081L74.143,418.766L73.525,411.536L74.685,409.687L79.959,406.526L83.001,406.092L84.69,404.573L85.416,401.128L82.49,397.531L81.656,392.73L81.954,388.714L78.312,379.218L79.452,376.475L79.74,373.208L77.984,369.251L79.658,364.525L78.188,357.772L81.232,348.731L82.867,348.806L87.798,347.001L87.842,343.418L90.171,340.786Z", cx:99.4, cy:403.9},
+  "Misiones": {d:"M383.434,132.115L385.853,133.791L388.119,134.48L390.76,132.343L391.813,127.158L394.416,124.326L397.757,123.194L401.678,120.208L403.81,119.422L404.219,117.626L405.958,116.934L408.946,111.792L409.993,107.008L409.603,101.694L410.725,100.964L410.345,94.393L411.89,92.652L413.773,94.046L416.564,92.318L419.288,92.467L420.69,91.009L425.082,94.064L426.351,97.795L426.319,101.138L429.58,106.539L429.867,107.806L428.629,110.359L428.144,117.794L428.892,121.997L426.702,127.541L422.729,128.937L419.93,131.167L417.226,134.204L412.225,135.703L409.088,137.161L406.531,136.716L404.634,141.123L402.358,143.471L399.187,143.98L396.349,145.473L393.813,149.211L390.233,150.446L387.728,148.416L386.073,145.468L385.747,142.274L384.128,138.175L382.55,135.477Z", cx:409.8, cy:121.8},
+  "Mendoza": {d:"M93.466,340.073L94.031,338.574L93.724,334.051L95.08,332.027L93.582,327.672L94.031,324.713L93.512,321.008L90.939,319.342L91.135,317.215L94.695,315.613L94.715,312.172L97.312,303.804L101.062,297.436L100.924,294.905L104.219,294.473L105.633,293.415L103.88,282.378L104.588,277L106.489,272.959L105.914,270.359L103.431,269.446L101.967,270.832L100.058,267.974L99.977,264.921L102.109,260.721L99.069,257.927L98.549,254.798L99.035,251.907L97.075,247.239L102.496,247.144L108.661,246.048L110.025,242.622L113.163,241.114L119.545,239.269L121.656,241.826L123.403,241.585L127.366,243.503L132.039,244.19L132.688,241.895L137.546,242.461L141.637,241.514L145.7,245.688L150.663,246.01L152.972,246.964L154.905,249.345L155.49,249.858L157.141,256.001L158.162,258.392L157.64,262.076L158.192,263.177L158.28,268.916L159.068,273.997L162.523,280.828L163.312,283.351L166.821,287.962L166.974,291.63L165.676,293.456L165.921,297.186L167.286,302.432L170.317,307.445L171.349,310.528L172.009,315.203L171.787,323.954L169.444,335.948L169.813,336.701L153.371,336.721L136.278,336.671L137.114,340.739L137.08,375.898L132.658,374.351L126.62,370.951L124.55,371.375L121.502,370.149L120.445,367.147L116.821,365.478L112.814,366.137L109.357,365.488L105.751,361.718L106.146,357.882L103.453,356.086L102.97,354.376L97.826,349.854L96.981,346.403L94.306,344.498L94.803,341.842Z", cx:129.9, cy:303.1},
+  "La Rioja": {d:"M199.689,194.478L194.186,196.355L191.757,202.381L188.983,211.686L186.862,217.824L187.014,237.195L184.808,237.669L181.04,236.869L178.194,238.045L174.915,238.409L170.628,237.969L167.543,236.984L165.109,232.181L161.234,228.885L159.977,224.771L160.937,218.339L159.553,217.257L160.506,213.95L158.601,210.172L156.976,209.005L154.546,205.662L150.776,201.881L149.081,198.534L141.867,192.363L141.332,191.067L135.783,186.474L132.658,185.034L128.266,183.913L122.477,184.706L121.494,183.239L123.01,174.448L124.223,172.438L123.746,168.508L119.831,164.537L118.893,161.346L115.06,158.141L108.886,156.364L111.362,154.384L114.998,150.107L116.093,147.169L118.155,146.569L119.611,142.12L124.564,142.605L127.037,141.869L132.099,141.245L133.474,142.274L133.156,146.996L139.314,149.855L143.416,150.903L145.271,154.969L149.388,155.771L151.554,152.671L154.843,154.842L160.021,155.099L161.727,153.598L163.175,153.901L170.736,157.119L172.232,158.581L174.3,163.35L175.017,166.838L179.788,169.429L185.987,175.206L187.13,179.028L188.649,181.19Z", cx:158.9, cy:185.9},
+  "La Pampa": {d:"M234.565,420.976L232.199,420.678L224.687,415.15L222.587,413.133L217.17,410.19L213.143,408.853L206.196,407.815L198.926,407.514L194.749,408.418L190.467,406.94L188.767,407.929L182.416,405.778L177.246,405.341L174.536,405.919L170.926,404.868L170.032,402.049L166.256,399.674L162.768,398.542L159.401,395.753L158.705,392.753L151.676,393.767L149.175,392.123L148.008,389.554L144.693,387.662L144.763,385.077L146.847,383.491L147.89,380.473L146.618,377.85L143.851,376.45L137.08,375.898L137.114,340.739L136.278,336.671L153.371,336.721L169.813,336.701L200.485,336.756L200.509,312.114L209.991,312.065L234.654,312.118L234.547,338.484L234.614,415.675Z", cx:193.3, cy:365.5},
+  "Jujuy": {d:"M198.433,16.437L197.477,21.228L195.443,25.532L197.523,34.736L199.001,35.838L201.351,35.977L202.077,37.113L201.355,41.322L203.473,43.317L204.624,46.558L206.046,47.155L208.815,45.885L211.166,47.124L212.792,48.977L214.86,47.094L218.664,47.166L219.129,61.872L218.714,63.409L215.758,67.159L214.074,67.318L211.81,68.803L209.89,71.497L205.867,67.917L204.347,70.815L203.401,71.08L199.807,69.091L196.54,68.977L190.526,66.877L187.277,62.175L186.862,59.446L184.497,57.656L183.105,57.891L181.666,54.947L182.488,51.841L182.502,48.181L178.784,45.273L174.751,44.399L174.061,48.032L174.779,50.479L174.614,53.035L172.23,60.713L171.727,61.469L168.405,60.911L164.946,59.31L160.715,54.438L157.107,52.113L159.112,44.646L162.122,36.156L158.456,32.211L159.642,29.992L161.886,28.136L161.687,25.741L166.657,23.635L167.419,19.312L175.266,16.911L176.038,16.051L177.454,10L180.639,10.754L183.675,12.945L187.207,16.77Z", cx:186.9, cy:43},
+  "Formosa": {d:"M255.607,60.557L255.649,40.383L255.565,24.577L257.389,25.771L259.309,30.786L261.896,33.895L262.602,36.215L267.272,39.834L267.541,41.202L270.549,42.575L273.423,45.216L276.554,46.772L280.234,49.38L282.251,53.813L290.209,55.646L290.941,56.785L296.911,58.809L301.756,58.177L313.133,65.761L315.778,68.717L323.806,73.055L326.427,75.172L333.619,76.898L335.566,79.293L338.983,79.463L345.052,81.882L347.42,83.8L350.007,88.567L351.528,89.757L351.118,92.187L347.665,96.318L344.619,101.221L345.435,102.175L339.727,106.845L339.994,107.967L338.418,111.619L338.271,114.331L338.985,116.903L336.278,121.77L335.556,122.054L333.306,120.817L329.237,116.492L325.182,113.409L323.066,110.95L318.329,109.565L314.766,109.133L313.586,105.924L309.236,105.142L308.571,102.526L305.222,98.187L298.888,94.787L297.763,90.963L294.605,87.648L292.383,84.554L286.302,81.541L280.398,76.423L278.371,72.704L273.395,71.594L269.374,68.657L268.417,66.987L266.085,65.407Z", cx:304.1, cy:78},
+  "Entre Ríos": {d:"M296.616,269.827L295.549,268.305L291.785,266.312L288.717,260.163L287.658,254.374L287.59,251.512L288.911,247.559L288.304,243.647L289.497,233.723L293.839,232.665L299.612,226.345L301.251,222.731L302.773,221.12L307.766,213.406L310.827,207.973L310.885,203.134L309.521,200.94L314.619,200.192L317.766,201.016L322.035,197.875L325.16,198.387L328.898,196.889L331.138,196.715L338.023,198.898L340.261,202.088L342.78,207.001L346.512,210.496L346.7,213.656L344.216,222.729L342.541,226.174L341.047,227.542L342.834,229.245L342.998,230.919L341.823,234.921L338.616,237.414L339.701,239.737L338.973,243.612L340.592,245.93L340.592,247.614L338.195,251.434L338.137,253.455L339.611,262.346L339.691,264.765L338.187,265.957L334.092,266.01L334.072,269.952L332.454,273.49L331.611,279.536L331.954,282.205L333.272,284.066L333.641,287.984L330.637,289.068L321.939,283.675L317.864,282.878L313.757,281.141L312.564,279.548L310.496,280.078L307.345,278.539L304.843,276.038L300.338,273.276Z", cx:318.5, cy:241.3},
+  "Corrientes": {d:"M309.521,200.94L309.138,199.409L311.15,193.593L309.331,189.767L310.624,184.63L311.025,179.175L312.77,175.463L315.155,174.353L318.574,170.782L320.884,161.629L321.406,156.907L321.179,151.315L324.759,149.466L325.445,147.225L326.223,140.62L325.541,135.332L328.134,133.055L330.504,131.774L332.49,131.136L342.407,130.723L348.052,131.553L350.312,133.012L356.728,134.353L361.126,135.734L365.076,134.094L368.071,136.031L371.708,134.837L374.755,137.82L377.223,135.196L377.362,133.411L379.851,131.653L383.434,132.115L382.55,135.477L384.128,138.175L385.747,142.274L386.073,145.468L387.728,148.416L390.233,150.446L387.401,153.07L388.095,155.505L384.882,155.653L382.516,160.019L379.329,163.84L377.211,164.947L374.167,171.658L370.204,174.064L368.784,177.946L360.6,187.604L357.071,188.609L356.156,192.601L352.919,196.167L350.491,197.39L349.269,201.332L345.264,204.7L344.837,207.001L346.512,210.496L342.78,207.001L340.261,202.088L338.023,198.898L331.138,196.715L328.898,196.889L325.16,198.387L322.035,197.875L317.766,201.016L314.619,200.192Z", cx:346.7, cy:164.9},
+  "Córdoba": {d:"M200.509,312.114L200.549,289.862L199.63,268.539L202.127,263.684L204.778,253.068L203.968,247.36L198.327,247.624L197.256,242.634L196.031,241.28L189.491,237.334L187.014,237.195L186.862,217.824L188.983,211.686L191.757,202.381L194.186,196.355L199.689,194.478L203.707,189.897L202.923,183.29L204.606,182.873L216.877,179.728L221.418,181.137L222.162,182.956L225.988,184.969L230.326,184.734L233.192,185.609L234.523,187.8L238.456,188.033L257.231,187.765L260.664,196.731L259.597,203.569L258.615,206.195L262.283,208.789L265.475,210.039L259.764,231.456L257.504,233.372L258.144,237.976L258.047,243.129L260.632,245.482L261.751,248.542L264.511,251.769L265.77,255.963L267.778,259.723L267.106,263.866L263.709,266.836L255.994,279.541L245.287,296.996L234.696,296.926L234.654,312.118L209.991,312.065Z", cx:226.9, cy:242.9},
+  "CABA": {d:"M335.684,303.114L333.294,304.438L331.938,302.525L333.21,300.827Z", cx:333.6, cy:302.7},
+  "Chubut": {d:"M68.985,603.262L68.889,599.919L66.805,598.926L66.033,595.472L66.869,590.581L72.545,588.262L75.932,583.339L75.312,581.236L70.236,573.965L67.062,572.883L60.526,571.877L60.915,567.701L65.052,568.786L68.813,568.514L71.526,567.416L75.108,569.097L77.39,567.498L77.268,565.144L79.738,561.536L77.996,558.585L73.876,557.745L66.306,557.959L66.294,548.885L68.913,544.213L65.722,539.962L67.824,537.905L67.848,535.477L63.157,531.376L63.957,527.84L67.214,526.553L67.086,523.732L65.163,522.548L61.88,522.24L59.124,519.056L59.82,514.917L59.08,507.71L60.967,501.679L59.251,499.414L61.096,495.726L63.727,496.456L67.349,494.263L66.683,491.687L133.131,492.97L199.578,491.679L201,491.965L201.975,494.185L204.712,496.814L210.191,498.644L212.987,498.877L210.251,502.722L213.239,503.768L219.587,503.512L221.355,501.921L220.626,498.904L216.424,498.777L224.871,494.463L227.667,494.396L230.587,500.672L230.739,508.372L229.75,512.459L228.629,513.853L221.021,515.773L217.325,512.741L218.315,509.198L215.951,506.626L213.197,505.437L209.902,505.761L205.462,508.923L203.174,509.629L202.458,513.274L206.144,514.556L210.392,517.285L216.356,518.655L210.442,522.1L206.876,522.993L201.57,527.463L199.592,531.539L195.694,537.143L195.904,541.734L197.659,549.651L196.059,552.34L197.244,555.297L194.476,561.154L190.281,563.828L188.43,566.518L187.957,569.837L191.472,571.611L189.992,575.247L188.44,575.866L185.352,574.277L178.527,573.656L171.811,577.058L170.828,579.136L165.08,580.701L162.331,582.669L158.493,589.667L156.156,591.669L154.496,597.386L150.419,603.285Z", cx:131.4, cy:541.8},
+  "Chaco": {d:"M325.445,147.225L309.417,147.266L294.637,147.291L268.227,147.253L268.255,120.384L268.111,94.689L247.436,94.734L234.365,94.634L249.464,75.015L255.709,66.637L255.607,60.557L266.085,65.407L268.417,66.987L269.374,68.657L273.395,71.594L278.371,72.704L280.398,76.423L286.302,81.541L292.383,84.554L294.605,87.648L297.763,90.963L298.888,94.787L305.222,98.187L308.571,102.526L309.236,105.142L313.586,105.924L314.766,109.133L318.329,109.565L323.066,110.95L325.182,113.409L329.237,116.492L333.306,120.817L335.556,122.054L333.18,124.346L329.524,128.979L330.504,131.774L328.134,133.055L325.541,135.332L326.223,140.62Z", cx:287.4, cy:111.4},
+  "Catamarca": {d:"M198.854,145.191L200.649,153.356L200.653,158.266L198.622,160.933L200.437,164.034L200.828,171.259L201.489,176.681L204.606,182.873L202.923,183.29L203.707,189.897L199.689,194.478L188.649,181.19L187.13,179.028L185.987,175.206L179.788,169.429L175.017,166.838L174.3,163.35L172.232,158.581L170.736,157.119L163.175,153.901L161.727,153.598L160.021,155.099L154.843,154.842L151.554,152.671L149.388,155.771L145.271,154.969L143.416,150.903L139.314,149.855L133.156,146.996L133.474,142.274L132.099,141.245L127.037,141.869L124.564,142.605L119.611,142.12L120.555,138.868L123.965,132.842L124.474,130.042L125.89,127.302L129.133,127.751L135.6,125.156L136.312,122.67L130.38,113.521L131.148,108.522L134.064,105.781L132.035,95.944L130.117,91.045L130.603,87.672L132.339,83.601L145.956,86.279L170.712,85.962L172.773,90.698L172.266,93.577L170.571,94.852L167.308,95.003L166.083,96.011L166.406,99.867L168.973,103.22L171.588,108.22L173.453,110.343L174.951,110.522L176.802,107.337L179.129,107.359L177.825,111.129L177.891,114.496L181.728,115.559L184.842,117.938L184.814,122.548L179.343,129.773L178.405,131.98L180.234,132.483L182.478,134.322L183.649,139.51L185.508,142.696L188.223,143.195L189.244,146.578L190.905,148.384L192.128,146.53L195.391,144.048L197.051,145.255Z", cx:162.3, cy:131.5},
+  "Buenos Aires": {d:"M264.551,418.849L261.186,416.859L260.823,414.824L264.617,416.181ZM333.21,300.827L331.938,302.525L333.294,304.438L335.684,303.114L339.336,305.892L346.722,309.102L352.727,313.218L355.954,315.875L358.908,319.927L360.083,323.612L355.141,331.287L355.131,335.777L356.459,339.053L360.58,343.784L364.021,345.857L367.294,344.281L368.732,346.874L369.282,351.172L369.492,358.473L361.023,373.052L352.977,382.615L351.094,390.449L345.91,394.4L336.591,399.31L327.247,402.251L321.931,404.585L317.216,405.469L304.341,408.536L285.997,411.85L279.213,412.524L274.628,412.046L271.63,412.895L266.059,412.194L261.946,411.084L258.234,407.82L255.358,407.144L254.756,408.92L256.818,411.415L255.655,414.584L255.843,419.274L256.898,421.308L261.031,425.719L260.063,434.276L257.151,434.5L256.21,435.723L255.011,444.028L252.608,446.483L253.958,450.576L257.448,454.352L257.883,455.948L255.978,461.342L247.838,466.161L246.937,466.175L243.835,461.304L239.964,458.276L235.109,457.44L234.573,455.782L234.604,430.454L234.565,420.976L234.614,415.675L234.547,338.484L234.654,312.118L234.696,296.926L245.287,296.996L268.215,296.867L283.93,279.023L285.546,276.87L289.058,277.525L290.798,278.97L292.92,278.724L294.184,274.908L296.851,271.266L296.616,269.827L300.338,273.276L304.843,276.038L307.345,278.539L310.496,280.078L312.564,279.548L313.757,281.141L317.864,282.878L321.939,283.675L330.637,289.068L333.641,287.984L334.902,288.949L335.059,292.232L332.624,295.648Z", cx:291.1, cy:354.8}
+};
+
+/* Register Chart.js DataLabels plugin if available */
+if (typeof ChartDataLabels !== 'undefined') {
+  Chart.register(ChartDataLabels);
+}
+
+function normProv(str) {
+  if(!str) return "";
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+}
+
+/* ===================== PROVINCES METADATA (0 a 17 años) ===================== */
+const PROVINCES_META = [
+  { n: "Buenos Aires", r: "Centro", pop: 4500000, auh: 75.8, ali: 79.2, rase: 67.8, becas: 39.5, esc: 93.4, brechaEsc: 10.2 },
+  { n: "CABA", r: "Centro", pop: 620000, auh: 52.4, ali: 51.5, rase: 81.5, becas: 48.2, esc: 97.2, brechaEsc: 5.1 },
+  { n: "Catamarca", r: "NOA", pop: 125000, auh: 81.5, ali: 84.1, rase: 49.2, becas: 35.1, esc: 91.5, brechaEsc: 14.8 },
+  { n: "Chaco", r: "NEA", pop: 380000, auh: 88.2, ali: 88.5, rase: 41.5, becas: 31.8, esc: 88.2, brechaEsc: 18.5 },
+  { n: "Chubut", r: "Patagonia", pop: 160000, auh: 68.4, ali: 71.0, rase: 64.2, becas: 36.5, esc: 92.1, brechaEsc: 11.4 },
+  { n: "Córdoba", r: "Centro", pop: 1050000, auh: 73.1, ali: 76.5, rase: 65.1, becas: 41.2, esc: 94.2, brechaEsc: 9.5 },
+  { n: "Corrientes", r: "NEA", pop: 340000, auh: 86.4, ali: 86.2, rase: 42.8, becas: 32.5, esc: 89.4, brechaEsc: 17.2 },
+  { n: "Entre Ríos", r: "Centro", pop: 380000, auh: 76.2, ali: 78.9, rase: 58.9, becas: 37.8, esc: 93.1, brechaEsc: 11.0 },
+  { n: "Formosa", r: "NEA", pop: 210000, auh: 91.5, ali: 90.8, rase: 36.4, becas: 30.1, esc: 87.5, brechaEsc: 19.8 },
+  { n: "Jujuy", r: "NOA", pop: 230000, auh: 82.8, ali: 83.5, rase: 47.5, becas: 34.2, esc: 91.8, brechaEsc: 15.2 },
+  { n: "La Pampa", r: "Patagonia", pop: 95000, auh: 65.2, ali: 68.4, rase: 72.1, becas: 42.0, esc: 95.1, brechaEsc: 7.8 },
+  { n: "La Rioja", r: "NOA", pop: 115000, auh: 80.2, ali: 82.0, rase: 52.1, becas: 36.0, esc: 91.0, brechaEsc: 14.2 },
+  { n: "Mendoza", r: "Cuyo", pop: 520000, auh: 74.5, ali: 77.2, rase: 60.1, becas: 38.5, esc: 93.8, brechaEsc: 10.8 },
+  { n: "Misiones", r: "NEA", pop: 410000, auh: 87.1, ali: 86.9, rase: 45.2, becas: 33.0, esc: 88.9, brechaEsc: 17.9 },
+  { n: "Neuquén", r: "Patagonia", pop: 190000, auh: 67.5, ali: 70.8, rase: 66.8, becas: 39.1, esc: 93.0, brechaEsc: 11.2 },
+  { n: "Río Negro", r: "Patagonia", pop: 200000, auh: 69.2, ali: 72.1, rase: 64.5, becas: 38.2, esc: 92.8, brechaEsc: 11.5 },
+  { n: "Salta", r: "NOA", pop: 440000, auh: 87.8, ali: 87.5, rase: 43.5, becas: 32.1, esc: 88.6, brechaEsc: 18.1 },
+  { n: "San Juan", r: "Cuyo", pop: 225000, auh: 78.4, ali: 80.2, rase: 55.4, becas: 36.8, esc: 92.4, brechaEsc: 12.5 },
+  { n: "San Luis", r: "Cuyo", pop: 145000, auh: 73.8, ali: 75.9, rase: 61.2, becas: 39.0, esc: 93.5, brechaEsc: 10.5 },
+  { n: "Santa Cruz", r: "Patagonia", pop: 100000, auh: 62.1, ali: 65.4, rase: 75.8, becas: 41.5, esc: 94.8, brechaEsc: 8.5 },
+  { n: "Santa Fe", r: "Centro", pop: 950000, auh: 74.8, ali: 77.8, rase: 64.8, becas: 40.5, esc: 93.9, brechaEsc: 9.8 },
+  { n: "Santiago del Estero", r: "NOA", pop: 290000, auh: 89.5, ali: 89.1, rase: 39.5, becas: 31.0, esc: 87.9, brechaEsc: 19.1 },
+  { n: "Tierra del Fuego", r: "Patagonia", pop: 55000, auh: 58.5, ali: 62.0, rase: 79.2, becas: 44.0, esc: 96.1, brechaEsc: 6.2 },
+  { n: "Tucumán", r: "NOA", pop: 480000, auh: 84.2, ali: 85.0, rase: 48.1, becas: 34.8, esc: 90.2, brechaEsc: 16.1 }
+];
+
+let activeFilters = { prov: "ALL", edad: "ALL", sexo: "ALL", vuln: "ALL" };
+let chartInstances = {};
+
+function fmtN(val) { return new Intl.NumberFormat('es-AR').format(Math.round(val)); }
+function fmtPct(val) { return (val).toFixed(1) + '%'; }
+function fmtMoney(val) { return '$ ' + new Intl.NumberFormat('es-AR').format(Math.round(val)); }
+
+function initDashboard() {
+  try { renderSVGMap(); } catch(e) { console.warn("Error rendering map:", e); }
+  try { applyFilters(); } catch(e) { console.warn("Error applying filters:", e); }
+}
+
+document.addEventListener('DOMContentLoaded', initDashboard);
+window.onload = initDashboard;
+
+function switchTab(tabId) {
+  const btns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  btns.forEach(b => b.classList.remove('active'));
+  panels.forEach(p => p.classList.remove('active'));
+
+  const activePanel = document.getElementById(tabId);
+  if(activePanel) activePanel.classList.add('active');
+
+  const activeBtn = Array.from(btns).find(b => b.getAttribute('onclick')?.includes(tabId));
+  if(activeBtn) activeBtn.classList.add('active');
+
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, 100);
+}
+
+function renderSVGMap() {
+  const svg = document.getElementById('svg-argentina');
+  if(!svg) return;
+  
+  let html = '';
+  for(const [provName, data] of Object.entries(ARG_MAP_PATHS)) {
+    const cleanId = normProv(provName).replace(/\s+/g, '-');
+    html += `<path id="map-path-${cleanId}" 
+                   class="prov-path" 
+                   d="${data.d}" 
+                   data-prov="${provName}"
+                   onmouseover="showMapTooltip(event, '${provName}')"
+                   onmousemove="moveMapTooltip(event)"
+                   onmouseout="hideMapTooltip()"
+                   onclick="selectProvinceFromMap('${provName}')" />`;
+  }
+  svg.innerHTML = html;
+  renderMainMap();
+}
+
+function getFilteredProvinces() {
+  const p = activeFilters.prov;
+  if(p === "ALL") return PROVINCES_META;
+  if(p.startsWith("REG_")) {
+    const regName = p.replace("REG_", "");
+    return PROVINCES_META.filter(item => item.r === regName);
+  }
+  return PROVINCES_META.filter(item => normProv(item.n) === normProv(p));
+}
+
+function getAgeFactor() {
+  if(activeFilters.edad === "0-5") return 0.25;
+  if(activeFilters.edad === "6-12") return 0.40;
+  if(activeFilters.edad === "13-17") return 0.35;
+  return 1.0;
+}
+
+function getSexFactor() {
+  if(activeFilters.sexo === "F") return 0.49;
+  if(activeFilters.sexo === "M") return 0.51;
+  return 1.0;
+}
+
+function getVulnFactor() {
+  if(activeFilters.vuln === "INDIGENTE") return 0.38;
+  if(activeFilters.vuln === "POBRE") return 0.32;
+  if(activeFilters.vuln === "VULNERABLE") return 0.30;
+  return 1.0;
+}
+
+function getScaleFactor() {
+  return getAgeFactor() * getSexFactor() * getVulnFactor();
+}
+
+function renderMainMap() {
+  const metric = document.getElementById('sel-map-metric')?.value || 'auh_cob';
+  const filteredList = getFilteredProvinces();
+  const provMap = new Map(filteredList.map(p => [normProv(p.n), p]));
+
+  let minVal = 100, maxVal = 0;
+  PROVINCES_META.forEach(p => {
+    const val = p[metric.replace('_cob', '').replace('_tasa', '')] || p.auh;
+    if(val < minVal) minVal = val;
+    if(val > maxVal) maxVal = val;
+  });
+
+  const legendMin = document.getElementById('legend-min-val');
+  const legendMax = document.getElementById('legend-max-val');
+  if(legendMin && legendMax) {
+    legendMin.innerText = `Bajo (${minVal.toFixed(0)}%)`;
+    legendMax.innerText = `Alto (${maxVal.toFixed(0)}%)`;
+  }
+
+  for(const provName of Object.keys(ARG_MAP_PATHS)) {
+    const cleanId = normProv(provName).replace(/\s+/g, '-');
+    const pathEl = document.getElementById(`map-path-${cleanId}`);
+    if(!pathEl) continue;
+
+    const meta = provMap.get(normProv(provName));
+    if(!meta) {
+      pathEl.style.fill = '#334155';
+      pathEl.style.opacity = '0.35';
+    } else {
+      pathEl.style.opacity = '1.0';
+      const rawVal = meta[metric.replace('_cob', '').replace('_tasa', '')] || meta.auh;
+      const pct = Math.max(0, Math.min(1, (rawVal - minVal) / (maxVal - minVal || 1)));
+      
+      // Color scale from red/orange to cyan/blue
+      const hue = (pct * 140) + 10; 
+      pathEl.style.fill = `hsl(${hue}, 75%, 45%)`;
+    }
+
+    if(activeFilters.prov !== "ALL" && normProv(provName) === normProv(activeFilters.prov)) {
+      pathEl.classList.add('selected-path');
+    } else {
+      pathEl.classList.remove('selected-path');
+    }
+  }
+}
+
+function showMapTooltip(e, provName) {
+  const tooltip = document.getElementById('map-tooltip');
+  if(!tooltip) return;
+  
+  const meta = PROVINCES_META.find(p => normProv(p.n) === normProv(provName));
+  if(!meta) return;
+
+  const scaleFact = getScaleFactor();
+  const popProv = Math.round(meta.pop * scaleFact);
+  const vulnTxt = activeFilters.vuln === 'ALL' ? 'Todos' : (activeFilters.vuln === 'INDIGENTE' ? 'Indigencia Extrema' : (activeFilters.vuln === 'POBRE' ? 'Pobreza No Indig.' : 'Vuln. No Pobre'));
+
+  tooltip.innerHTML = `
+    <div style="font-weight:800; font-family:var(--font-heading); color:var(--primary); margin-bottom:0.25rem;">📍 ${meta.n} (${meta.r})</div>
+    <div style="color:var(--text-muted); font-size:0.75rem;">Padrón 0-17 (${activeFilters.sexo==='F'?'Fem.':(activeFilters.sexo==='M'?'Masc.':'Todos')}, ${vulnTxt}): <strong>${fmtN(popProv)}</strong></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.25rem 0.5rem; margin-top:0.4rem; font-size:0.75rem;">
+      <div>🪙 AUH/PNC: <strong style="color:#38bdf8">${meta.auh}%</strong></div>
+      <div>🍲 Alimentar: <strong style="color:#34d399">${meta.ali}%</strong></div>
+      <div>⚡ RASE Subsidio: <strong style="color:#fbbf24">${meta.rase}%</strong></div>
+      <div>🎓 Becas/Vouchers: <strong style="color:#ec4899">${meta.becas}%</strong></div>
+      <div style="grid-column:span 2;">🏫 Escolarización: <strong style="color:#a855f7">${meta.esc}%</strong> (Brecha: ${meta.brechaEsc} pp)</div>
+    </div>
+  `;
+  tooltip.style.display = 'block';
+  moveMapTooltip(e);
+}
+
+function moveMapTooltip(e) {
+  const tooltip = document.getElementById('map-tooltip');
+  if(!tooltip) return;
+  tooltip.style.left = (e.clientX + 15) + 'px';
+  tooltip.style.top = (e.clientY + 15) + 'px';
+}
+
+function hideMapTooltip() {
+  const tooltip = document.getElementById('map-tooltip');
+  if(tooltip) tooltip.style.display = 'none';
+}
+
+function selectProvinceFromMap(provName) {
+  const selProv = document.getElementById('sel-prov');
+  if(selProv) {
+    selProv.value = provName;
+    applyFilters();
+  }
+}
+
+function resetFilters() {
+  document.getElementById('sel-prov').value = "ALL";
+  document.getElementById('sel-edad').value = "ALL";
+  document.getElementById('sel-sexo').value = "ALL";
+  if(document.getElementById('sel-vuln')) document.getElementById('sel-vuln').value = "ALL";
+  applyFilters();
+}
+
+function applyFilters() {
+  activeFilters.prov = document.getElementById('sel-prov')?.value || "ALL";
+  activeFilters.edad = document.getElementById('sel-edad')?.value || "ALL";
+  activeFilters.sexo = document.getElementById('sel-sexo')?.value || "ALL";
+  activeFilters.vuln = document.getElementById('sel-vuln')?.value || "ALL";
+
+  // Update Active Filter Indicator Tag
+  const tag = document.getElementById('active-filter-indicator') || document.getElementById('active-filter-tag');
+  if(tag) {
+    let provTxt = activeFilters.prov === "ALL" ? "Pa&iacute;s Completo" : activeFilters.prov.replace("REG_", "Regi&oacute;n ");
+    let edadTxt = activeFilters.edad === "ALL" ? "0-17 a&ntilde;os" : activeFilters.edad + " a&ntilde;os";
+    let sexoTxt = activeFilters.sexo === "ALL" ? "Todos" : (activeFilters.sexo === "F" ? "Femenino" : "Masculino");
+    let vulnTxt = activeFilters.vuln === "ALL" ? "Todos los niveles" : (activeFilters.vuln === "INDIGENTE" ? "Indigencia Extrema" : (activeFilters.vuln === "POBRE" ? "Pobreza No Indigente" : "Vulnerable No Pobre"));
+    tag.innerHTML = `⚡ Mostrando: <strong>${provTxt}</strong> | Tramo: <strong>${edadTxt}</strong> | <strong>${sexoTxt}</strong> | Vuln: <strong>${vulnTxt}</strong>`;
+  }
+
+  const list = getFilteredProvinces();
+  const scaleFact = getScaleFactor();
+  const totalPop = list.reduce((acc, p) => acc + (p.pop * scaleFact), 0);
+
+  // Sex and Vulnerability coverage adjustments for percentages
+  let sexAUHMod = 0, sexAliMod = 0, sexRASEMod = 0, sexBecasMod = 0, sexEscMod = 0;
+  if (activeFilters.sexo === "F") {
+    sexAUHMod = 0.6; sexAliMod = 0.4; sexRASEMod = 0.8; sexBecasMod = 2.4; sexEscMod = 1.5;
+  } else if (activeFilters.sexo === "M") {
+    sexAUHMod = -0.6; sexAliMod = 0.8; sexRASEMod = -0.5; sexBecasMod = -2.1; sexEscMod = -1.2;
+  }
+
+  let vulnAUHMod = 0, vulnAliMod = 0, vulnRASEMod = 0, vulnBecasMod = 0, vulnEscMod = 0;
+  if (activeFilters.vuln === "INDIGENTE") {
+    vulnAUHMod = 14.2; vulnAliMod = 12.5; vulnRASEMod = -14.2; vulnBecasMod = 3.8; vulnEscMod = -8.3;
+  } else if (activeFilters.vuln === "POBRE") {
+    vulnAUHMod = 3.8; vulnAliMod = -3.5; vulnRASEMod = -4.1; vulnBecasMod = 1.2; vulnEscMod = -0.8;
+  } else if (activeFilters.vuln === "VULNERABLE") {
+    vulnAUHMod = -20.2; vulnAliMod = -33.5; vulnRASEMod = 12.8; vulnBecasMod = -4.5; vulnEscMod = 3.7;
+  }
+
+  const baseAUH = list.reduce((acc, p) => acc + (p.auh * p.pop), 0) / (list.reduce((acc, p) => acc + p.pop, 0) || 1);
+  const baseAli = list.reduce((acc, p) => acc + (p.ali * p.pop), 0) / (list.reduce((acc, p) => acc + p.pop, 0) || 1);
+  const baseRASE = list.reduce((acc, p) => acc + (p.rase * p.pop), 0) / (list.reduce((acc, p) => acc + p.pop, 0) || 1);
+  const baseBecas = list.reduce((acc, p) => acc + (p.becas * p.pop), 0) / (list.reduce((acc, p) => acc + p.pop, 0) || 1);
+  const baseEsc = list.reduce((acc, p) => acc + (p.esc * p.pop), 0) / (list.reduce((acc, p) => acc + p.pop, 0) || 1);
+  const baseBrecha = list.reduce((acc, p) => acc + (p.brechaEsc * p.pop), 0) / (list.reduce((acc, p) => acc + p.pop, 0) || 1);
+
+  const avgAUH = Math.min(100, Math.max(0, baseAUH + sexAUHMod + vulnAUHMod));
+  const avgAli = Math.min(100, Math.max(0, baseAli + sexAliMod + vulnAliMod));
+  const avgRASE = Math.min(100, Math.max(0, baseRASE + sexRASEMod + vulnRASEMod));
+  const avgBecas = Math.min(100, Math.max(0, baseBecas + sexBecasMod + vulnBecasMod));
+  const avgEsc = Math.min(100, Math.max(0, baseEsc + sexEscMod + vulnEscMod));
+  const avgBrecha = Math.max(0, baseBrecha - (activeFilters.sexo === "F" ? 0.8 : 0) + (activeFilters.vuln === "INDIGENTE" ? 6.5 : (activeFilters.vuln === "VULNERABLE" ? -4.2 : 0)));
+
+  // Update Tab 0 KPIs
+  if(document.getElementById('kpi0-auh-cob')) document.getElementById('kpi0-auh-cob').innerText = fmtPct(avgAUH);
+  if(document.getElementById('kpi0-auh-count')) document.getElementById('kpi0-auh-count').innerText = `${fmtN(totalPop * (avgAUH/100))} activos`;
+
+  if(document.getElementById('kpi0-ali-cob')) document.getElementById('kpi0-ali-cob').innerText = fmtPct(avgAli);
+  if(document.getElementById('kpi0-ali-count')) document.getElementById('kpi0-ali-count').innerText = `${fmtN(totalPop * (avgAli/100))} beneficiarios`;
+
+  if(document.getElementById('kpi0-rase-cob')) document.getElementById('kpi0-rase-cob').innerText = fmtPct(avgRASE);
+  if(document.getElementById('kpi0-rase-gap-pill')) document.getElementById('kpi0-rase-gap-pill').innerText = `Brecha ${fmtPct(100-avgRASE)}`;
+  if(document.getElementById('kpi0-rase-count')) document.getElementById('kpi0-rase-count').innerText = `${fmtN((totalPop/3.2) * (avgRASE/100))} hogares`;
+
+  if(document.getElementById('kpi0-becas-cob')) document.getElementById('kpi0-becas-cob').innerText = fmtPct(avgBecas);
+  if(document.getElementById('kpi0-becas-count')) document.getElementById('kpi0-becas-count').innerText = `${fmtN(totalPop * (avgBecas/100))} becarios`;
+
+  if(document.getElementById('kpi0-esc-cob')) document.getElementById('kpi0-esc-cob').innerText = fmtPct(avgEsc);
+  if(document.getElementById('kpi0-esc-count')) document.getElementById('kpi0-esc-count').innerText = `${fmtN(totalPop * (avgEsc/100))} alumnos`;
+
+  // Update Tab 1 KPIs
+  if(document.getElementById('kpi1-activos')) document.getElementById('kpi1-activos').innerText = fmtN(totalPop * (avgAUH/100));
+  if(document.getElementById('kpi1-cobertura')) document.getElementById('kpi1-cobertura').innerText = fmtPct(avgAUH);
+
+  // Update Tab 2 KPIs
+  if(document.getElementById('kpi2-activos')) document.getElementById('kpi2-activos').innerText = fmtN(totalPop * (avgAli/100));
+  if(document.getElementById('kpi2-cobertura')) document.getElementById('kpi2-cobertura').innerText = fmtPct(avgAli);
+
+  // Update Tab 3 KPIs
+  if(document.getElementById('kpi3-hogares')) document.getElementById('kpi3-hogares').innerText = fmtN((totalPop/3.2) * (avgRASE/100));
+  if(document.getElementById('kpi3-cobertura')) document.getElementById('kpi3-cobertura').innerText = fmtPct(avgRASE);
+
+  // Update Tab 4 KPIs
+  if(document.getElementById('kpi4-activos')) document.getElementById('kpi4-activos').innerText = fmtN(totalPop * (avgBecas/100));
+
+  // Update Tab 5 KPIs
+  if(document.getElementById('kpi5-tasa')) document.getElementById('kpi5-tasa').innerText = fmtPct(avgEsc);
+  if(document.getElementById('kpi5-matriculados')) document.getElementById('kpi5-matriculados').innerText = fmtN(totalPop * (avgEsc/100));
+  if(document.getElementById('kpi5-brecha')) document.getElementById('kpi5-brecha').innerText = `${avgBrecha.toFixed(1)} pp`;
+
+  // Update Tab Alerts KPIs (Reactivos a Jurisdicción, Tramo y Sexo)
+  let dropVal = -3.8;
+  if (activeFilters.edad === '0-5') dropVal = -4.5;
+  else if (activeFilters.edad === '13-17') dropVal = -2.9;
+  if (activeFilters.sexo === 'F') dropVal = +(dropVal + 0.4).toFixed(1);
+  else if (activeFilters.sexo === 'M') dropVal = +(dropVal - 0.4).toFixed(1);
+  if (document.getElementById('kpi-a1-val')) document.getElementById('kpi-a1-val').innerText = `${dropVal}%`;
+
+  const lowCount = list.filter(p => p.auh < 70).length;
+  if (document.getElementById('kpi-a2-val')) document.getElementById('kpi-a2-val').innerText = `${lowCount} Prov.`;
+
+  let noLibVal = 12.3;
+  if (activeFilters.edad === '0-5') noLibVal = 15.2;
+  else if (activeFilters.edad === '6-12') noLibVal = 9.4;
+  else if (activeFilters.edad === '13-17') noLibVal = 11.8;
+  if (activeFilters.sexo === 'F') noLibVal = +(noLibVal - 0.8).toFixed(1);
+  else if (activeFilters.sexo === 'M') noLibVal = +(noLibVal + 0.7).toFixed(1);
+  if (document.getElementById('kpi-a3-val')) document.getElementById('kpi-a3-val').innerText = `${noLibVal}%`;
+
+  const locCount = activeFilters.prov === 'ALL' ? 18 : Math.max(2, Math.round(list.length * 0.8));
+  if (document.getElementById('kpi-a4-val')) document.getElementById('kpi-a4-val').innerText = `${locCount} Loc.`;
+
+  let gapVal = 15.4;
+  if (activeFilters.edad === '0-5') gapVal = 22.5;
+  else if (activeFilters.edad === '6-12') gapVal = 6.2;
+  else if (activeFilters.edad === '13-17') gapVal = 18.4;
+  if (activeFilters.sexo === 'F') gapVal = Math.max(2, +(gapVal - 1.2).toFixed(1));
+  if (document.getElementById('kpi-a5-val')) document.getElementById('kpi-a5-val').innerText = `${gapVal} pp`;
+
+  // Render Map & Summary Table
+  renderMainMap();
+  renderSummaryTable(list, scaleFact);
+
+  // Generate Synthetic Microdata Tables
+  generateSyntheticMicrodata();
+
+  // Re-render Charts
+  renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc);
+}
+
+function renderSummaryTable(list, scaleFact) {
+  const tbody = document.getElementById('tbody-summary');
+  if(!tbody) return;
+
+  let html = '';
+  list.forEach(p => {
+    const popProv = Math.round(p.pop * scaleFact);
+    const badgeState = p.auh < 70 || p.rase < 45 || p.esc < 90 ? 
+      `<span class="badge-pill badge-bad">Alerta</span>` : 
+      (p.auh > 85 ? `<span class="badge-pill badge-good">Óptimo</span>` : `<span class="badge-pill badge-warn">Monitoreo</span>`);
+
+    html += `
+      <tr>
+        <td><strong>${p.n}</strong> <span style="font-size:0.7rem; color:#64748b;">(${p.r})</span></td>
+        <td>${fmtN(popProv)}</td>
+        <td>${fmtPct(p.auh)}</td>
+        <td>${fmtPct(p.ali)}</td>
+        <td>${fmtPct(p.rase)}</td>
+        <td>${fmtPct(p.becas)}</td>
+        <td>${fmtPct(p.esc)}</td>
+        <td>${p.brechaEsc.toFixed(1)} pp</td>
+        <td>${badgeState}</td>
+      </tr>
+    `;
+  });
+  tbody.innerHTML = html;
+}
+
+function generateSyntheticMicrodata() {
+  const list = getFilteredProvinces();
+  const provNames = list.map(p => p.n);
+  const sampleProv = () => provNames[Math.floor(Math.random() * provNames.length)] || "Buenos Aires";
+  
+  const sexFilter = activeFilters.sexo; // "ALL", "F", "M"
+  const ageFilter = activeFilters.edad; // "ALL", "0-5", "6-12", "13-17"
+
+  const getSex = (idx) => {
+    if (sexFilter === "F") return "F";
+    if (sexFilter === "M") return "M";
+    return idx % 2 === 0 ? "F" : "M";
+  };
+
+  const getBirthDate = (idx) => {
+    if (ageFilter === "0-5") {
+      const dates = ["2021-04-12", "2022-08-15", "2023-01-20", "2024-05-10", "2025-02-28"];
+      return dates[idx % dates.length];
+    }
+    if (ageFilter === "6-12") {
+      const dates = ["2014-11-03", "2016-03-25", "2017-09-18", "2018-12-05", "2020-07-14"];
+      return dates[idx % dates.length];
+    }
+    if (ageFilter === "13-17") {
+      const dates = ["2009-06-14", "2010-02-18", "2011-10-22", "2012-05-22", "2013-11-29"];
+      return dates[idx % dates.length];
+    }
+    const dates = ["2023-08-30", "2021-04-12", "2017-08-19", "2012-05-22", "2009-06-14"];
+    return dates[idx % dates.length];
+  };
+
+  // Table 1: ANSES
+  const tb1 = document.getElementById('tbody-t1-micro');
+  if(tb1) {
+    const rows = [
+      { id: "CRP-984120", fc: getBirthDate(0), sex: getSex(0), prov: sampleProv(), loc: "La Matanza", rel: "PADRE/MADRE", auh: 1, monto: "$ 124.500", aaff: 1, pnc: 0, met: "CBU Bancario", sinLib: "PRESENTADA" },
+      { id: "CRP-812394", fc: getBirthDate(1), sex: getSex(1), prov: sampleProv(), loc: "Rosario", rel: "PADRE/MADRE", auh: 1, monto: "$ 124.500", aaff: 0, pnc: 0, met: "Billetera Virtual", sinLib: "PRESENTADA" },
+      { id: "CRP-719203", fc: getBirthDate(2), sex: getSex(2), prov: sampleProv(), loc: "Capital", rel: "TUTOR LEGAL", auh: 1, monto: "$ 124.500", aaff: 1, pnc: 0, met: "CBU Bancario", sinLib: "PENDIENTE" },
+      { id: "CRP-602914", fc: getBirthDate(3), sex: getSex(3), prov: sampleProv(), loc: "Resistencia", rel: "PADRE/MADRE", auh: 1, monto: "$ 124.500", aaff: 1, pnc: 1, met: "Ventanilla BNA", sinLib: "PRESENTADA" },
+      { id: "CRP-519204", fc: getBirthDate(4), sex: getSex(4), prov: sampleProv(), loc: "San Miguel", rel: "PADRE/MADRE", auh: 1, monto: "$ 124.500", aaff: 0, pnc: 0, met: "CBU Bancario", sinLib: "PRESENTADA" }
+    ];
+    tb1.innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="field-code">${r.id}</span></td>
+        <td>${r.fc}</td>
+        <td><strong>${r.sex}</strong></td>
+        <td>${r.prov}</td>
+        <td>${r.loc}</td>
+        <td>${r.rel}</td>
+        <td><span class="badge-pill badge-good">1 (SÍ)</span></td>
+        <td>${r.monto}</td>
+        <td><span class="badge-pill ${r.aaff?'badge-good':'badge-warn'}">${r.aaff?'1 (SÍ)':'0 (NO)'}</span></td>
+        <td><span class="badge-pill ${r.pnc?'badge-good':'badge-warn'}">${r.pnc?'1 (SÍ)':'0 (NO)'}</span></td>
+        <td>${r.met}</td>
+        <td><span class="badge-pill ${r.sinLib==='PRESENTADA'?'badge-good':'badge-bad'}">${r.sinLib}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  // Table 2: SENAF Alimentar
+  const tb2 = document.getElementById('tbody-t2-micro');
+  if(tb2) {
+    const rows = [
+      { cuil: getSex(0)==='F'?"27-44091823-4":"20-44091823-3", fc: getBirthDate(0), sex: getSex(0), prov: sampleProv(), mun: "Lomas de Zamora", monto: "$ 98.000", per: "2026-07", pre: "POSTNATAL", orig: "ANSES LIQ", idC: "COM-482", nomC: "Comedor Los Pibes" },
+      { cuil: getSex(1)==='F'?"27-41092831-9":"20-41092831-2", fc: getBirthDate(1), sex: getSex(1), prov: sampleProv(), mun: "San Martín", monto: "$ 98.000", per: "2026-07", pre: "POSTNATAL", orig: "ANSES LIQ", idC: "COM-319", nomC: "Merendero La Esperanza" },
+      { cuil: getSex(2)==='F'?"27-46102948-9":"20-46102948-1", fc: getBirthDate(2), sex: getSex(2), prov: sampleProv(), mun: "Capital", monto: "$ 98.000", per: "2026-07", pre: ageFilter==='0-5'?"PRENATAL":"POSTNATAL", orig: "SENAF DIRECTO", idC: "COM-104", nomC: "Centro Comunitario Sol" },
+      { cuil: getSex(3)==='F'?"27-39102948-5":"20-39102948-1", fc: getBirthDate(3), sex: getSex(3), prov: sampleProv(), mun: "Orán", monto: "$ 98.000", per: "2026-07", pre: "POSTNATAL", orig: "ANSES LIQ", idC: "COM-821", nomC: "Comedor Caritas Feliz" }
+    ];
+    tb2.innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="field-code">${r.cuil}</span></td>
+        <td>${r.fc}</td>
+        <td><strong>${r.sex}</strong></td>
+        <td>${r.prov}</td>
+        <td>${r.mun}</td>
+        <td>${r.monto}</td>
+        <td>${r.per}</td>
+        <td><span class="badge-pill badge-good">${r.pre}</span></td>
+        <td>${r.orig}</td>
+        <td><span class="field-code">${r.idC}</span></td>
+        <td>${r.nomC}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Table 3: RASE / MEC
+  const tb3 = document.getElementById('tbody-t3-micro');
+  if(tb3) {
+    const rows = [
+      { cuil: getSex(0)==='F'?"27-39102845-3":"20-39102845-1", per: "2026-07", monto: "$ 48.200", prov: sampleProv(), loc: "Quilmes", cp: "1878", disc: "NO", flia: "SÍ", est: "APROBADO", sub: "SÍ", cat: "N2 - Ingresos Bajos Subsid." },
+      { cuil: getSex(1)==='F'?"27-37491028-5":"20-37491028-1", per: "2026-07", monto: "$ 42.000", prov: sampleProv(), loc: "Godoy Cruz", cp: "5501", disc: "SÍ", flia: "NO", est: "APROBADO", sub: "SÍ", cat: "N2 - Ingresos Bajos Subsid." },
+      { cuil: getSex(2)==='F'?"27-41092834-6":"20-41092834-2", per: "2026-07", monto: "$ 54.500", prov: sampleProv(), loc: "La Banda", cp: "4200", disc: "SÍ", flia: "SÍ", est: "APROBADO", sub: "SÍ", cat: "N2 - Ingresos Bajos Subsid." }
+    ];
+    tb3.innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="field-code">${r.cuil}</span></td>
+        <td>${r.per}</td>
+        <td>${r.monto}</td>
+        <td>${r.prov}</td>
+        <td>${r.loc}</td>
+        <td>${r.cp}</td>
+        <td><span class="badge-pill ${r.disc==='SÍ'?'badge-warn':'badge-good'}">${r.disc}</span></td>
+        <td><span class="badge-pill ${r.flia==='SÍ'?'badge-good':'badge-warn'}">${r.flia}</span></td>
+        <td><span class="badge-pill badge-good">${r.est}</span></td>
+        <td><span class="badge-pill badge-good">${r.sub}</span></td>
+        <td>${r.cat}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Table 4: Becas Educativas
+  const tb4 = document.getElementById('tbody-t4-micro');
+  if(tb4) {
+    const sublineaSample = ageFilter==='0-5' ? "VOUCHER NIVEL INICIAL" : (ageFilter==='6-12' ? "VOUCHER PRIMARIA" : "COMPUTACIÓN Y DIGITAL");
+    const rows = [
+      { dni: "46.102.948", cuit: getSex(0)==='F'?"27-46102948-4":"20-46102948-1", nom: getSex(0)==='F'?"GÓMEZ, Lucía":"GÓMEZ, Lucas", sex: getSex(0), fn: getBirthDate(0), prov: sampleProv(), loc: "Bahía Blanca", prio: "SÍ", sub: sublineaSample, monto: "$ 65.000", per: "2026-07" },
+      { dni: "48.291.034", cuit: getSex(1)==='F'?"27-48291034-9":"20-48291034-1", nom: getSex(1)==='F'?"RODRÍGUEZ, Maya":"RODRÍGUEZ, Mateo", sex: getSex(1), fn: getBirthDate(1), prov: sampleProv(), loc: "Villa María", prio: "SÍ", sub: "ALIMENTOS Y SALUD", monto: "$ 65.000", per: "2026-07" },
+      { dni: "50.192.831", cuit: getSex(2)==='F'?"27-50192831-9":"20-50192831-2", nom: getSex(2)==='F'?"FERNÁNDEZ, Sofía":"FERNÁNDEZ, Santiago", sex: getSex(2), fn: getBirthDate(2), prov: sampleProv(), loc: "Tartagal", prio: "SÍ", sub: ageFilter==='13-17'?"VOUCHER NIVEL MEDIO":"VOUCHER PRIMARIA", monto: "$ 65.000", per: "2026-07" }
+    ];
+    tb4.innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="field-code">${r.dni}</span></td>
+        <td>${r.cuit}</td>
+        <td><strong>${r.nom}</strong></td>
+        <td>${r.sex}</td>
+        <td>${r.fn}</td>
+        <td>${r.prov}</td>
+        <td>${r.loc}</td>
+        <td><span class="badge-pill badge-good">${r.prio}</span></td>
+        <td>${r.sub}</td>
+        <td>${r.monto}</td>
+        <td>${r.per}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Table 5: Relevamiento Anual BNH
+  const tb5 = document.getElementById('tbody-t5-micro');
+  if(tb5) {
+    const ofertaSample = ageFilter==='0-5' ? "Jardín de Infantes" : (ageFilter==='6-12' ? "Primario Común" : "Secundario Orientado");
+    const gradoSample = ageFilter==='0-5' ? "Sala 5 años" : (ageFilter==='6-12' ? "5° Grado" : "4° Año");
+    const orientSample = ageFilter==='0-5' ? "Nivel Inicial" : (ageFilter==='6-12' ? "Educación General" : "Economía y Admin.");
+
+    const rows = [
+      { id: "JUR-481920", doc: "45.910.283", cuil: getSex(0)==='F'?"27-45910283-4":"20-45910283-3", fn: getBirthDate(0), sex: getSex(0), prov: sampleProv(), loc: "Avellaneda", cue: "0601928-00", ofer: ofertaSample, grado: gradoSample, orient: orientSample },
+      { id: "JUR-591024", doc: "49.102.834", cuil: getSex(1)==='F'?"27-49102834-8":"20-49102834-1", fn: getBirthDate(1), sex: getSex(1), prov: sampleProv(), loc: "Concordia", cue: "0802914-00", ofer: ofertaSample, grado: gradoSample, orient: orientSample },
+      { id: "JUR-610294", doc: "52.819.203", cuil: getSex(2)==='F'?"27-52819203-1":"20-52819203-9", fn: getBirthDate(2), sex: getSex(2), prov: sampleProv(), loc: "Rafaela", cue: "2104819-00", ofer: ofertaSample, grado: gradoSample, orient: orientSample }
+    ];
+    tb5.innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="field-code">${r.id}</span></td>
+        <td>${r.doc}</td>
+        <td>${r.cuil}</td>
+        <td>${r.fn}</td>
+        <td><strong>${r.sex}</strong></td>
+        <td>${r.prov}</td>
+        <td>${r.loc}</td>
+        <td><span class="field-code">${r.cue}</span></td>
+        <td>${r.ofer}</td>
+        <td>${r.grado}</td>
+        <td>${r.orient}</td>
+      </tr>
+    `).join('');
+  }
+}
+
+function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
+  const age = activeFilters.edad; // "ALL", "0-5", "6-12", "13-17"
+  const sex = activeFilters.sexo; // "ALL", "F", "M"
+  const vuln = activeFilters.vuln; // "ALL", "INDIGENTE", "POBRE", "VULNERABLE"
+
+  const ageFact = getAgeFactor(); 
+  const sexFact = getSexFactor(); 
+  const vulnFact = getVulnFactor();
+  const scaleFact = ageFact * sexFact * vulnFact;
+
+  const edadLabel = age === "ALL" ? "0-17 años" : age + " años";
+  const sexoLabel = sex === "ALL" ? "Todos" : (sex === "F" ? "Femenino" : "Masculino");
+  const vulnLabel = vuln === "ALL" ? "Todos los niveles" : (vuln === "INDIGENTE" ? "Indigencia Extrema" : (vuln === "POBRE" ? "Pobreza No Indig." : "Vulnerable No Pobre"));
+
+  const datalabelsDefault = {
+    display: true,
+    font: { family: 'Inter', size: 9.5, weight: '600' },
+    color: '#f8fafc',
+    formatter: (val) => typeof val === 'number' ? (val % 1 === 0 ? val : val.toFixed(1)) : val
+  };
+
+  // 1. Overview Radar Chart
+  let radarAUH = list.reduce((a, b) => a + (b.auh * b.pop), 0) / (list.reduce((a, b) => a + b.pop, 0) || 1);
+  let radarAli = list.reduce((a, b) => a + (b.ali * b.pop), 0) / (list.reduce((a, b) => a + b.pop, 0) || 1);
+  let radarRASE = list.reduce((a, b) => a + (b.rase * b.pop), 0) / (list.reduce((a, b) => a + b.pop, 0) || 1);
+  let radarBecas = list.reduce((a, b) => a + (b.becas * b.pop), 0) / (list.reduce((a, b) => a + b.pop, 0) || 1);
+  let radarEsc = list.reduce((a, b) => a + (b.esc * b.pop), 0) / (list.reduce((a, b) => a + b.pop, 0) || 1);
+
+  if (age === '0-5') {
+    radarAUH = Math.min(100, radarAUH + 3.5);
+    radarAli = Math.min(100, radarAli + 5.2);
+    radarBecas = Math.max(0, radarBecas - 22.0);
+    radarEsc = Math.max(0, radarEsc - 4.2);
+  } else if (age === '6-12') {
+    radarAUH = Math.min(100, radarAUH + 0.8);
+    radarAli = Math.min(100, radarAli + 2.0);
+    radarBecas = Math.max(0, radarBecas - 5.0);
+    radarEsc = Math.min(100, radarEsc + 5.5);
+  } else if (age === '13-17') {
+    radarAUH = Math.max(0, radarAUH - 4.0);
+    radarAli = Math.max(0, radarAli - 6.5);
+    radarBecas = Math.min(100, radarBecas + 14.0);
+    radarEsc = Math.max(0, radarEsc - 2.0);
+  }
+
+  if (sex === 'F') {
+    radarBecas = Math.min(100, radarBecas + 1.8);
+    radarEsc = Math.min(100, radarEsc + 1.2);
+  } else if (sex === 'M') {
+    radarAli = Math.min(100, radarAli + 0.8);
+  }
+
+  if (vuln === 'INDIGENTE') {
+    radarAUH = Math.min(100, radarAUH + 14.2);
+    radarAli = Math.min(100, radarAli + 12.5);
+    radarRASE = Math.max(0, radarRASE - 14.2);
+    radarBecas = Math.min(100, radarBecas + 3.8);
+    radarEsc = Math.max(0, radarEsc - 8.3);
+  } else if (vuln === 'POBRE') {
+    radarAUH = Math.min(100, radarAUH + 3.8);
+    radarAli = Math.max(0, radarAli - 3.5);
+    radarRASE = Math.max(0, radarRASE - 4.1);
+    radarEsc = Math.max(0, radarEsc - 0.8);
+  } else if (vuln === 'VULNERABLE') {
+    radarAUH = Math.max(0, radarAUH - 20.2);
+    radarAli = Math.max(0, radarAli - 33.5);
+    radarRASE = Math.min(100, radarRASE + 12.8);
+    radarEsc = Math.min(100, radarEsc + 3.7);
+  }
+
+  const radarLabelSelection = activeFilters.prov === 'ALL' ? 
+    'Nivel Nacional (24 Provincias)' : 
+    (activeFilters.prov.startsWith('REG_') ? `Selección: ${activeFilters.prov.replace('REG_', 'Región ')}` : `Selección: ${activeFilters.prov}`);
+
+  createChart('chart-radar-overview', 'radar', {
+    labels: ['1. AUH / AAFF', '2. Alimentar', '3. Subsidio RASE', '4. Becas / Vouchers', '5. Escolarización'],
+    datasets: [
+      {
+        label: radarLabelSelection,
+        data: [+radarAUH.toFixed(1), +radarAli.toFixed(1), +radarRASE.toFixed(1), +radarBecas.toFixed(1), +radarEsc.toFixed(1)],
+        backgroundColor: 'rgba(56, 189, 248, 0.3)',
+        borderColor: '#38bdf8',
+        borderWidth: 2,
+        pointBackgroundColor: '#38bdf8',
+        pointRadius: 4
+      },
+      {
+        label: 'Meta Referencia 2026',
+        data: [90, 88, 85, 80, 95],
+        backgroundColor: 'rgba(52, 211, 153, 0.15)',
+        borderColor: '#34d399',
+        borderDash: [4, 4],
+        borderWidth: 1.5,
+        pointBackgroundColor: '#34d399',
+        pointRadius: 2.5
+      }
+    ]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        display: true,
+        align: 'top',
+        color: '#7dd3fc',
+        font: { family: 'Inter', size: 9.5, weight: '600' },
+        formatter: (val) => val.toFixed(1) + '%'
+      })
+    },
+    scales: {
+      r: {
+        angleLines: { color: 'rgba(255,255,255,0.1)' },
+        grid: { color: 'rgba(255,255,255,0.1)' },
+        pointLabels: { color: '#cbd5e1', font: { family: 'Inter', size: 10, weight: '600' } },
+        ticks: { color: '#64748b', backdropColor: 'transparent' }
+      }
+    }
+  });
+
+  // 2. ANSES Serie Line Chart
+  const baseStock = [9320000, 9350000, 9380000, 9410000, 9430000, 9450000, 9460000, 9475000, 9482000, 9490000, 9495000, 9497600];
+  const baseAltas = [85000, 82000, 88000, 84000, 91000, 79000, 83000, 86000, 89000, 85000, 82000, 84000];
+  const baseBajas = [32000, 31000, 34000, 30000, 35000, 29000, 31000, 33000, 36000, 32000, 30000, 33000];
+
+  const stockData = baseStock.map(v => Math.round(v * scaleFact));
+  const altasData = baseAltas.map(v => Math.round(v * scaleFact));
+  const bajasData = baseBajas.map(v => Math.round(v * scaleFact));
+
+  createChart('chart-t1-serie', 'line', {
+    labels: ['Ago 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dic 25', 'Ene 26', 'Feb 26', 'Mar 26', 'Abr 26', 'May 26', 'Jun 26', 'Jul 26'],
+    datasets: [
+      { label: `Stock Activos`, data: stockData, borderColor: '#38bdf8', tension: 0.3 },
+      { label: `Altas Mensuales`, data: altasData, borderColor: '#34d399', borderDash: [5,5] },
+      { label: `Bajas Mensuales`, data: bajasData, borderColor: '#f87171', borderDash: [5,5] }
+    ]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        align: 'top',
+        font: { family: 'Inter', size: 9, weight: '500' },
+        formatter: (val) => (val >= 1000000 ? (val/1000000).toFixed(2)+'M' : (val/1000).toFixed(0)+'k')
+      })
+    }
+  });
+
+  // 3. ANSES Types Bar Chart
+  let baseTipos = [5420000, 185000, 2650000, 420000, 1950000, 3820000];
+  let tiposLabels = ['AUH', 'AUH Discap.', 'AAFF', 'PNC 7 Hijos', '1000 Días', 'Ayuda Escolar'];
+
+  if(age === '0-5') {
+    baseTipos = [5420000 * 0.25, 185000 * 0.25, 2650000 * 0.25, 420000 * 0.25, 1950000, 3820000 * 0.15];
+  } else if(age === '6-12') {
+    baseTipos = [5420000 * 0.40, 185000 * 0.40, 2650000 * 0.40, 420000 * 0.40, 0, 3820000 * 0.55];
+  } else if(age === '13-17') {
+    baseTipos = [5420000 * 0.35, 185000 * 0.35, 2650000 * 0.35, 420000 * 0.35, 0, 3820000 * 0.30];
+  }
+
+  const tiposData = baseTipos.map(v => Math.round(v * sexFact));
+
+  createChart('chart-t1-tipos', 'bar', {
+    labels: tiposLabels,
+    datasets: [{
+      label: `Beneficiarios`,
+      data: tiposData,
+      backgroundColor: ['#38bdf8', '#818cf8', '#34d399', '#fbbf24', '#f472b6', '#a855f7']
+    }]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        anchor: 'end', align: 'top',
+        font: { family: 'Inter', size: 9, weight: '500' },
+        formatter: (val) => (val >= 1000000 ? (val/1000000).toFixed(2)+'M' : (val/1000).toFixed(0)+'k')
+      })
+    }
+  });
+
+  // 4. Pirámide Alimentar (Etiquetas fijas en Eje X: '0-5 años', '6-12 años', '13-17 años')
+  const pirLabels = ['0-5 años', '6-12 años', '13-17 años'];
+  let femData = [-610000, -820000, -580000];
+  let mascData = [640000, 860000, 610000];
+
+  if(age === '0-5') {
+    femData = [-610000, 0, 0];
+    mascData = [640000, 0, 0];
+  } else if(age === '6-12') {
+    femData = [0, -820000, 0];
+    mascData = [0, 860000, 0];
+  } else if(age === '13-17') {
+    femData = [0, 0, -580000];
+    mascData = [0, 0, 610000];
+  }
+
+  const datasetsPir = [];
+  if(sex === 'ALL' || sex === 'F') {
+    datasetsPir.push({ label: 'Femenino', data: femData, backgroundColor: '#ec4899' });
+  }
+  if(sex === 'ALL' || sex === 'M') {
+    datasetsPir.push({ label: 'Masculino', data: mascData, backgroundColor: '#38bdf8' });
+  }
+
+  createChart('chart-t2-piramide', 'bar', {
+    labels: pirLabels,
+    datasets: datasetsPir
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => val === 0 ? '' : (Math.abs(val)/1000).toFixed(0)+'k',
+        align: (ctx) => ctx.datasetIndex === 0 ? 'left' : 'right',
+        anchor: (ctx) => ctx.datasetIndex === 0 ? 'start' : 'end'
+      })
+    }
+  });
+
+  // 5. Alimentar Monto por Provincia Top 8
+  const topMonto = [...list].sort((a,b)=>b.pop-a.pop).slice(0, 8);
+  createChart('chart-t2-monto-prov', 'bar', {
+    labels: topMonto.map(p=>p.n),
+    datasets: [{
+      label: `Monto Alimentar ($ Millones)`,
+      data: topMonto.map(p => Math.round((p.pop * ageFact * sexFact * (p.ali/100) * 98000) / 1e6)),
+      backgroundColor: '#34d399'
+    }]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        anchor: 'end', align: 'top',
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => '$' + val + 'M'
+      })
+    }
+  });
+
+  // 6. RASE Servicios por Región
+  const regList = ['Centro', 'NOA', 'NEA', 'Cuyo', 'Patagonia'];
+  const servGas = [71.2, 44.5, 14.8, 58.2, 89.5];
+  const servElec = [75.4, 54.8, 52.1, 64.5, 81.2];
+  const servGarr = [28.8, 55.5, 85.2, 41.8, 10.5];
+
+  const adjGas = servGas.map(v => age === '0-5' ? Math.min(100, v + 2.5) : (age === '13-17' ? Math.max(0, v - 1.8) : v));
+  const adjElec = servElec.map(v => age === '0-5' ? Math.min(100, v + 1.8) : v);
+  const adjGarr = servGarr.map(v => age === '13-17' ? Math.min(100, v + 2.0) : v);
+
+  createChart('chart-t3-servicios', 'bar', {
+    labels: regList,
+    datasets: [
+      { label: `Gas por Redes (%)`, data: adjGas, backgroundColor: '#38bdf8' },
+      { label: `Electricidad Subsid. (%)`, data: adjElec, backgroundColor: '#fbbf24' },
+      { label: `Garrafa / Hogar (%)`, data: adjGarr, backgroundColor: '#f87171' }
+    ]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => val.toFixed(1) + '%',
+        anchor: 'end', align: 'top'
+      })
+    }
+  });
+
+  // 7. RASE Serie Brecha
+  let baseRaseCob = [61.2, 62.5, 63.4, 64.1, 64.8, 65.1, 65.4];
+  if(age === '0-5') baseRaseCob = baseRaseCob.map(v => Math.min(100, v + 3.2));
+  else if(age === '13-17') baseRaseCob = baseRaseCob.map(v => Math.max(0, v - 2.5));
+  if(sex === 'F') baseRaseCob = baseRaseCob.map(v => Math.min(100, v + 1.5));
+
+  const baseRaseGap = baseRaseCob.map(v => +(100 - v).toFixed(1));
+
+  createChart('chart-t3-brecha-serie', 'line', {
+    labels: ['Ene 26', 'Feb 26', 'Mar 26', 'Abr 26', 'May 26', 'Jun 26', 'Jul 26'],
+    datasets: [
+      { label: `Cobertura RASE (%)`, data: baseRaseCob, borderColor: '#34d399' },
+      { label: `Brecha Acceso (%)`, data: baseRaseGap, borderColor: '#f87171', borderDash: [5,5] }
+    ]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => val.toFixed(1) + '%', align: 'top'
+      })
+    }
+  });
+
+  // 8. Becas por Sublínea
+  let becasLabels = ['Alimentos/Salud', 'Computación', 'Ambiente/Energía', 'Voucher Medio', 'Voucher Primaria'];
+  let becasVal = [380000, 310000, 190000, 340000, 200000];
+
+  if(age === '0-5') {
+    becasLabels = ['Voucher Inicial', 'Alimentos/Salud', 'Nutrición', 'Estimulación', 'Cuidado Infantil'];
+    becasVal = [180000, 120000, 95000, 60000, 45000];
+  } else if(age === '6-12') {
+    becasLabels = ['Voucher Primaria', 'Alimentos/Salud', 'Apoyo Escolar', 'Apoyo Digital', 'Talleres'];
+    becasVal = [200000, 150000, 110000, 75000, 40000];
+  } else if(age === '13-17') {
+    becasLabels = ['Computación', 'Voucher Medio', 'Ambiente/Energía', 'Beca Belgrano', 'Formación Tec.'];
+    becasVal = [310000, 340000, 190000, 140000, 85000];
+  }
+
+  const becasData = becasVal.map(v => Math.round(v * sexFact));
+
+  createChart('chart-t4-sublineas', 'bar', {
+    labels: becasLabels,
+    datasets: [{
+      label: `Becarios Activos`,
+      data: becasData,
+      backgroundColor: ['#ec4899', '#38bdf8', '#34d399', '#a855f7', '#fbbf24']
+    }]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        anchor: 'end', align: 'top',
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => (val/1000).toFixed(0)+'k'
+      })
+    }
+  });
+
+  // 9. Becas Serie Altas/Bajas
+  const baseBecasStock = [1280000, 1310000, 1330000, 1350000, 1360000, 1370000, 1385000, 1400000, 1410000, 1415000, 1418000, 1420000];
+  const baseBecasAltas = [35000, 32000, 31000, 28000, 22000, 19000, 25000, 29000, 31000, 28000, 24000, 26000];
+
+  const bStockData = baseBecasStock.map(v => Math.round(v * scaleFact));
+  const bAltasData = baseBecasAltas.map(v => Math.round(v * scaleFact));
+
+  createChart('chart-t4-serie', 'line', {
+    labels: ['Ago 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dic 25', 'Ene 26', 'Feb 26', 'Mar 26', 'Abr 26', 'May 26', 'Jun 26', 'Jul 26'],
+    datasets: [
+      { label: `Stock Becas & Vouchers`, data: bStockData, borderColor: '#ec4899', tension: 0.2 },
+      { label: `Altas Mensuales`, data: bAltasData, borderColor: '#34d399' }
+    ]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        font: { family: 'Inter', size: 9, weight: '500' },
+        formatter: (val) => (val >= 1000000 ? (val/1000000).toFixed(2)+'M' : (val/1000).toFixed(0)+'k'),
+        align: 'top'
+      })
+    }
+  });
+
+  // 10. Escolarización por Oferta
+  let ofertasLabels = ['Inicial (0-5)', 'Primario (6-12)', 'Sec. Orientado (13-17)', 'Sec. Técnico (13-17)'];
+  let ofertasVal = [2980000, 4850000, 3120000, 928000];
+
+  if(age === '0-5') {
+    ofertasLabels = ['Maternal (0-2)', 'Infantes (3-5)', 'CDI / Centros'];
+    ofertasVal = [720000, 1980000, 280000];
+  } else if(age === '6-12') {
+    ofertasLabels = ['1° Ciclo Primaria', '2° Ciclo Primaria', 'Esc. Rurales'];
+    ofertasVal = [2380000, 2250000, 220000];
+  } else if(age === '13-17') {
+    ofertasLabels = ['Ciclo Básico Sec.', 'Ciclo Orientado', 'Sec. Técnica', 'Jóvenes y Adultos'];
+    ofertasVal = [1820000, 1300000, 928000, 120000];
+  }
+
+  const ofertasData = ofertasVal.map(v => Math.round(v * sexFact));
+
+  createChart('chart-t5-ofertas', 'bar', {
+    labels: ofertasLabels,
+    datasets: [{
+      label: `Matriculados BNH`,
+      data: ofertasData,
+      backgroundColor: ['#a855f7', '#38bdf8', '#34d399', '#fbbf24']
+    }]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        anchor: 'end', align: 'top',
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => (val/1000000).toFixed(2)+'M'
+      })
+    }
+  });
+
+  // 11. Escolarización Serie por Tramo Etario
+  let series05 = [84.2, 85.1, 86.0, 87.2, 88.5];
+  let series612 = [98.1, 98.4, 98.6, 98.8, 99.1];
+  let series1317 = [86.5, 87.2, 88.4, 89.5, 90.8];
+
+  if(sex === 'F') {
+    series05 = series05.map(v => +(v + 0.5).toFixed(1));
+    series612 = series612.map(v => Math.min(100, +(v + 0.2).toFixed(1)));
+    series1317 = series1317.map(v => +(v + 1.2).toFixed(1));
+  } else if(sex === 'M') {
+    series05 = series05.map(v => +(v - 0.3).toFixed(1));
+    series1317 = series1317.map(v => +(v - 0.8).toFixed(1));
+  }
+
+  const datasetsEsc = [];
+  if(age === 'ALL' || age === '0-5') {
+    datasetsEsc.push({ label: `0-5 años (Inicial)`, data: series05, borderColor: '#a855f7' });
+  }
+  if(age === 'ALL' || age === '6-12') {
+    datasetsEsc.push({ label: `6-12 años (Primaria)`, data: series612, borderColor: '#38bdf8' });
+  }
+  if(age === 'ALL' || age === '13-17') {
+    datasetsEsc.push({ label: `13-17 años (Secundaria)`, data: series1317, borderColor: '#34d399' });
+  }
+
+  createChart('chart-t5-tramos-serie', 'line', {
+    labels: ['2022', '2023', '2024', '2025', '2026 (Julio)'],
+    datasets: datasetsEsc
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => val.toFixed(1) + '%', align: 'top'
+      })
+    }
+  });
+
+  // 12. Alerta 1: Caída Mensual > 3% en Activos AUH (Reactivo a Jurisdicción, Tramo Etario y Sexo)
+  const a1Labels = ['May 25', 'Jun 25', 'Jul 25', 'Ago 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dic 25', 'Ene 26', 'Feb 26', 'Mar 26', 'Abr 26'];
+  const pSel = activeFilters.prov;
+
+  let a1Datasets = [];
+  if (pSel === 'ALL' || pSel === 'REG_NOA' || pSel === 'REG_NEA') {
+    a1Datasets = [
+      { label: `Jujuy (-4.2%)`, data: [112000, 111500, 110200, 109500, 108900, 108100, 107800, 107500, 107400, 107300, 107300, 107200].map(v => Math.round(v * scaleFact)), borderColor: '#f87171' },
+      { label: `Formosa (-3.8%)`, data: [98000, 97500, 96800, 96200, 95500, 95100, 94800, 94600, 94400, 94300, 94300, 94200].map(v => Math.round(v * scaleFact)), borderColor: '#fbbf24' },
+      { label: `Chaco (-3.5%)`, data: [215000, 214000, 212500, 211000, 209800, 208900, 208200, 207800, 207500, 207400, 207400, 207400].map(v => Math.round(v * scaleFact)), borderColor: '#ec4899' },
+      { label: `Media Nacional`, data: [395000, 394800, 394500, 394200, 394000, 393900, 393800, 393800, 393700, 393700, 393700, 393700].map(v => Math.round(v * scaleFact)), borderColor: '#38bdf8', borderDash: [4,4] }
+    ];
+  } else if (pSel.startsWith('REG_')) {
+    const regProvs = list.slice(0, 3);
+    const colors = ['#f87171', '#fbbf24', '#ec4899'];
+    a1Datasets = regProvs.map((p, idx) => ({
+      label: `${p.n} (-${(3.2 + idx*0.5).toFixed(1)}%)`,
+      data: [120000, 119200, 118500, 117800, 117000, 116500, 116000, 115800, 115600, 115500, 115400, 115400].map(v => Math.round((v * (p.pop/4500000) + idx*15000) * scaleFact)),
+      borderColor: colors[idx % colors.length]
+    }));
+    a1Datasets.push({
+      label: 'Media Regional',
+      data: [120000, 119500, 119000, 118500, 118000, 117800, 117500, 117400, 117300, 117200, 117200, 117200].map(v => Math.round(v * scaleFact)),
+      borderColor: '#38bdf8',
+      borderDash: [4,4]
+    });
+  } else {
+    const pMeta = list[0] || PROVINCES_META[0];
+    const baseVal = pMeta.pop * 0.74 * scaleFact;
+    a1Datasets = [
+      {
+        label: `Stock Activos ${pMeta.n}`,
+        data: Array.from({length: 12}, (_, i) => Math.round(baseVal * (1 - (i * 0.003)))),
+        borderColor: '#38bdf8',
+        tension: 0.3
+      },
+      {
+        label: `Altas Mensuales ${pMeta.n}`,
+        data: Array.from({length: 12}, (_, i) => Math.round(baseVal * 0.009 * (1 + Math.sin(i)))),
+        borderColor: '#34d399',
+        borderDash: [5,5]
+      },
+      {
+        label: `Bajas Mensuales ${pMeta.n}`,
+        data: Array.from({length: 12}, (_, i) => Math.round(baseVal * 0.004 * (1 + Math.cos(i)))),
+        borderColor: '#f87171',
+        borderDash: [5,5]
+      }
+    ];
+  }
+
+  createChart('chart-alert-1', 'line', {
+    labels: a1Labels,
+    datasets: a1Datasets
+  }, {
+    plugins: {
+      datalabels: { display: false }
+    }
+  });
+
+  // 13. Alerta 2: Cobertura AUH por Debajo del Percentil 25 (Reactivo)
+  let a2Provs = [];
+  let a2Vals = [];
+
+  if (pSel === 'ALL') {
+    a2Provs = ['CABA', 'Tierra del Fuego', 'Santa Cruz', 'Mendoza', 'Neuquén'];
+    a2Vals = [62.4, 64.8, 67.2, 69.1, 71.5];
+  } else {
+    const sortedLow = [...list].sort((a,b) => a.auh - b.auh).slice(0, 5);
+    a2Provs = sortedLow.map(p => p.n);
+    a2Vals = sortedLow.map(p => p.auh);
+  }
+
+  let ageMod2 = age === '0-5' ? 3.5 : (age === '6-12' ? 0.8 : -4.0);
+  let sexMod2 = sex === 'F' ? 0.6 : (sex === 'M' ? -0.6 : 0);
+
+  const a2Adj = a2Vals.map(v => Math.min(100, Math.max(0, +(v + ageMod2 + sexMod2).toFixed(1))));
+
+  createChart('chart-alert-2', 'bar', {
+    labels: a2Provs,
+    datasets: [
+      { label: `Cobertura AUH (%) - ${edadLabel}, ${sexoLabel}`, data: a2Adj, backgroundColor: '#fbbf24' },
+      { label: 'Umbral Crítico (70%)', data: Array(a2Provs.length).fill(70), type: 'line', borderColor: '#ef4444', borderDash: [4,4] }
+    ]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        formatter: (val) => typeof val === 'number' ? val.toFixed(1) + '%' : val,
+        anchor: 'end', align: 'top'
+      })
+    }
+  });
+
+  // 14. Alerta 3: Semáforo Libreta AUH (Doughnut reactivo)
+  let baseAcred = 87.7;
+  let baseSalud = 7.1;
+  let baseEduc = 5.2;
+
+  if (age === '0-5') {
+    baseSalud = 9.8;
+    baseEduc = 2.5;
+    baseAcred = 87.7;
+  } else if (age === '6-12') {
+    baseSalud = 4.2;
+    baseEduc = 4.1;
+    baseAcred = 91.7;
+  } else if (age === '13-17') {
+    baseSalud = 5.5;
+    baseEduc = 8.9;
+    baseAcred = 85.6;
+  }
+
+  if (sex === 'F') {
+    baseAcred += 1.2;
+    baseSalud -= 0.7;
+    baseEduc -= 0.5;
+  } else if (sex === 'M') {
+    baseAcred -= 1.0;
+    baseSalud += 0.6;
+    baseEduc += 0.4;
+  }
+
+  const totalLib = baseAcred + baseSalud + baseEduc;
+  const pAcred = +(baseAcred / totalLib * 100).toFixed(1);
+  const pSalud = +(baseSalud / totalLib * 100).toFixed(1);
+  const pEduc = +(100 - pAcred - pSalud).toFixed(1);
+
+  createChart('chart-alert-3', 'doughnut', {
+    labels: ['Acreditada (Salud + Educ.)', 'Pendiente Salud', 'Pendiente Educación'],
+    datasets: [{
+      data: [pAcred, pSalud, pEduc],
+      backgroundColor: ['#34d399', '#fbbf24', '#ef4444']
+    }]
+  }, {
+    plugins: {
+      datalabels: {
+        display: true,
+        color: '#0f172a',
+        font: { family: 'Inter', weight: '700', size: 12 },
+        formatter: (val) => val.toFixed(1) + '%'
+      }
+    }
+  });
+
+  // 15. Alerta 4: Caída Beneficiarios Alimentar por Localidad (Reactivo)
+  let a4Locs = [];
+  let a4Vals = [];
+
+  if (pSel === 'ALL') {
+    a4Locs = ['La Matanza (BA)', 'Concordia (ER)', 'Resistencia (CH)', 'San Miguel Tucumán', 'Rosario (SF)', 'Bariloche (RN)'];
+    a4Vals = [-6.8, -5.9, -5.4, -4.8, -4.2, -3.9];
+  } else if (pSel === 'Buenos Aires') {
+    a4Locs = ['La Matanza', 'Lomas de Zamora', 'Moreno', 'Merlo', 'Quilmes', 'Florencio Varela'];
+    a4Vals = [-6.8, -6.1, -5.7, -5.2, -4.6, -4.1];
+  } else {
+    const targetProv = list[0]?.n || 'Mendoza';
+    a4Locs = [`Loc. Centro (${targetProv})`, `Loc. Norte (${targetProv})`, `Loc. Sur (${targetProv})`, `Loc. Oeste (${targetProv})`, `Loc. Periferia (${targetProv})` ];
+    a4Vals = [-5.8, -5.2, -4.7, -4.1, -3.6];
+  }
+
+  let ageMod4 = age === '0-5' ? -1.2 : (age === '13-17' ? 1.5 : 0);
+  let sexMod4 = sex === 'F' ? 0.4 : (sex === 'M' ? -0.4 : 0);
+
+  const a4Adj = a4Vals.map(v => +Math.min(0, v + ageMod4 + sexMod4).toFixed(1));
+
+  createChart('chart-alert-4', 'bar', {
+    labels: a4Locs,
+    datasets: [{
+      label: `Variación Acumulada % (${edadLabel}, ${sexoLabel})`,
+      data: a4Adj,
+      backgroundColor: '#ef4444'
+    }]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        anchor: 'end', align: 'bottom',
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => val.toFixed(1) + '%'
+      })
+    }
+  });
+
+  // 16. Alerta 5: Disparidad Escolarización Territorial (Reactivo)
+  let a5Deptos = [];
+  let a5Vuln = [];
+  let a5ProvAvg = [];
+
+  if (pSel === 'ALL') {
+    a5Deptos = ['Depto. Moreno (SDE)', 'Depto. Rivadavia (Salta)', 'Depto. Bermejo (Chaco)', 'Depto. Patiño (Formosa)', 'Depto. Añelo (Neuquén)'];
+    a5Vuln = [78.2, 79.5, 80.1, 81.4, 83.0];
+    a5ProvAvg = [92.4, 91.8, 92.0, 93.1, 94.5];
+  } else {
+    const targetProv = list[0]?.n || 'Córdoba';
+    a5Deptos = [`Depto. Norte (${targetProv})`, `Depto. Sur (${targetProv})`, `Depto. Este (${targetProv})`, `Depto. Oeste (${targetProv})` ];
+    a5Vuln = [79.4, 81.2, 82.5, 84.0];
+    const provEscBase = list[0]?.esc || 92.8;
+    a5ProvAvg = Array(4).fill(+provEscBase.toFixed(1));
+  }
+
+  let ageMod5Vuln = age === '0-5' ? -12.0 : (age === '6-12' ? 5.2 : -8.5);
+  let ageMod5Avg = age === '0-5' ? -6.0 : (age === '6-12' ? 5.8 : -2.5);
+  let sexMod5 = sex === 'F' ? 1.5 : (sex === 'M' ? -1.2 : 0);
+
+  const a5VulnAdj = a5Vuln.map(v => Math.min(100, Math.max(0, +(v + ageMod5Vuln + sexMod5).toFixed(1))));
+  const a5AvgAdj = a5ProvAvg.map(v => Math.min(100, Math.max(0, +(v + ageMod5Avg + sexMod5).toFixed(1))));
+
+  createChart('chart-alert-5', 'bar', {
+    labels: a5Deptos,
+    datasets: [
+      { label: `Escolarización Depto. Vulnerable (%) - ${edadLabel}`, data: a5VulnAdj, backgroundColor: '#ef4444' },
+      { label: `Promedio Provincial (%) - ${edadLabel}`, data: a5AvgAdj, backgroundColor: '#38bdf8' }
+    ]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        anchor: 'end', align: 'top',
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => val.toFixed(1) + '%'
+      })
+    }
+  });
+}
+
+function createChart(id, type, data, extraOptions = {}) {
+  if (typeof Chart === 'undefined') return;
+  try {
+    if(chartInstances[id]) chartInstances[id].destroy();
+    const ctx = document.getElementById(id);
+    if(!ctx) return;
+
+    const defaultOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } } }
+      },
+      scales: type !== 'doughnut' && type !== 'radar' ? {
+        x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+        y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+      } : {}
+    };
+
+    const finalPlugins = Object.assign({}, defaultOptions.plugins, extraOptions.plugins || {});
+    const finalScales = extraOptions.scales || defaultOptions.scales;
+
+    const finalOptions = Object.assign({}, defaultOptions, extraOptions, {
+      plugins: finalPlugins,
+      scales: finalScales
+    });
+
+    chartInstances[id] = new Chart(ctx, {
+      type: type,
+      data: data,
+      options: finalOptions
+    });
+  } catch(e) {
+    console.warn("Chart error on " + id, e);
+  }
+}
+
+function exportTableCSV(tableId) {
+  const tbl = document.getElementById(tableId);
+  if(!tbl) return;
+  let csv = [];
+  const rows = tbl.querySelectorAll('tr');
+  rows.forEach(r => {
+    if(r.style.display !== 'none') {
+      const cols = r.querySelectorAll('th, td');
+      const rowData = [];
+      cols.forEach(c => rowData.push('"' + c.innerText.replace(/"/g, '""').trim() + '"'));
+      csv.push(rowData.join(','));
+    }
+  });
+
+  const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute('download', `tablero_indigencia_0_17_${tableId}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/dashboard_indigencia_0_17_FINAL.html" }
+  ]
+}
