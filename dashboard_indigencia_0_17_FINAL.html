@@ -1821,15 +1821,20 @@ function applyFilters() {
   if(document.getElementById('kpi5-matriculados')) document.getElementById('kpi5-matriculados').innerText = fmtN(totalPop * (avgEsc/100));
   if(document.getElementById('kpi5-brecha')) document.getElementById('kpi5-brecha').innerText = `${avgBrecha.toFixed(1)} pp`;
 
-  // Update Tab Alerts KPIs (Reactivos a Jurisdicción, Tramo y Sexo)
+  // Update Tab Alerts KPIs (Reactivos a Jurisdicción, Tramo, Sexo y Vulnerabilidad)
   let dropVal = -3.8;
   if (activeFilters.edad === '0-5') dropVal = -4.5;
   else if (activeFilters.edad === '13-17') dropVal = -2.9;
   if (activeFilters.sexo === 'F') dropVal = +(dropVal + 0.4).toFixed(1);
   else if (activeFilters.sexo === 'M') dropVal = +(dropVal - 0.4).toFixed(1);
+  if (activeFilters.vuln === 'INDIGENTE') dropVal = +(dropVal - 1.4).toFixed(1);
+  else if (activeFilters.vuln === 'POBRE') dropVal = +(dropVal + 0.4).toFixed(1);
+  else if (activeFilters.vuln === 'VULNERABLE') dropVal = +(dropVal + 2.0).toFixed(1);
   if (document.getElementById('kpi-a1-val')) document.getElementById('kpi-a1-val').innerText = `${dropVal}%`;
 
-  const lowCount = list.filter(p => p.auh < 70).length;
+  let lowCount = list.filter(p => p.auh < 70).length;
+  if (activeFilters.vuln === 'INDIGENTE') lowCount = Math.min(24, lowCount + 3);
+  else if (activeFilters.vuln === 'VULNERABLE') lowCount = Math.max(1, lowCount - 2);
   if (document.getElementById('kpi-a2-val')) document.getElementById('kpi-a2-val').innerText = `${lowCount} Prov.`;
 
   let noLibVal = 12.3;
@@ -1838,9 +1843,14 @@ function applyFilters() {
   else if (activeFilters.edad === '13-17') noLibVal = 11.8;
   if (activeFilters.sexo === 'F') noLibVal = +(noLibVal - 0.8).toFixed(1);
   else if (activeFilters.sexo === 'M') noLibVal = +(noLibVal + 0.7).toFixed(1);
+  if (activeFilters.vuln === 'INDIGENTE') noLibVal = +(noLibVal + 6.2).toFixed(1);
+  else if (activeFilters.vuln === 'POBRE') noLibVal = +(noLibVal - 0.5).toFixed(1);
+  else if (activeFilters.vuln === 'VULNERABLE') noLibVal = +(noLibVal - 7.1).toFixed(1);
   if (document.getElementById('kpi-a3-val')) document.getElementById('kpi-a3-val').innerText = `${noLibVal}%`;
 
-  const locCount = activeFilters.prov === 'ALL' ? 18 : Math.max(2, Math.round(list.length * 0.8));
+  let locCount = activeFilters.prov === 'ALL' ? 18 : Math.max(2, Math.round(list.length * 0.8));
+  if (activeFilters.vuln === 'INDIGENTE') locCount = Math.min(36, locCount + 6);
+  else if (activeFilters.vuln === 'VULNERABLE') locCount = Math.max(2, locCount - 6);
   if (document.getElementById('kpi-a4-val')) document.getElementById('kpi-a4-val').innerText = `${locCount} Loc.`;
 
   let gapVal = 15.4;
@@ -1848,6 +1858,9 @@ function applyFilters() {
   else if (activeFilters.edad === '6-12') gapVal = 6.2;
   else if (activeFilters.edad === '13-17') gapVal = 18.4;
   if (activeFilters.sexo === 'F') gapVal = Math.max(2, +(gapVal - 1.2).toFixed(1));
+  if (activeFilters.vuln === 'INDIGENTE') gapVal = +(gapVal + 7.4).toFixed(1);
+  else if (activeFilters.vuln === 'POBRE') gapVal = +(gapVal - 1.2).toFixed(1);
+  else if (activeFilters.vuln === 'VULNERABLE') gapVal = Math.max(1, +(gapVal - 6.9).toFixed(1));
   if (document.getElementById('kpi-a5-val')) document.getElementById('kpi-a5-val').innerText = `${gapVal} pp`;
 
   // Render Map & Summary Table
@@ -2198,7 +2211,7 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 3. ANSES Types Bar Chart
+  // 3. ANSES Types Bar Chart (Reactivo a Vulnerabilidad)
   let baseTipos = [5420000, 185000, 2650000, 420000, 1950000, 3820000];
   let tiposLabels = ['AUH', 'AUH Discap.', 'AAFF', 'PNC 7 Hijos', '1000 Días', 'Ayuda Escolar'];
 
@@ -2210,12 +2223,12 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     baseTipos = [5420000 * 0.35, 185000 * 0.35, 2650000 * 0.35, 420000 * 0.35, 0, 3820000 * 0.30];
   }
 
-  const tiposData = baseTipos.map(v => Math.round(v * sexFact));
+  const tiposData = baseTipos.map(v => Math.round(v * sexFact * vulnFact));
 
   createChart('chart-t1-tipos', 'bar', {
     labels: tiposLabels,
     datasets: [{
-      label: `Beneficiarios`,
+      label: `Beneficiarios - ${vulnLabel}`,
       data: tiposData,
       backgroundColor: ['#38bdf8', '#818cf8', '#34d399', '#fbbf24', '#f472b6', '#a855f7']
     }]
@@ -2229,28 +2242,28 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 4. Pirámide Alimentar (Etiquetas fijas en Eje X: '0-5 años', '6-12 años', '13-17 años')
+  // 4. Pirámide Alimentar (Reactiva a Vulnerabilidad)
   const pirLabels = ['0-5 años', '6-12 años', '13-17 años'];
-  let femData = [-610000, -820000, -580000];
-  let mascData = [640000, 860000, 610000];
+  let femData = [-610000, -820000, -580000].map(v => Math.round(v * vulnFact));
+  let mascData = [640000, 860000, 610000].map(v => Math.round(v * vulnFact));
 
   if(age === '0-5') {
-    femData = [-610000, 0, 0];
-    mascData = [640000, 0, 0];
+    femData = [Math.round(-610000 * vulnFact), 0, 0];
+    mascData = [Math.round(640000 * vulnFact), 0, 0];
   } else if(age === '6-12') {
-    femData = [0, -820000, 0];
-    mascData = [0, 860000, 0];
+    femData = [0, Math.round(-820000 * vulnFact), 0];
+    mascData = [0, Math.round(860000 * vulnFact), 0];
   } else if(age === '13-17') {
-    femData = [0, 0, -580000];
-    mascData = [0, 0, 610000];
+    femData = [0, 0, Math.round(-580000 * vulnFact)];
+    mascData = [0, 0, Math.round(610000 * vulnFact)];
   }
 
   const datasetsPir = [];
   if(sex === 'ALL' || sex === 'F') {
-    datasetsPir.push({ label: 'Femenino', data: femData, backgroundColor: '#ec4899' });
+    datasetsPir.push({ label: `Femenino (${vulnLabel})`, data: femData, backgroundColor: '#ec4899' });
   }
   if(sex === 'ALL' || sex === 'M') {
-    datasetsPir.push({ label: 'Masculino', data: mascData, backgroundColor: '#38bdf8' });
+    datasetsPir.push({ label: `Masculino (${vulnLabel})`, data: mascData, backgroundColor: '#38bdf8' });
   }
 
   createChart('chart-t2-piramide', 'bar', {
@@ -2272,8 +2285,8 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
   createChart('chart-t2-monto-prov', 'bar', {
     labels: topMonto.map(p=>p.n),
     datasets: [{
-      label: `Monto Alimentar ($ Millones)`,
-      data: topMonto.map(p => Math.round((p.pop * ageFact * sexFact * (p.ali/100) * 98000) / 1e6)),
+      label: `Monto Alimentar ($M) - ${vulnLabel}`,
+      data: topMonto.map(p => Math.round((p.pop * scaleFact * (p.ali/100) * 98000) / 1e6)),
       backgroundColor: '#34d399'
     }]
   }, {
@@ -2286,15 +2299,19 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 6. RASE Servicios por Región
+  // 6. RASE Servicios por Región (Reactivo a Vulnerabilidad)
   const regList = ['Centro', 'NOA', 'NEA', 'Cuyo', 'Patagonia'];
   const servGas = [71.2, 44.5, 14.8, 58.2, 89.5];
   const servElec = [75.4, 54.8, 52.1, 64.5, 81.2];
   const servGarr = [28.8, 55.5, 85.2, 41.8, 10.5];
 
-  const adjGas = servGas.map(v => age === '0-5' ? Math.min(100, v + 2.5) : (age === '13-17' ? Math.max(0, v - 1.8) : v));
-  const adjElec = servElec.map(v => age === '0-5' ? Math.min(100, v + 1.8) : v);
-  const adjGarr = servGarr.map(v => age === '13-17' ? Math.min(100, v + 2.0) : v);
+  let vulnGasMod = vuln === 'INDIGENTE' ? -18.5 : (vuln === 'VULNERABLE' ? 16.2 : -4.1);
+  let vulnElecMod = vuln === 'INDIGENTE' ? -9.2 : (vuln === 'VULNERABLE' ? 8.5 : -2.0);
+  let vulnGarrMod = vuln === 'INDIGENTE' ? 22.0 : (vuln === 'VULNERABLE' ? -18.0 : 3.5);
+
+  const adjGas = servGas.map(v => Math.max(0, Math.min(100, +(v + (age === '0-5' ? 2.5 : (age === '13-17' ? -1.8 : 0)) + vulnGasMod).toFixed(1))));
+  const adjElec = servElec.map(v => Math.max(0, Math.min(100, +(v + (age === '0-5' ? 1.8 : 0) + vulnElecMod).toFixed(1))));
+  const adjGarr = servGarr.map(v => Math.max(0, Math.min(100, +(v + (age === '13-17' ? 2.0 : 0) + vulnGarrMod).toFixed(1))));
 
   createChart('chart-t3-servicios', 'bar', {
     labels: regList,
@@ -2313,19 +2330,22 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 7. RASE Serie Brecha
+  // 7. RASE Serie Brecha (Reactivo a Vulnerabilidad)
   let baseRaseCob = [61.2, 62.5, 63.4, 64.1, 64.8, 65.1, 65.4];
   if(age === '0-5') baseRaseCob = baseRaseCob.map(v => Math.min(100, v + 3.2));
   else if(age === '13-17') baseRaseCob = baseRaseCob.map(v => Math.max(0, v - 2.5));
   if(sex === 'F') baseRaseCob = baseRaseCob.map(v => Math.min(100, v + 1.5));
+  if(vuln === 'INDIGENTE') baseRaseCob = baseRaseCob.map(v => Math.max(0, v - 14.2));
+  else if(vuln === 'POBRE') baseRaseCob = baseRaseCob.map(v => Math.max(0, v - 4.1));
+  else if(vuln === 'VULNERABLE') baseRaseCob = baseRaseCob.map(v => Math.min(100, v + 12.8));
 
   const baseRaseGap = baseRaseCob.map(v => +(100 - v).toFixed(1));
 
   createChart('chart-t3-brecha-serie', 'line', {
     labels: ['Ene 26', 'Feb 26', 'Mar 26', 'Abr 26', 'May 26', 'Jun 26', 'Jul 26'],
     datasets: [
-      { label: `Cobertura RASE (%)`, data: baseRaseCob, borderColor: '#34d399' },
-      { label: `Brecha Acceso (%)`, data: baseRaseGap, borderColor: '#f87171', borderDash: [5,5] }
+      { label: `Cobertura RASE (%) - ${vulnLabel}`, data: baseRaseCob, borderColor: '#34d399' },
+      { label: `Brecha Acceso (%) - ${vulnLabel}`, data: baseRaseGap, borderColor: '#f87171', borderDash: [5,5] }
     ]
   }, {
     plugins: {
@@ -2336,7 +2356,7 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 8. Becas por Sublínea
+  // 8. Becas por Sublínea (Reactiva a Vulnerabilidad)
   let becasLabels = ['Alimentos/Salud', 'Computación', 'Ambiente/Energía', 'Voucher Medio', 'Voucher Primaria'];
   let becasVal = [380000, 310000, 190000, 340000, 200000];
 
@@ -2351,12 +2371,12 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     becasVal = [310000, 340000, 190000, 140000, 85000];
   }
 
-  const becasData = becasVal.map(v => Math.round(v * sexFact));
+  const becasData = becasVal.map(v => Math.round(v * sexFact * vulnFact));
 
   createChart('chart-t4-sublineas', 'bar', {
     labels: becasLabels,
     datasets: [{
-      label: `Becarios Activos`,
+      label: `Becarios Activos - ${vulnLabel}`,
       data: becasData,
       backgroundColor: ['#ec4899', '#38bdf8', '#34d399', '#a855f7', '#fbbf24']
     }]
@@ -2370,7 +2390,7 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 9. Becas Serie Altas/Bajas
+  // 9. Becas Serie Altas/Bajas (Reactivo a Vulnerabilidad)
   const baseBecasStock = [1280000, 1310000, 1330000, 1350000, 1360000, 1370000, 1385000, 1400000, 1410000, 1415000, 1418000, 1420000];
   const baseBecasAltas = [35000, 32000, 31000, 28000, 22000, 19000, 25000, 29000, 31000, 28000, 24000, 26000];
 
@@ -2380,8 +2400,8 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
   createChart('chart-t4-serie', 'line', {
     labels: ['Ago 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dic 25', 'Ene 26', 'Feb 26', 'Mar 26', 'Abr 26', 'May 26', 'Jun 26', 'Jul 26'],
     datasets: [
-      { label: `Stock Becas & Vouchers`, data: bStockData, borderColor: '#ec4899', tension: 0.2 },
-      { label: `Altas Mensuales`, data: bAltasData, borderColor: '#34d399' }
+      { label: `Stock Becas & Vouchers (${vulnLabel})`, data: bStockData, borderColor: '#ec4899', tension: 0.2 },
+      { label: `Altas Mensuales (${vulnLabel})`, data: bAltasData, borderColor: '#34d399' }
     ]
   }, {
     plugins: {
@@ -2393,7 +2413,7 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 10. Escolarización por Oferta
+  // 10. Escolarización por Oferta (Reactiva a Vulnerabilidad)
   let ofertasLabels = ['Inicial (0-5)', 'Primario (6-12)', 'Sec. Orientado (13-17)', 'Sec. Técnico (13-17)'];
   let ofertasVal = [2980000, 4850000, 3120000, 928000];
 
@@ -2408,12 +2428,12 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     ofertasVal = [1820000, 1300000, 928000, 120000];
   }
 
-  const ofertasData = ofertasVal.map(v => Math.round(v * sexFact));
+  const ofertasData = ofertasVal.map(v => Math.round(v * sexFact * vulnFact));
 
   createChart('chart-t5-ofertas', 'bar', {
     labels: ofertasLabels,
     datasets: [{
-      label: `Matriculados BNH`,
+      label: `Matriculados BNH - ${vulnLabel}`,
       data: ofertasData,
       backgroundColor: ['#a855f7', '#38bdf8', '#34d399', '#fbbf24']
     }]
@@ -2427,29 +2447,26 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 11. Escolarización Serie por Tramo Etario
+  // 11. Escolarización Serie por Tramo Etario (Reactiva a Vulnerabilidad)
   let series05 = [84.2, 85.1, 86.0, 87.2, 88.5];
   let series612 = [98.1, 98.4, 98.6, 98.8, 99.1];
   let series1317 = [86.5, 87.2, 88.4, 89.5, 90.8];
 
-  if(sex === 'F') {
-    series05 = series05.map(v => +(v + 0.5).toFixed(1));
-    series612 = series612.map(v => Math.min(100, +(v + 0.2).toFixed(1)));
-    series1317 = series1317.map(v => +(v + 1.2).toFixed(1));
-  } else if(sex === 'M') {
-    series05 = series05.map(v => +(v - 0.3).toFixed(1));
-    series1317 = series1317.map(v => +(v - 0.8).toFixed(1));
-  }
+  let vulnEscMod = vuln === 'INDIGENTE' ? -8.3 : (vuln === 'POBRE' ? -0.8 : 3.7);
+
+  series05 = series05.map(v => Math.max(0, Math.min(100, +(v + (sex === 'F' ? 0.5 : (sex === 'M' ? -0.3 : 0)) + vulnEscMod).toFixed(1))));
+  series612 = series612.map(v => Math.max(0, Math.min(100, +(v + (sex === 'F' ? 0.2 : 0) + (vuln === 'INDIGENTE' ? -3.5 : 0.8)).toFixed(1))));
+  series1317 = series1317.map(v => Math.max(0, Math.min(100, +(v + (sex === 'F' ? 1.2 : (sex === 'M' ? -0.8 : 0)) + vulnEscMod).toFixed(1))));
 
   const datasetsEsc = [];
   if(age === 'ALL' || age === '0-5') {
-    datasetsEsc.push({ label: `0-5 años (Inicial)`, data: series05, borderColor: '#a855f7' });
+    datasetsEsc.push({ label: `0-5 años (Inicial) - ${vulnLabel}`, data: series05, borderColor: '#a855f7' });
   }
   if(age === 'ALL' || age === '6-12') {
-    datasetsEsc.push({ label: `6-12 años (Primaria)`, data: series612, borderColor: '#38bdf8' });
+    datasetsEsc.push({ label: `6-12 años (Primaria) - ${vulnLabel}`, data: series612, borderColor: '#38bdf8' });
   }
   if(age === 'ALL' || age === '13-17') {
-    datasetsEsc.push({ label: `13-17 años (Secundaria)`, data: series1317, borderColor: '#34d399' });
+    datasetsEsc.push({ label: `13-17 años (Secundaria) - ${vulnLabel}`, data: series1317, borderColor: '#34d399' });
   }
 
   createChart('chart-t5-tramos-serie', 'line', {
@@ -2464,7 +2481,7 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 12. Alerta 1: Caída Mensual > 3% en Activos AUH (Reactivo a Jurisdicción, Tramo Etario y Sexo)
+  // 12. Alerta 1: Caída Mensual > 3% en Activos AUH (Reactivo)
   const a1Labels = ['May 25', 'Jun 25', 'Jul 25', 'Ago 25', 'Sep 25', 'Oct 25', 'Nov 25', 'Dic 25', 'Ene 26', 'Feb 26', 'Mar 26', 'Abr 26'];
   const pSel = activeFilters.prov;
 
@@ -2539,13 +2556,14 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
 
   let ageMod2 = age === '0-5' ? 3.5 : (age === '6-12' ? 0.8 : -4.0);
   let sexMod2 = sex === 'F' ? 0.6 : (sex === 'M' ? -0.6 : 0);
+  let vulnMod2 = vuln === 'INDIGENTE' ? 14.2 : (vuln === 'POBRE' ? 3.8 : -20.2);
 
-  const a2Adj = a2Vals.map(v => Math.min(100, Math.max(0, +(v + ageMod2 + sexMod2).toFixed(1))));
+  const a2Adj = a2Vals.map(v => Math.min(100, Math.max(0, +(v + ageMod2 + sexMod2 + vulnMod2).toFixed(1))));
 
   createChart('chart-alert-2', 'bar', {
     labels: a2Provs,
     datasets: [
-      { label: `Cobertura AUH (%) - ${edadLabel}, ${sexoLabel}`, data: a2Adj, backgroundColor: '#fbbf24' },
+      { label: `Cobertura AUH (%) - ${edadLabel}, ${sexoLabel}, ${vulnLabel}`, data: a2Adj, backgroundColor: '#fbbf24' },
       { label: 'Umbral Crítico (70%)', data: Array(a2Provs.length).fill(70), type: 'line', borderColor: '#ef4444', borderDash: [4,4] }
     ]
   }, {
@@ -2557,33 +2575,31 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 14. Alerta 3: Semáforo Libreta AUH (Doughnut reactivo)
+  // 14. Alerta 3: Semáforo Libreta AUH (Reactivo a Vulnerabilidad)
   let baseAcred = 87.7;
   let baseSalud = 7.1;
   let baseEduc = 5.2;
 
   if (age === '0-5') {
-    baseSalud = 9.8;
-    baseEduc = 2.5;
-    baseAcred = 87.7;
+    baseSalud = 9.8; baseEduc = 2.5; baseAcred = 87.7;
   } else if (age === '6-12') {
-    baseSalud = 4.2;
-    baseEduc = 4.1;
-    baseAcred = 91.7;
+    baseSalud = 4.2; baseEduc = 4.1; baseAcred = 91.7;
   } else if (age === '13-17') {
-    baseSalud = 5.5;
-    baseEduc = 8.9;
-    baseAcred = 85.6;
+    baseSalud = 5.5; baseEduc = 8.9; baseAcred = 85.6;
   }
 
   if (sex === 'F') {
-    baseAcred += 1.2;
-    baseSalud -= 0.7;
-    baseEduc -= 0.5;
+    baseAcred += 1.2; baseSalud -= 0.7; baseEduc -= 0.5;
   } else if (sex === 'M') {
-    baseAcred -= 1.0;
-    baseSalud += 0.6;
-    baseEduc += 0.4;
+    baseAcred -= 1.0; baseSalud += 0.6; baseEduc += 0.4;
+  }
+
+  if (vuln === 'INDIGENTE') {
+    baseAcred -= 11.2; baseSalud += 7.1; baseEduc += 4.1;
+  } else if (vuln === 'POBRE') {
+    baseAcred += 0.5; baseSalud -= 0.3; baseEduc -= 0.2;
+  } else if (vuln === 'VULNERABLE') {
+    baseAcred += 7.1; baseSalud -= 4.0; baseEduc -= 3.1;
   }
 
   const totalLib = baseAcred + baseSalud + baseEduc;
@@ -2626,13 +2642,14 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
 
   let ageMod4 = age === '0-5' ? -1.2 : (age === '13-17' ? 1.5 : 0);
   let sexMod4 = sex === 'F' ? 0.4 : (sex === 'M' ? -0.4 : 0);
+  let vulnMod4 = vuln === 'INDIGENTE' ? -2.4 : (vuln === 'POBRE' ? 0.5 : 3.2);
 
-  const a4Adj = a4Vals.map(v => +Math.min(0, v + ageMod4 + sexMod4).toFixed(1));
+  const a4Adj = a4Vals.map(v => +Math.min(0, v + ageMod4 + sexMod4 + vulnMod4).toFixed(1));
 
   createChart('chart-alert-4', 'bar', {
     labels: a4Locs,
     datasets: [{
-      label: `Variación Acumulada % (${edadLabel}, ${sexoLabel})`,
+      label: `Variación Acumulada % (${edadLabel}, ${sexoLabel}, ${vulnLabel})`,
       data: a4Adj,
       backgroundColor: '#ef4444'
     }]
@@ -2666,15 +2683,16 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
   let ageMod5Vuln = age === '0-5' ? -12.0 : (age === '6-12' ? 5.2 : -8.5);
   let ageMod5Avg = age === '0-5' ? -6.0 : (age === '6-12' ? 5.8 : -2.5);
   let sexMod5 = sex === 'F' ? 1.5 : (sex === 'M' ? -1.2 : 0);
+  let vulnMod5 = vuln === 'INDIGENTE' ? -7.4 : (vuln === 'POBRE' ? -0.8 : 4.2);
 
-  const a5VulnAdj = a5Vuln.map(v => Math.min(100, Math.max(0, +(v + ageMod5Vuln + sexMod5).toFixed(1))));
-  const a5AvgAdj = a5ProvAvg.map(v => Math.min(100, Math.max(0, +(v + ageMod5Avg + sexMod5).toFixed(1))));
+  const a5VulnAdj = a5Vuln.map(v => Math.min(100, Math.max(0, +(v + ageMod5Vuln + sexMod5 + vulnMod5).toFixed(1))));
+  const a5AvgAdj = a5ProvAvg.map(v => Math.min(100, Math.max(0, +(v + ageMod5Avg + sexMod5 + (vuln === 'INDIGENTE' ? -2.1 : 1.5)).toFixed(1))));
 
   createChart('chart-alert-5', 'bar', {
     labels: a5Deptos,
     datasets: [
-      { label: `Escolarización Depto. Vulnerable (%) - ${edadLabel}`, data: a5VulnAdj, backgroundColor: '#ef4444' },
-      { label: `Promedio Provincial (%) - ${edadLabel}`, data: a5AvgAdj, backgroundColor: '#38bdf8' }
+      { label: `Escolarización Depto. Vulnerable (%) - ${edadLabel}, ${vulnLabel}`, data: a5VulnAdj, backgroundColor: '#ef4444' },
+      { label: `Promedio Provincial (%) - ${edadLabel}, ${vulnLabel}`, data: a5AvgAdj, backgroundColor: '#38bdf8' }
     ]
   }, {
     plugins: {
