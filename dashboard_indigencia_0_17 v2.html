@@ -783,8 +783,9 @@ footer {
   <button class="tab-btn" onclick="switchTab('tab-3')">⚡ 3. Subsidios Energ&eacute;ticos <span class="badge">MEC</span></button>
   <button class="tab-btn" onclick="switchTab('tab-4')">🎓 4. Becas Educativas <span class="badge">EDUCACI&Oacute;N</span></button>
   <button class="tab-btn" onclick="switchTab('tab-5')">🏫 5. Escolarizaci&oacute;n Formal <span class="badge">EDUCACI&Oacute;N</span></button>
+  <button class="tab-btn" onclick="switchTab('tab-6')">🏠 6. Configuración Socioecon&oacute;mica <span class="badge" style="background:#a855f7; color:#fff;">RSH / CPGI</span></button>
   <button class="tab-btn" onclick="switchTab('tab-alerts')">🚨 Monitoreo de Alertas <span class="badge" style="background:#ef4444; color:#fff;">SISTEMA</span></button>
-  <button class="tab-btn" onclick="switchTab('tab-6')">🔬 Diccionarios y Muestras Sint&eacute;ticas</button>
+  <button class="tab-btn" onclick="switchTab('tab-7')">🔬 Diccionarios y Muestras Sint&eacute;ticas</button>
 </nav>
 
 <!-- Dashboard Main Container -->
@@ -1339,6 +1340,123 @@ footer {
     </div>
   </section>
 
+  <!-- ==================== TAB 6: CONFIGURACIÓN SOCIOECONÓMICA DEL HOGAR (CPGI / RSH) ==================== -->
+  <section id="tab-6" class="tab-panel">
+    <!-- 5 KPIs in Single Row -->
+    <div class="kpi-grid">
+      <div class="kpi-card" style="--card-accent: #a855f7;">
+        <div class="kpi-header"><span class="kpi-title">Hogares c/ N&Ntilde;A (0-17)</span><div class="kpi-icon">🏠</div></div>
+        <div class="kpi-value" id="kpi6-hogares">3.764.705</div>
+        <div class="kpi-subtext">Hogares evaluados en Registro Social (RSH)</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: #a855f7;">
+        <div class="kpi-header"><span class="kpi-title">% Bajo L&iacute;nea Pobreza (CPGI &lt; 1,0)</span><div class="kpi-icon">📉</div></div>
+        <div class="kpi-value" id="kpi6-pobreza">54.8%</div>
+        <div class="kpi-subtext" id="kpi6-pobreza-count">2.063.058 hogares bajo LP</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: #a855f7;">
+        <div class="kpi-header"><span class="kpi-title">% Jefatura Femenina c/ Menores</span><div class="kpi-icon">👩‍👦</div></div>
+        <div class="kpi-value" id="kpi6-jefatura">41.2%</div>
+        <div class="kpi-subtext">Hogares monoparentales vulnerables</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: #a855f7;">
+        <div class="kpi-header"><span class="kpi-title">% Sin Empleo Registrado</span><div class="kpi-icon">💼</div></div>
+        <div class="kpi-value" id="kpi6-sin-registro">36.5%</div>
+        <div class="kpi-subtext">Sin asalariados formales ni monotributo</div>
+      </div>
+      <div class="kpi-card" style="--card-accent: #a855f7;">
+        <div class="kpi-header"><span class="kpi-title">Sensibilidad Modelo CPGI</span><div class="kpi-icon">🎯</div></div>
+        <div class="kpi-value" id="kpi6-sensibilidad">91.4%</div>
+        <div class="kpi-subtext">Precisi&oacute;n &ge; 90.2% | Error Exclusi&oacute;n &le; 8.6%</div>
+      </div>
+    </div>
+
+    <!-- Indicator Formula Tag & Details -->
+    <div class="doc-item" style="margin-bottom:1.5rem; background:#1e293b; border-color:#a855f7;">
+      <h4 style="color:#c084fc;">Indicador 6: Configuraci&oacute;n socioecon&oacute;mica del hogar — Capacidad Potencial de Generaci&oacute;n de Ingresos (CPGI)</h4>
+      <p style="font-size:0.825rem; color:var(--text-muted); line-height:1.6; margin-bottom:0.5rem;">
+        <strong>Modelo Predictivo CPGI (MCO + Lasso):</strong> <span class="field-code" style="color:#e9d5ff;">ln(CPGI) = &beta;₀ + &beta;₁·(Cant_personas) + &beta;₂·(Jefa_mujer_menores) + &beta;₃·(Jubilados_pensionados) + &beta;₄·(Saneamiento_deficiente) + &beta;₅·(Tenencia_regular) + &beta;₆·(Tasa_dependencia) + &beta;₇·(Tasa_menores) + &beta;₈·(Piso_precario) + &beta;₉·(Techo_precario) + &beta;₁₀·(Asalariados_registrados) + &beta;₁₁·(Clima_educativo&sup2;) + &beta;₁₂·(Jefe_superior_completo) + &beta;₁₃·(Edad_jefe) + &beta;₁₄·(Ingreso_real_medio_provincial)</span>
+      </p>
+      <p style="font-size:0.825rem; color:var(--text-muted); line-height:1.6;">
+        <strong>Clasificaci&oacute;n Binaria:</strong> Hogar Pobre (LP): CPGI &lt; 1,0 (ITF predicho &lt; CBT regionalizada) | Hogar No Pobre: CPGI &ge; 1,0<br>
+        <strong>F&oacute;rmula:</strong> <span class="field-code">% Hogares en vulnerabilidad = (Hogares con CPGI &lt; 1,0 / Total hogares RSH) &times; 100</span> | 
+        <strong>Fuentes:</strong> SIIS (RSH / SIEMPRO), EPH-INDEC, ANSES, ARCA/STESS, SINTYS, RASE, SENAF.
+      </p>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="grid-2col" style="margin-bottom:1.5rem;">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>🏠 Porcentaje de Hogares Bajo L&iacute;nea de Pobreza (CPGI &lt; 1,0) por Provincia</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t6-cpgi-prov"></canvas>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>📊 Distribuci&oacute;n Porcentual por Decil Socioecon&oacute;mico CPGI (Decil 1 al 10)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t6-deciles"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="grid-2col" style="margin-bottom:1.5rem;">
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>👨‍👩‍👧‍👦 Perfil de Vulnerabilidad por Decil de CPGI (NNyA, Desocupados, Jefatura Femenina, Sin Registro)</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t6-perfil-decil"></canvas>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <div class="card-title-bar">
+          <h3>🎯 Desempe&ntilde;o y M&eacute;tricas de Calibraci&oacute;n del Modelo Predictivo CPGI</h3>
+        </div>
+        <div class="chart-container">
+          <canvas id="chart-t6-modelo-gauge"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Microdata Table 6 -->
+    <div class="card-box">
+      <div class="card-title-bar">
+        <h3>🔬 Muestra de Microdatos Sint&eacute;ticos: CPGI / Registro Social de Hogares (RSH / SIIS)</h3>
+        <button class="btn-reset" style="background:#334155; color:#fff;" onclick="exportTableCSV('tbl-t6-micro')">📥 Exportar CSV</button>
+      </div>
+      <div class="table-responsive">
+        <table class="data-table" id="tbl-t6-micro">
+          <thead>
+            <tr>
+              <th>cuit_jefe_hogar</th>
+              <th>vinculo_parentesco</th>
+              <th>provincia_residencia</th>
+              <th>municipio_localidad</th>
+              <th>decil_cpgi</th>
+              <th>cpgi_valor</th>
+              <th>clasificacion_lp</th>
+              <th>jefatura_femenina</th>
+              <th>empleo_registrado</th>
+              <th>calidad_habitacional</th>
+              <th>clima_educativo</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-t6-micro">
+            <!-- Dynamic microdata rows -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <!-- ==================== TAB ALERTS: MONITOREO DE ALERTAS ==================== -->
   <section id="tab-alerts" class="tab-panel">
     
@@ -1433,7 +1551,7 @@ footer {
       </div>
     </div>
   </section>
-  <section id="tab-6" class="tab-panel">
+  <section id="tab-7" class="tab-panel">
     <div class="doc-box">
       <div class="doc-title">📖 Fichas Metodol&oacute;gicas y Diccionario de Datos Administrativos SIIS (0 a 17 a&ntilde;os)</div>
       <p style="color:var(--text-muted); font-size:0.85rem;">Documento de especificaci&oacute;n t&eacute;cnica seg&uacute;n la propuesta oficial del Ministerio de Capital Humano (Julio 2026). Todos los indicadores se construyen <strong>exclusivamente con fuentes administrativas disponibles</strong> con datos simulados en cada campo.</p>
@@ -1463,11 +1581,16 @@ footer {
           <p><strong>Campos Clave:</strong> <span class="field-code">dni</span>, <span class="field-code">cuit</span>, <span class="field-code">apellido</span>, <span class="field-code">nombre</span>, <span class="field-code">sexo</span>, <span class="field-code">fecha_nacimiento</span>, <span class="field-code">grupo_prioritario</span>, <span class="field-code">sublinea_beca</span>, <span class="field-code">monto_liquidado</span></p>
         </div>
 
-        <div class="doc-item" style="grid-column: span 2;">
+        <div class="doc-item">
           <h4>5. Escolarizaci&oacute;n Formal en Contextos de Indigencia Identificada (Relevamiento Anual BNH)</h4>
           <p><strong>F&oacute;rmula:</strong> <span class="field-code">Tasa Escolarizaci&oacute;n 0-17 = (Matriculados BNH / Proyecci&oacute;n Poblacional INDEC) * 100</span></p>
           <p><strong>Campos Clave:</strong> <span class="field-code">id_persona_jurisdiccional</span>, <span class="field-code">nro_documento</span>, <span class="field-code">cuil</span>, <span class="field-code">fecha_nacimiento</span>, <span class="field-code">c_provincia_residencia</span>, <span class="field-code">cueanexo</span>, <span class="field-code">c_oferta_padron</span>, <span class="field-code">c_grado</span>, <span class="field-code">c_orientacion</span></p>
-          <p><strong>Nota Metodol&oacute;gica Denominador:</strong> El denominador poblacional (total 0-17 a&ntilde;os = 12.8M) se construye por cruce entre el padr&oacute;n ANSES (<span class="field-code">Persona_CRP_Id + Relacion_F[n]_Id + Nacimiento_Fc</span>) y el padr&oacute;n Alimentar SENAF (<span class="field-code">cuil_beneficiario + fecha_nacimiento_beneficiario</span>).</p>
+        </div>
+
+        <div class="doc-item">
+          <h4>6. Configuraci&oacute;n Socioecon&oacute;mica del Hogar (Modelo Predictivo CPGI / RSH)</h4>
+          <p><strong>F&oacute;rmula:</strong> <span class="field-code">% Hogares CPGI &lt; 1,0 = (Hogares CPGI &lt; 1,0 / Total Hogares RSH) * 100</span></p>
+          <p><strong>Campos Clave:</strong> <span class="field-code">cuil_cuit_jefe</span>, <span class="field-code">Relacion_F[n]_Id</span>, <span class="field-code">Decil_CPGI</span>, <span class="field-code">CPGI_Valor</span>, <span class="field-code">Clasificacion_LP</span>, <span class="field-code">Jefatura_Femenina_Fl</span>, <span class="field-code">Empleo_Registrado_Fl</span>, <span class="field-code">Calidad_Habitacional_Cd</span></p>
         </div>
       </div>
     </div>
@@ -1821,6 +1944,19 @@ function applyFilters() {
   if(document.getElementById('kpi5-matriculados')) document.getElementById('kpi5-matriculados').innerText = fmtN(totalPop * (avgEsc/100));
   if(document.getElementById('kpi5-brecha')) document.getElementById('kpi5-brecha').innerText = `${avgBrecha.toFixed(1)} pp`;
 
+  // Update Tab 6 KPIs (Configuración Socioeconómica CPGI / RSH)
+  const totalHogaresVal = (totalPop / 3.4);
+  const pobrFactVal = activeFilters.vuln === 'INDIGENTE' ? 0.895 : (activeFilters.vuln === 'POBRE' ? 0.682 : (activeFilters.vuln === 'VULNERABLE' ? 0.245 : 0.548));
+  const jefatFactVal = activeFilters.sexo === 'F' ? 0.582 : (activeFilters.sexo === 'M' ? 0.315 : 0.412);
+  const sinRegFactVal = activeFilters.vuln === 'INDIGENTE' ? 0.642 : (activeFilters.vuln === 'VULNERABLE' ? 0.148 : 0.365);
+
+  if(document.getElementById('kpi6-hogares')) document.getElementById('kpi6-hogares').innerText = fmtN(totalHogaresVal);
+  if(document.getElementById('kpi6-pobreza')) document.getElementById('kpi6-pobreza').innerText = fmtPct(pobrFactVal * 100);
+  if(document.getElementById('kpi6-pobreza-count')) document.getElementById('kpi6-pobreza-count').innerText = `${fmtN(totalHogaresVal * pobrFactVal)} hogares bajo LP`;
+  if(document.getElementById('kpi6-jefatura')) document.getElementById('kpi6-jefatura').innerText = fmtPct(jefatFactVal * 100);
+  if(document.getElementById('kpi6-sin-registro')) document.getElementById('kpi6-sin-registro').innerText = fmtPct(sinRegFactVal * 100);
+  if(document.getElementById('kpi6-sensibilidad')) document.getElementById('kpi6-sensibilidad').innerText = '91.4%';
+
   // Update Tab Alerts KPIs (Reactivos a Jurisdicción, Tramo, Sexo y Vulnerabilidad)
   let dropVal = -3.8;
   if (activeFilters.edad === '0-5') dropVal = -4.5;
@@ -2063,6 +2199,31 @@ function generateSyntheticMicrodata() {
         <td>${r.ofer}</td>
         <td>${r.grado}</td>
         <td>${r.orient}</td>
+      </tr>
+    `).join('');
+  }
+
+  // Table 6: Configuración Socioeconómica del Hogar (CPGI / RSH)
+  const tb6 = document.getElementById('tbody-t6-micro');
+  if(tb6) {
+    const rows = [
+      { cuit: "27-38910284-4", vinc: "Jefa de Hogar", prov: sampleProv(), loc: "La Matanza", decil: "Decil 1", cpgi: "0.48", clasif: "Hogar Pobre (LP)", jefFem: "SÍ (3 menores)", reg: "NO", hab: "Déficit Saneamiento / Techo", educ: "Primaria Incompleta" },
+      { cuit: "20-41029481-3", vinc: "Jefe de Hogar", prov: sampleProv(), loc: "Resistencia", decil: "Decil 2", cpgi: "0.62", clasif: "Hogar Pobre (LP)", jefFem: "NO", reg: "NO", hab: "Piso Precario", educ: "Secundaria Incompleta" },
+      { cuit: "27-42918204-9", vinc: "Jefa de Hogar", prov: sampleProv(), loc: "Rosario", decil: "Decil 3", cpgi: "0.85", clasif: "Hogar Pobre (LP)", jefFem: "SÍ (2 menores)", reg: "SÍ (Monotributo Social)", hab: "Regular", educ: "Secundaria Completa" }
+    ];
+    tb6.innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="field-code">${r.cuit}</span></td>
+        <td>${r.vinc}</td>
+        <td>${r.prov}</td>
+        <td>${r.loc}</td>
+        <td><span class="badge-pill badge-warn">${r.decil}</span></td>
+        <td><strong>${r.cpgi}</strong></td>
+        <td><span class="badge-pill badge-warn">${r.clasif}</span></td>
+        <td>${r.jefFem}</td>
+        <td><span class="badge-pill ${r.reg==='NO'?'badge-warn':'badge-good'}">${r.reg}</span></td>
+        <td>${r.hab}</td>
+        <td>${r.educ}</td>
       </tr>
     `).join('');
   }
@@ -2699,6 +2860,92 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
       datalabels: Object.assign({}, datalabelsDefault, {
         anchor: 'end', align: 'top',
         font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => val.toFixed(1) + '%'
+      })
+    }
+  });
+
+  // 17. Indicador 6: Porcentaje de Hogares Bajo LP (CPGI < 1,0) por Provincia Top 8
+  const topCpgiProvs = [...list].sort((a,b) => b.pop - a.pop).slice(0, 8);
+  let cpgiRates = [68.4, 72.1, 74.5, 69.8, 65.2, 58.4, 71.0, 66.8];
+  if(vuln === 'INDIGENTE') cpgiRates = cpgiRates.map(v => Math.min(100, +(v + 18.2).toFixed(1)));
+  else if(vuln === 'POBRE') cpgiRates = cpgiRates.map(v => Math.min(100, +(v + 4.5).toFixed(1)));
+  else if(vuln === 'VULNERABLE') cpgiRates = cpgiRates.map(v => Math.max(0, +(v - 28.4).toFixed(1)));
+
+  createChart('chart-t6-cpgi-prov', 'bar', {
+    labels: topCpgiProvs.map(p => p.n),
+    datasets: [{
+      label: `% Hogares CPGI < 1,0 (Bajo LP) - ${vulnLabel}`,
+      data: cpgiRates,
+      backgroundColor: '#a855f7'
+    }]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        anchor: 'end', align: 'top',
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => val.toFixed(1) + '%'
+      })
+    }
+  });
+
+  // 18. Indicador 6: Distribución Porcentual por Decil CPGI (Deciles 1 a 10)
+  const decilLabels = ['Decil 1', 'Decil 2', 'Decil 3', 'Decil 4', 'Decil 5', 'Decil 6', 'Decil 7', 'Decil 8', 'Decil 9', 'Decil 10'];
+  let decilVals = [18.4, 15.2, 12.8, 11.0, 9.5, 8.1, 7.2, 6.0, 4.8, 3.0];
+  if(vuln === 'INDIGENTE') decilVals = [35.2, 28.4, 18.1, 10.2, 5.1, 2.0, 1.0, 0.0, 0.0, 0.0];
+  else if(vuln === 'POBRE') decilVals = [8.1, 18.2, 24.5, 22.1, 14.8, 8.2, 3.1, 1.0, 0.0, 0.0];
+  else if(vuln === 'VULNERABLE') decilVals = [0.0, 1.2, 5.4, 11.2, 18.5, 22.4, 19.8, 12.5, 6.0, 3.0];
+
+  createChart('chart-t6-deciles', 'bar', {
+    labels: decilLabels,
+    datasets: [{
+      label: `% Distribución de Hogares RSH - ${vulnLabel}`,
+      data: decilVals,
+      backgroundColor: ['#ef4444', '#f97316', '#fbbf24', '#facc15', '#a3e635', '#34d399', '#2dd4bf', '#38bdf8', '#818cf8', '#a855f7']
+    }]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        anchor: 'end', align: 'top',
+        font: { family: 'Inter', size: 9, weight: '600' },
+        formatter: (val) => val > 0 ? val.toFixed(1) + '%' : ''
+      })
+    }
+  });
+
+  // 19. Indicador 6: Perfil de Vulnerabilidad por Decil de CPGI
+  const perfilDecilLabels = ['Decil 1', 'Decil 2', 'Decil 3', 'Decil 4', 'Decil 5', 'Decil 6-10'];
+  createChart('chart-t6-perfil-decil', 'bar', {
+    labels: perfilDecilLabels,
+    datasets: [
+      { label: '% Presencia NNyA (0-17)', data: [88.5, 84.2, 79.1, 72.5, 65.4, 48.2], backgroundColor: '#a855f7' },
+      { label: '% Hogares c/ Desocupados', data: [52.4, 41.8, 32.5, 24.1, 16.8, 6.2], backgroundColor: '#ef4444' },
+      { label: '% Jefatura Femenina Menores', data: [61.2, 52.4, 44.8, 38.1, 31.0, 22.5], backgroundColor: '#ec4899' },
+      { label: '% Sin Registro Laboral', data: [74.5, 62.1, 51.4, 41.0, 30.5, 14.8], backgroundColor: '#fbbf24' }
+    ]
+  }, {
+    plugins: {
+      datalabels: { display: false }
+    },
+    scales: {
+      x: { stacked: false },
+      y: { max: 100 }
+    }
+  });
+
+  // 20. Indicador 6: Desempeño y Métricas de Calibración del Modelo Predictivo CPGI
+  createChart('chart-t6-modelo-gauge', 'bar', {
+    labels: ['Sensibilidad (>= 90,2%)', 'Precisión Global', 'Especificidad', 'Error de Exclusión (<= 9,8%)'],
+    datasets: [{
+      label: 'Métrica del Modelo (%)',
+      data: [91.4, 90.2, 88.6, 8.6],
+      backgroundColor: ['#34d399', '#38bdf8', '#818cf8', '#ef4444']
+    }]
+  }, {
+    plugins: {
+      datalabels: Object.assign({}, datalabelsDefault, {
+        anchor: 'end', align: 'top',
+        font: { family: 'Inter', size: 10, weight: '700' },
         formatter: (val) => val.toFixed(1) + '%'
       })
     }
