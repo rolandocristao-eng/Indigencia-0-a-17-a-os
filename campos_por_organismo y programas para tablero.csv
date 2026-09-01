@@ -169,3 +169,984 @@ ANSES;ANSES;anses;Prestacion_Deuda_Previsional_Fl;Indica si el CUIL es beneficia
 ANSES;ANSES;anses;Monto_Deuda_Previsional_Vl;Monto bruto de Deuda Previsional.
 ANSES;ANSES;anses;Primer_Periodo_Cobro_Deuda_Previsional_Nu;Período de la primera liquidación de Deuda Previsional. Formato: AAAAMM.
 ANSES;ANSES;anses;Ultimo_Periodo_Cobro_Deuda_Previsional_Nu;Período de la última liquidación de Deuda Previsional. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;cuit;CUIT/CUIL del contribuyente. El encabezado lo llama cuit pero el 100 pct son personas fisicas: en curated se llama cuil.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;descripcion;Denominacion: razon social o nombre de la persona fisica. DATO SENSIBLE.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;domicilio_fiscal;Domicilio fiscal. DATO SENSIBLE. Puede contener el separador como puntuacion: esas filas las repara el hook de row-repair.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;codigo_postal;Codigo postal.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;localidad;Localidad. Texto libre -> diccionario dic_arca_monotributo.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;provincia;"Codigo de provincia DGI/AFIP. Se traduce a INDEC en curated via cat_arca_monotributo; mapeo confirmado por el organismo 24 de 24."
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;desc_provincia;NUEVA en v2. Descripcion de provincia. NO SE MATERIALIZA: redundante con cat_arca_monotributo.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;cat_mono;Categoria de monotributo. Catalogo cerrado, 127 codigos con descripcion oficial desde el 2026-08-18.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;desc_cat_mono;NUEVA en v2. Descripcion de la categoria de monotributo. NO SE MATERIALIZA: redundante con cat_arca_monotributo.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;cat_auto;Categoria de autonomo. Catalogo cerrado, 67 codigos con descripcion oficial desde el 2026-08-18.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;desc_cat_auto;NUEVA en v2. Descripcion de la categoria de autonomo. NO SE MATERIALIZA: redundante con cat_arca_monotributo.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;es_ganancia;Marca de impuesto a las ganancias.
+ARCA (ex AFIP);(sin programa asignado);arca_autonomos_monotributo;es_iva;Marca de IVA.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;periodo;Diseno 1-6. Periodo, AAAAMM.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;cuit_empl;Diseno 7-17. CUIT del empleador.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;actividad_empl;Diseno 18-23. Actividad principal del empleador.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;cod_provincia;Diseno 24-26. Provincia.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;orig_rectif;Diseno 27-27. 0=original, 1=rectificativa.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;sec_oblig;Diseno 28-30. Secuencia de obligacion.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;fech_pres;Diseno 31-40. Fecha de presentacion, AAAA-MM-DD.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;cuil_trab;Diseno 41-51. CUIL del empleado.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;adherentes;Diseno 52-53. Familiares adherentes.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;version;Diseno 54-55.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;zona_geograf;Diseno 56-57. Zona geografica.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;actividad_trab;Diseno 58-60. Actividad del empleado.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;cod_ob_social;Diseno 61-66. Codigo de obra social (RNAS).
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;porc_reduccion;Diseno 67-70. Tipo de empleador (del CUIL). 2 enteros 2 decimales.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;remuner_total;Diseno 71-84. Remuneracion total. 12 enteros 2 decimales.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;rem_imp_ss;Diseno 85-98. Remuneracion 1 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;rem_imp_os;Diseno 99-112. Remuneracion 4 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;sit_cuil;Diseno 113-114. Situacion.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;cond_cuil;Diseno 115-116. Condicion.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;asig_fam_pag;Diseno 117-130. Asignaciones familiares. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;modalidad;Diseno 131-133. Modalidad de contratacion.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;usofut;Diseno 134-135. Uso futuro.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;ad_tar_riesg;Diseno 136-146. Adicional tarea riesgosa. 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;empr_serv_event;Diseno 147-147.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;imp_ad_os;Diseno 148-161. Importe adicional obra social. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;numoble;Diseno 162-173. Numero de obligacion.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;apobliss;Diseno 174-184. Aporte obligatorio Seg. Social. 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;apobsoc;Diseno 185-195. Aporte obra social. 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;apvolss;Diseno 196-206. Aporte voluntario Seg. Social. 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;conyuge;Diseno 207-207.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;hijos;Diseno 208-209.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;remicoss;Diseno 210-223. Remuneracion 2 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;remasigf;Diseno 224-237. Remuneracion 3 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;codsini;Diseno 238-239. Codigo de siniestrado.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;apadios;Diseno 240-253. Aporte adicional obra social. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;rem5;Diseno 254-267. Remuneracion 5 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;codcaprep;Diseno 268-268. Regimen jubilatorio con que se declara.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;convencionado;Diseno 269-269. Trabajador en convenio colectivo. 0=no 1=si.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;sueldo;Diseno 270-283. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;sac;Diseno 284-297. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;extras;Diseno 298-311. Horas extras, importe. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;zonades;Diseno 312-325. Zona desfavorable. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;vacaciones;Diseno 326-339. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;laborables;Diseno 340-341. Dias trabajados.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;rem6;Diseno 342-355. Remuneracion 6 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;apoacti;Diseno 356-366. Aporte por actividad (sobre rem6). 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;adic;Diseno 367-380. Adicionales. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;premios;Diseno 381-394. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;nrohe;Diseno 395-397. Cantidad de horas extras.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;rem7;Diseno 398-411. Remuneracion 7 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;aporem7;Diseno 412-422. Aporte sobre rem7. 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;rem8;Diseno 423-436. Remuneracion 8 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;apod788;Diseno 437-447. Aporte sobre rem8. 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;fecproc;Diseno 448-457. Fecha de proceso.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;release_ver;Diseno 458-459. Release de la version.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;ajus_asigfam_mat;Diseno 460-473. Haberes remun. cuando sitcuil=maternidad. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;ajus_remun;Diseno 474-487. Importe remun. blanqueado. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;cpto_no_remu;Diseno 488-501. Sumatoria de haberes no remunerativos. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;rem9;Diseno 502-515. Remuneracion 9 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;horas_lab;Diseno 516-518. Horas trabajadas, personal no mensualizado.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;conss;Diseno 519-532. Contribuciones Seg. Social nominadas. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;conos;Diseno 533-546. Contribuciones obra social nominadas. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;impo_detra;Diseno 547-560. Importe detraccion base contributiva. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;rem10;Diseno 561-574. Remuneracion 10 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;padconss;Diseno 575-578. Porcentaje adicional COSS. 2 enteros 2 decimales.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;madconss;Diseno 579-592. Monto adicional COSS. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;apobpami;Diseno 593-603. Aporte PAMI. 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;apanssal;Diseno 604-614. Aporte ANSSAL. 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;conrenatre;Diseno 615-628. Contribucion RENATRE. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;aporena;Diseno 629-639. Aporte seguro de sepelio. 9+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;rem11;Diseno 640-653. Remuneracion 11 del aplicativo. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;incr_salarial;Diseno 654-667. Incremento salarial. 12+2.
+ARCA (ex AFIP);(sin programa asignado);arca_mectra;uso_futuro;Diseno 668-700. Uso futuro.
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;cuit;"CUIT del empleador (diseno 1-11). Observacion del organismo: ""Periodos > 201409""."
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;filler_1;Relleno declarado en el diseno (12-17). Deberia venir vacio.
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;filler_2;Relleno declarado en el diseno (18-20). Deberia venir vacio.
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;periodo;Periodo de pago, AAAAMM (diseno 21-26). Es el periodo del DATO, distinto del periodo_entrega del archivo.
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;cuil;CUIL del trabajador de casas particulares (diseno 27-37).
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;filler_3;Relleno declarado en el diseno (38-39). Deberia venir vacio.
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;filler_4;Relleno declarado en el diseno (40-42). Deberia venir vacio.
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;cod_ob_soc;Codigo de obra social (diseno 43-48).
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;filler_5;Relleno declarado en el diseno (49-59). Deberia venir vacio.
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;fecpres;Fecha de pago (diseno 60-69). Formato sin confirmar contra los datos.
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;categoria;Categoria del trabajador de casas particulares (diseno 70-71). Catalogo no provisto por el organismo.
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;impuesto;Codigo de impuesto (diseno 72-74).
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;concepto;Codigo de concepto (diseno 75-77).
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;subcepto;"Codigo de subconcepto (diseno 78-80). El nombre es el del diseno (""SUBCEPTO""), se conserva tal cual."
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;importe;"Importe del pago (diseno 81-88), CRUDO. El diseno da 8 posiciones pero declara ""13 enteros 2 decimales"" (necesitaria 15): inconsistencia, consulta abierta a ARCA. NO se asume escala; la conversion va en curated."
+ARCA (ex AFIP);(sin programa asignado);arca_sdome;filler_6;"Relleno declarado en el diseno (89-100), ""uso futuro"". Deberia venir vacio."
+Educacion;Becas Belgrano;becas_belgrano;DNI;DNI del alumno.
+Educacion;Becas Belgrano;becas_belgrano;CUIT;CUIT del alumno. Formato: 20-99999999-9.
+Educacion;Becas Belgrano;becas_belgrano;Apellido;Apellido del alumno.
+Educacion;Becas Belgrano;becas_belgrano;Nombre;Nombre del alumno.
+Educacion;Becas Belgrano;becas_belgrano;Sexo;Sexo del alumno.
+Educacion;Becas Belgrano;becas_belgrano;Email usuario;Mail del usuario en el sistema.
+Educacion;Becas Belgrano;becas_belgrano;Email contacto;Mail de contacto alternativo.
+Educacion;Becas Belgrano;becas_belgrano;Celular;Telefono celular.
+Educacion;Becas Belgrano;becas_belgrano;Localidad;Localidad del domicilio del alumno.
+Educacion;Becas Belgrano;becas_belgrano;Partido;Partido del domicilio del alumno.
+Educacion;Becas Belgrano;becas_belgrano;Provincia;Provincia del domicilio del alumno.
+Educacion;Becas Belgrano;becas_belgrano;Calle;Calle del domicilio del alumno.
+Educacion;Becas Belgrano;becas_belgrano;Num/casilla;Numero o casilla del domicilio. Puede ser S/N o texto.
+Educacion;Becas Belgrano;becas_belgrano;Dto;Departamento o piso del domicilio.
+Educacion;Becas Belgrano;becas_belgrano;Código Postal:;Codigo postal del domicilio.
+Educacion;Becas Belgrano;becas_belgrano;Fecha de Nacimiento;Fecha de nacimiento del alumno. Formato: YYYYMMDD.
+Educacion;Becas Belgrano;becas_belgrano;Grupo prioritario;Grupo prioritario del alumno.
+Educacion;Becas Belgrano;becas_belgrano;Código ONA Universidad;Codigo ONA de la universidad (sistema SIU Guarani).
+Educacion;Becas Belgrano;becas_belgrano;Universidad;Nombre oficial de la universidad.
+Educacion;Becas Belgrano;becas_belgrano;Código Ona Unidad Académica;Codigo ONA de la unidad academica.
+Educacion;Becas Belgrano;becas_belgrano;Unidad Academica;Nombre de la unidad academica.
+Educacion;Becas Belgrano;becas_belgrano;Provincia Unidad Academica;Provincia de la unidad academica.
+Educacion;Becas Belgrano;becas_belgrano;Localidad Unidad Academica;Localidad de la unidad academica.
+Educacion;Becas Belgrano;becas_belgrano;Código Ona Carrera;Codigo ONA de la carrera.
+Educacion;Becas Belgrano;becas_belgrano;Carrera;Nombre oficial de la carrera.
+Educacion;Becas Belgrano;becas_belgrano;Año de ingreso a la carrera;Año en que el alumno ingreso a la carrera. Formato: YYYY.
+Educacion;Becas Belgrano;becas_belgrano;Cantidad de materias ingresantes;Cantidad de materias aprobadas como ingresante.
+Educacion;Becas Belgrano;becas_belgrano;Cantidad de materias avanzados;Cantidad de materias aprobadas como avanzado.
+Educacion;Becas Belgrano;becas_belgrano;Sublínea de beca;Sublinea de la beca.
+Educacion;Becas Belgrano;becas_belgrano;Monto liquidado;Monto del pago liquidado.
+Educacion;Becas Belgrano;becas_belgrano;Periodo liquidado;Periodo al que corresponde la liquidacion. Formato esperado: YYYYMM o texto libre.
+Educacion;Becas Belgrano;becas_belgrano;Fecha de pago;Fecha en que se realizo el pago. Formato: YYYYMMDD.
+Educacion;Informacion BNH;bnh;id_persona_jurisdiccional;"id de persona; siempre presente, con duplicados (sec 3)"
+Educacion;Informacion BNH;bnh;apellidos;limpios (0 digitos / 0 raros, EDA §1)
+Educacion;Informacion BNH;bnh;nombres;limpios (0 digitos / 0 raros, EDA §1)
+Educacion;Informacion BNH;bnh;c_tipo_documento;Tipo de documento de identidad de la persona.
+Educacion;Informacion BNH;bnh;nro_documento;"99,8% DNI 7-8 digitos; ver EDA §2"
+Educacion;Informacion BNH;bnh;cuil;99,3% valido (verificador mod 11)
+Educacion;Informacion BNH;bnh;fecha_nacimiento;a revisar/limpiar (sec 6)
+Educacion;Informacion BNH;bnh;c_sexo;Genero de la persona: F, M o X.
+Educacion;Informacion BNH;bnh;c_pais_nacimiento;Pais donde nacio la persona.
+Educacion;Informacion BNH;bnh;c_provincia_nacimiento;Provincia donde nacio la persona, en el codigo oficial del INDEC.
+Educacion;Informacion BNH;bnh;lugar_nacimiento;"geografia nacimiento; codigos sin catalogo"
+Educacion;Informacion BNH;bnh;c_nacionalidad;Nacionalidad de la persona.
+Educacion;Informacion BNH;bnh;c_pais_residencia;Pais donde vive la persona.
+Educacion;Informacion BNH;bnh;c_provincia_residencia;Provincia donde vive la persona, en el codigo oficial del INDEC.
+Educacion;Informacion BNH;bnh;c_localidad_residencia;Localidad donde vive la persona, en la codificacion del organismo.
+Educacion;Informacion BNH;bnh;cueanexo;Identificador del establecimiento educativo al que asiste la persona (CUE-Anexo).
+Educacion;Informacion BNH;bnh;c_oferta_padron;Tipo de oferta educativa que cursa la persona: nivel y modalidad, por ejemplo jardin de infantes o primaria de seis anios.
+Educacion;Informacion BNH;bnh;c_duracion;Cantidad de anios que dura el trayecto educativo que cursa la persona.
+Educacion;Informacion BNH;bnh;c_grado;Grado, anio o sala que cursa la persona.
+Educacion;Informacion BNH;bnh;c_orientacion;Orientacion o especialidad del trayecto que cursa la persona.
+Educacion;Progresar;progresar;CUIL;CUIL del becario, clave del cruce padron-pagos.
+Educacion;Progresar;progresar;Apellido_y_Nombre;CONCAT de Apellido y Nombre armado por la query de origen. SENSIBLE. En la cohorte 2025 hay nombres con caracteres ya perdidos en el origen (se ven como signos de pregunta): no es un problema de encoding de este lado.
+Educacion;Progresar;progresar;PE_PAGO;Periodo de pago YYYYMM. NO confundir con periodo_entrega, que identifica la cohorte.
+Educacion;Progresar;progresar;PE_LIQUI;Periodo de liquidacion YYYYMM. La query de origen filtro 202403 a 202503 para esta cohorte. SE SOLAPA con la cohorte 2025 en 202503.
+Educacion;Progresar;progresar;MONTO;Importe del pago, entero sin separador decimal.
+Educacion;Progresar;progresar;NIVEL_REPORTE;En las cohortes 2024 y 2025 es la LINEA de la beca, generada por el UNION de las tablas de padron: OBLIGATORIO / SUPERIOR / TRABAJO. En la cohorte 2026 es OTRA COSA: el nivel educativo, desde la tabla de pagos.
+Educacion;Progresar;progresar;Fecha_de_Nacimiento;ISO YYYY-MM-DD. SENSIBLE. Parte de las filas traen el literal NULL en vez de una fecha.
+Educacion;Progresar;progresar;Sexo;Dominio SUCIO en el origen: f, m, F, M, 0, n, N, X, el literal NULL, y un puniado de filas con una FECHA (esas son filas con las columnas rotadas). Se normaliza en la CURATED.
+Educacion;Progresar;progresar;Domicilio;CONCAT de calle y numeracion en mayusculas, armado por la query de origen: las filas sin calle traen el texto literal NULL NULL. SENSIBLE.
+Educacion;Progresar;progresar;Provincia;Nombre de provincia en texto libre, sin catalogo del organismo. Las filas rotadas traen aca un valor numerico.
+Educacion;Progresar;progresar;Localidad;Texto libre, sin catalogo. En las filas rotadas trae la provincia.
+Educacion;Informacion SGE;cruce_muestra_estudiantes;provincia;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;cueanexo;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;id_alumno;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;nro_documento;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;cuil;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;nombre;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;apellido;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;c_sexo;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;cluster;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;descripcion_grupo;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;fecha_nacimiento;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;cuil_anses;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;descripcion_modalidad;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;descripcion_nivel;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;descripcion_oferta;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;c_duracion_oferta;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;descripcion_grado;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;nombre_seccion;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;descripcion_orientacion;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;descripcion_tipo_seccion;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;descripcion_turno;
+Educacion;Informacion SGE;cruce_muestra_estudiantes;descripcion_modalidad_dictado;
+Educacion;Vouchers;Nominal_voucher_2024.csv;cuil_menor;
+Educacion;Vouchers;Nominal_voucher_2024.csv;alumno;
+Educacion;Vouchers;Nominal_voucher_2024.csv;fecha_nacimiento;
+Educacion;Vouchers;Nominal_voucher_2024.csv;vinculo_con_menor;
+Educacion;Vouchers;Nominal_voucher_2024.csv;nivel_educativo;
+Educacion;Vouchers;Nominal_voucher_2024.csv;cue;
+Educacion;Vouchers;Nominal_voucher_2024.csv;anio_academico;
+Educacion;Vouchers;Nominal_voucher_2024.csv;cuit_padre_tutor;
+Educacion;Vouchers;Nominal_voucher_2024.csv;tutor;
+Educacion;Vouchers;Nominal_voucher_2024.csv;cod_localidad_escuela;
+Educacion;Vouchers;Nominal_voucher_2024.csv;localidad_escuela;
+Educacion;Vouchers;Nominal_voucher_2024.csv;cod_departamento_esc;
+Educacion;Vouchers;Nominal_voucher_2024.csv;departamento_esc;
+Educacion;Vouchers;Nominal_voucher_2024.csv;cod_provincia_esc;
+Educacion;Vouchers;Nominal_voucher_2024.csv;provincia_esc;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_04_monto;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_04_pago;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_05_monto;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_05_pago;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_06_monto;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_06_pago;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_07_monto;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_07_pago;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_08_monto;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_08_pago;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_09_monto;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_09_pago;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_10_monto;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_10_pago;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_11_monto;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_11_pago;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_12_monto;
+Educacion;Vouchers;Nominal_voucher_2024.csv;_12_pago;
+Educacion;Vouchers;Nominal_voucher_2025.csv;cuil_menor;
+Educacion;Vouchers;Nominal_voucher_2025.csv;alumno;
+Educacion;Vouchers;Nominal_voucher_2025.csv;fecha_nacimiento;
+Educacion;Vouchers;Nominal_voucher_2025.csv;vinculo_con_menor;
+Educacion;Vouchers;Nominal_voucher_2025.csv;nivel_educativo;
+Educacion;Vouchers;Nominal_voucher_2025.csv;cue;
+Educacion;Vouchers;Nominal_voucher_2025.csv;anio_academico;
+Educacion;Vouchers;Nominal_voucher_2025.csv;cuit_padre_tutor;
+Educacion;Vouchers;Nominal_voucher_2025.csv;tutor;
+Educacion;Vouchers;Nominal_voucher_2025.csv;cod_localidad_escuela;
+Educacion;Vouchers;Nominal_voucher_2025.csv;localidad_escuela;
+Educacion;Vouchers;Nominal_voucher_2025.csv;cod_departamento_esc;
+Educacion;Vouchers;Nominal_voucher_2025.csv;departamento_esc;
+Educacion;Vouchers;Nominal_voucher_2025.csv;cod_provincia_esc;
+Educacion;Vouchers;Nominal_voucher_2025.csv;provincia_esc;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_04_monto;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_04_pago;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_05_monto;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_05_pago;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_06_monto;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_06_pago;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_07_monto;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_07_pago;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_08_monto;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_08_pago;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_09_monto;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_09_pago;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_10_monto;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_10_pago;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_11_monto;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_11_pago;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_12_monto;
+Educacion;Vouchers;Nominal_voucher_2025.csv;_12_pago;
+Educacion;Vouchers;Nominal_voucher_2026.csv;cuit_menor;
+Educacion;Vouchers;Nominal_voucher_2026.csv;alumno;
+Educacion;Vouchers;Nominal_voucher_2026.csv;fecha_nacimiento;
+Educacion;Vouchers;Nominal_voucher_2026.csv;vinculo_con_menor;
+Educacion;Vouchers;Nominal_voucher_2026.csv;nivel_educativo;
+Educacion;Vouchers;Nominal_voucher_2026.csv;cue;
+Educacion;Vouchers;Nominal_voucher_2026.csv;anio_academico;
+Educacion;Vouchers;Nominal_voucher_2026.csv;cuit_padre_tutor;
+Educacion;Vouchers;Nominal_voucher_2026.csv;tutor;
+Educacion;Vouchers;Nominal_voucher_2026.csv;cod_localidad_escuela;
+Educacion;Vouchers;Nominal_voucher_2026.csv;localidad_escuela;
+Educacion;Vouchers;Nominal_voucher_2026.csv;cod_departamento_esc;
+Educacion;Vouchers;Nominal_voucher_2026.csv;departamento_esc;
+Educacion;Vouchers;Nominal_voucher_2026.csv;cod_provincia_esc;
+Educacion;Vouchers;Nominal_voucher_2026.csv;provincia_esc;
+Educacion;Vouchers;Nominal_voucher_2026.csv;_04_monto;
+Educacion;Vouchers;Nominal_voucher_2026.csv;_04_pago;
+Educacion;Vouchers;Nominal_voucher_2026.csv;_05_monto;
+Educacion;Vouchers;Nominal_voucher_2026.csv;_05_pago;
+Educacion;Vouchers;Nominal_voucher_2026.csv;_06_monto;
+Educacion;Vouchers;Nominal_voucher_2026.csv;_06_pago;
+Ninez, Adolescencia y Familia;Alimentar;alimentar_no_pagados;ORIGEN;Subtipo de ALIMENTAR por el que se iba a cobrar: auh, pnc, rurales o judiciales.
+Ninez, Adolescencia y Familia;Alimentar;alimentar_no_pagados;CUIL;CUIL de la persona a la que se le iba a acreditar el pago, validado.
+Ninez, Adolescencia y Familia;Alimentar;alimentar_no_pagados;R;Campo r (sin interpretar)
+Ninez, Adolescencia y Familia;Alimentar;alimentar_no_pagados;IMPORTE;Monto que se informo y no llego a acreditarse.
+Ninez, Adolescencia y Familia;Alimentar;alimentar_no_pagados;PERIODO;Mes al que correspondia el pago que no se acredito.
+Ninez, Adolescencia y Familia;Alimentar;pa_beneficiarios;cuil_titular;CUIT/CUIL del titular de la prestacion.
+Ninez, Adolescencia y Familia;Alimentar;pa_beneficiarios;origen;Fuente del dato para liquidacion (ej: auh, pnc, rurales, judiciales).
+Ninez, Adolescencia y Familia;Alimentar;pa_beneficiarios;cuil_beneficiario;"CUIT/CUIL del beneficiario (integrante a cargo del titular, no necesariamente hijo). En filas prenatales viene como ""PRENATAL""."
+Ninez, Adolescencia y Familia;Alimentar;pa_beneficiarios;dni_beneficiario;"DNI del beneficiario (integrante a cargo del titular, no necesariamente hijo). En filas prenatales viene como ""PRENATAL""."
+Ninez, Adolescencia y Familia;Alimentar;pa_beneficiarios;apellido_nombre_beneficiario;Apellido y nombre del beneficiario (integrante a cargo del titular, no necesariamente hijo).
+Ninez, Adolescencia y Familia;Alimentar;pa_beneficiarios;fecha_nacimiento_beneficiario;"Fecha de nacimiento del beneficiario (formato DD.MM.YYYY o ""PRENATAL"" en filas prenatales)."
+Ninez, Adolescencia y Familia;Alimentar;pa_beneficiarios;sexo_beneficiario;"Sexo/genero del beneficiario (F/M/X, o ""PRENATAL""/""JUDICIAL"" en casos especiales)."
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;provincia_titular;Provincia de residencia del titular.
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;municipio_titular;Municipio de residencia del titular.
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;cuil_titular;CUIT/CUIL del titular de la prestacion.
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;dni_titular;DNI del titular.
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;apellido_nombre_titular;Apellido y nombre del titular.
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;monto_titular;Monto liquidado al titular.
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;prenatal;Indicador de prestacion prenatal (0/1 -> false/true).
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;periodo;"Periodo de liquidacion en formato YYYYMM (ej: ""202510"")."
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;origen;Fuente del dato para liquidacion (ej: auh, pnc, rurales, judiciales).
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;fecha_nacimiento_titular;Fecha de nacimiento del titular (formato DD.MM.YYYY).
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;sexo_titular;Sexo/genero del titular (F/M/X).
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;cod_postal;Codigo postal.
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;calle;Nombre de la calle.
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;numero;"Altura de la calle (puede contener ""S/N"")."
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;piso;Piso en el caso que sea edificio.
+Ninez, Adolescencia y Familia;Alimentar;pa_titulares;departamento;Numero o letra del Departamento.
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;actividad_centro_id;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;cantidad_personas;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;horariosdesde;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;precio;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;estado;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;actividad_id;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;centro_id;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;horarioshasta;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;actividad;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_actividades;categoria;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_centros;centro_id;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_centros;nombre_centro_adherido;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_centros;tipo;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_centros;activo;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_centros;faro_asociado_id;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_centros;organizacion_id;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_centros;localidad;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_centros;municipio;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_centros;provincia;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;id;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;fecha_registro;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;actividad_centro_id;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;ciudadano_id;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;documento;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;nombre;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;apellido;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;fecha_nacimiento;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;estado;
+Ninez, Adolescencia y Familia;Centro de Familias;dim_inscripciones;fecha_modificacion;
+Ninez, Adolescencia y Familia;Comedores;comedores_ejecucion;id;
+Ninez, Adolescencia y Familia;Comedores;comedores_ejecucion;programa;
+Ninez, Adolescencia y Familia;Comedores;comedores_ejecucion;nombre_comedor;
+Ninez, Adolescencia y Familia;Comedores;comedores_ejecucion;provincia;
+Ninez, Adolescencia y Familia;Comedores;comedores_ejecucion;municipio;
+Ninez, Adolescencia y Familia;Comedores;comedores_ejecucion;localidad;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;IDcomedor;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;ndoc;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;CUIT RENAPER;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;APELLIDO;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;NOMBRE;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;sexo;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;fnac;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;provincia;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;municipio;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;ciudad;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;calle;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;numero;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;piso;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;departamento;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;cpostal;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;barrio;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;monoblock;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;Autos;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;Desempleo;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;Embarcaciones;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;EmpleoFormal;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;EmpleoIndependiente;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;Fallecidos;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;Inmuebles;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;Jubilacion;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;Becas;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;PNC;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;PROG SOC;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;CONARC;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;AUH;
+Ninez, Adolescencia y Familia;Comedores;comedores_nomina_ejecucion;PPJJ;
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_liquidacion;IDpersona;"Numero con el que el programa identifica a la persona; es el mismo en las tres series de PAS."
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_liquidacion;mesAlta;Mes en que la persona fue dada de alta en el programa.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_liquidacion;mesBaja;Mes en que la persona fue dada de baja del programa.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_liquidacion;ultimoMesLiquidado;Ultimo mes que se le liquido a la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_liquidacion;periodoLiquidacion;Mes al que corresponde esta liquidacion.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_liquidacion;estado;Situacion de la persona en ese mes: activa, suspendida o de baja.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_liquidacion;aviso;Mensaje que la fuente adjunta sobre la liquidacion de ese mes.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_liquidacion;monto;Importe liquidado a la persona en ese mes.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;IDpersona;"Numero con el que el programa identifica a la persona; es el mismo en las tres series de PAS."
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;ndoc;Numero de documento de identidad de la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;cuit;CUIL de la persona, la clave con la que se la cruza con el resto de las fuentes del SIIS.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;apellidos;Apellido o apellidos de la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;nombres;Nombre o nombres de la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;fechanac;Fecha de nacimiento de la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;edad;Edad de la persona tal como la calculo el organismo al extraer el archivo.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;sexo;Genero de la persona, llevado al codigo canonico que comparten todas las fuentes del SIIS.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;telCelularCodArea;Codigo de area del telefono celular de contacto.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;telCelular;Numero de telefono celular de contacto, sin el codigo de area.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;telFijoCodArea;Codigo de area del telefono fijo de contacto.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;telFijo;Numero de telefono fijo de contacto, sin el codigo de area.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;email;Direccion de correo electronico de contacto.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;Calle;Nombre de la calle del domicilio.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;numero;Altura del domicilio sobre la calle.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;piso;Piso del domicilio, cuando es un edificio.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;depto;Unidad dentro del edificio: el numero o la letra del departamento.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;Manzana;Manzana del domicilio, en barrios y urbanizaciones que se ubican asi.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;lote;Lote del domicilio, en barrios y urbanizaciones que se ubican asi.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;barrio;Barrio del domicilio.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;CodigoPostal;Codigo postal del domicilio: cuatro digitos, o el codigo postal argentino completo con sus letras cuando la fuente lo informa asi.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;Localidad;Localidad del domicilio, tal como la informa la fuente.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;Municipio;Municipalidad del domicilio, tal como la informa la fuente.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;Provincia;Provincia del domicilio, como codigo oficial de INDEC.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;mesAlta;Mes en que la persona fue dada de alta en el programa, segun la foto que trae el padron.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;mesBaja;Mes en que la persona fue dada de baja del programa, segun la foto que trae el padron.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;ultimoMesLiquidado;Ultimo mes que se le liquido a la persona, segun la foto que trae el padron.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;estado;Situacion de la persona en el programa al momento de extraer el padron: activa, suspendida o de baja.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;aviso;Mensaje que la fuente adjunta sobre la liquidacion de la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_nomina;monto;Importe liquidado a la persona segun la foto que trae el padron.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;IDpersona;"Numero con el que el programa identifica a la persona; es el mismo en las tres series de PAS."
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;ndoc;Numero de documento de identidad de la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;cuit;CUIL de la persona, la clave con la que se la cruza con el resto de las fuentes del SIIS.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;apellidos;Apellido o apellidos de la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;nombres;Nombre o nombres de la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;fechaNac;Fecha de nacimiento de la persona.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;edad;Edad de la persona tal como la calculo el organismo al extraer el archivo.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;sexo;Genero de la persona, llevado al codigo canonico que comparten todas las fuentes del SIIS.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;genero;Genero autopercibido que declaro la persona, cuando lo declaro.
+Ninez, Adolescencia y Familia;PAS (Programa de Acompañamiento Social);pas_personas;criterioIngresoPAS;Motivo o motivos por los que la persona entro al programa.
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;ID_Operacion;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;NumeroOperativo;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;FechaOperativo;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;Hora Inicio;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;Hora Finalizacion;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;CamionID;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;Provincia;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;Localidad;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;Escuela;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;DireccionEscuela;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;Observaciones;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;Usuario;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;latitud;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_operativos;longitud;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;Operativo_ID;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;Nro_Acta;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;FechaHoraReg;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;NombrePersona;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;ApellidoPersona;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;DNI;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;DireccionPersona;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;Provincia;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;Localidad;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;Telefono;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;Edad;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;Genero;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;EstadoDetalle;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;CantidadLentes;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;Observaciones;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;Usuario;
+Ninez, Adolescencia y Familia;VPSL (Ver Para Ser Libres);vpsl_registros_operativos;error_id;
+Trabajo, Empleo y Seguridad Social;STESS;stess;tipo_liquidacion;Tipo de liquidacion (codigo): identifica liquidacion normal o complementaria.
+Trabajo, Empleo y Seguridad Social;STESS;stess;periodo_liquidado;Periodo liquidado (MMAAAA): identifica el devengado pagado.
+Trabajo, Empleo y Seguridad Social;STESS;stess;periodo_de_liquidacion;Periodo de liquidacion (MMAAAA).
+Trabajo, Empleo y Seguridad Social;STESS;stess;liqui_plan;Tipo de plan a liquidar (codigo).
+Trabajo, Empleo y Seguridad Social;STESS;stess;provincia_cod;Codigo de provincia.
+Trabajo, Empleo y Seguridad Social;STESS;stess;proyecto;Identificacion del proyecto (codigo).
+Trabajo, Empleo y Seguridad Social;STESS;stess;programa;Identificacion del programa (codigo).
+Trabajo, Empleo y Seguridad Social;STESS;stess;cuil;CUIL del beneficiario.
+Trabajo, Empleo y Seguridad Social;STESS;stess;tipo_doc;Tipo de documento (codigo).
+Trabajo, Empleo y Seguridad Social;STESS;stess;apellido_y_nombre;Apellido y nombre del beneficiario.
+Trabajo, Empleo y Seguridad Social;STESS;stess;nro_doc;Numero de documento (text: hay documentos enmascarados con '*').
+Trabajo, Empleo y Seguridad Social;STESS;stess;fecha_nacimiento_str;Fecha de nacimiento (ddmmaaaa, string crudo).
+Trabajo, Empleo y Seguridad Social;STESS;stess;sexo;Sexo (codigo).
+Trabajo, Empleo y Seguridad Social;STESS;stess;importe;Importe (parte entera del monto, en pesos).
+Trabajo, Empleo y Seguridad Social;STESS;stess;centavos;Centavos del importe (0-99).
+Trabajo, Empleo y Seguridad Social;STESS;stess;cuit_empresa;CUIT de la empresa (0 cuando no corresponde).
+Trabajo, Empleo y Seguridad Social;STESS;stess;provincia_desc;Descripcion/identificacion de la provincia.
+Trabajo, Empleo y Seguridad Social;STESS;stess;municipio_desc;Municipio del domicilio del beneficiario.
+Trabajo, Empleo y Seguridad Social;STESS;stess;localidad_desc;Localidad de residencia del beneficiario.
+Trabajo, Empleo y Seguridad Social;STESS;stess;domicilio;"Domicilio del beneficiario (calle y altura; el origen NO separa numero/entre calles: llegan juntos en este campo, truncado a 30 chars)."
+Trabajo, Empleo y Seguridad Social;STESS;stess;cod_postal;Codigo postal del domicilio (CP de 4 digitos o CPA alfanumerico).
+Trabajo, Empleo y Seguridad Social;Programas Nacionales de Empleo;stess;;Tipo de plan a liquidar (codigo). 2
+Trabajo, Empleo y Seguridad Social;Incentivos Generales;stess;;Tipo de plan a liquidar (codigo).3
+Trabajo, Empleo y Seguridad Social;Seguro de Capacitación y Empleo;stess;;Tipo de plan a liquidar (codigo).6
+Trabajo, Empleo y Seguridad Social;Jovenes con Más y Mejor Trabajo;stess;;Tipo de plan a liquidar (codigo).9
+Trabajo, Empleo y Seguridad Social;Seguro de Desempleo;stess;;Tipo de plan a liquidar (codigo).11
+Trabajo, Empleo y Seguridad Social;Promover  Linea 2;stess;;Tipo de plan a liquidar (codigo).14
+Trabajo, Empleo y Seguridad Social;Promover  Linea 1;stess;;Tipo de plan a liquidar (codigo).15
+Trabajo, Empleo y Seguridad Social;FOMENTAR;stess;;Tipo de plan a liquidar (codigo).25
+Trabajo, Empleo y Seguridad Social;Volver al Trabajo (VAT);stess;;Tipo de plan a liquidar (codigo).30
+Trabajo, Empleo y Seguridad Social;Monotributo Social;stess;;Tipo de plan a liquidar (codigo).40
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;ID_PERSONA;Identificador único SINTyS | Tipo declarado por SINTyS: NUMBER (10)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;CUIT;Clave Única de Identificación Tributaria | Tipo declarado por SINTyS: NUMBER (11)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;NDOC;Número de Documento | Tipo declarado por SINTyS: NUMBER (11)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;DENO;Apellido/s y Nombre/s de la persona | Tipo declarado por SINTyS: VARCHAR2 (200)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;SEXO;Identidad de Género (1: Masculino, 2: Femenino, 3: No Binaria) | Tipo declarado por SINTyS: NUMBER
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;FNAC;Fecha Nacimiento de la Persona | Tipo declarado por SINTyS: DATE
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;FUENTE;Campo proveniente desde Origen | Tipo declarado por SINTyS: VARCHAR2 (30)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;PRESTACION;Campo proveniente desde Origen | Tipo declarado por SINTyS: VARCHAR2 (54)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;FALLECIDOS;Estado atributo de la persona al momento del cruce (1: Sí / 0: No) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;AUH;Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;ALIMENTAR;Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;AUE (Asignación Universal por Embarazo);Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;PAS (Programa de Acompañamiento Social);Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;PROG_NAC_EMPLEO;Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;EMP_INDEPENDIENTE;Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;ELECTRODEPENDIENTE;Estado atributo de la persona al momento del cruce (1: Sí / 0: No) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;CUD;Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;RENABAP;Estado atributo de la persona al momento del cruce (1: Sí / 0: No) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;AERONAVES;Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;EMBARCACIONES;Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;OBRA_SOCIAL;Estado atributo de la persona al momento del cruce, incluye Prepagas (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;DESEMPLEO;Estado atributo de la persona al momento del cruce (1: Sí / 0: No) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;ASIG_FLIAR;Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;EMP_DEPENDIENTE;Estado atributo de la persona al momento del cruce (1: Sí / 0: No) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;JUBYPENS;Posee alguna Jubilación, Pensión o Retiro Nacional o Provincial (1: Sí / 0: No) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;PNC;Estado atributo de la persona al momento del cruce (1: Tiene / 0: No Tiene) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;AUTOS_0_A_3_ANIOS_ANTIG;Posee algún automóvil (2 o 4 ruedas) de hasta 3 años de antigüedad (1: Sí / 0: No) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;AUTOS_MAYOR_3_HASTA_5_ANIOS_ANTIG;Posee algún automóvil (2 o 4 ruedas) de entre 4 y 5 años de antigüedad (1: Sí / 0: No) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;AUTOS_MAYOR_5_ANIOS_ANTIG;Posee algún automóvil (2 o 4 ruedas) de 5 o más años de antigüedad (1: Sí / 0: No) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;INMUEBLES_CANT_1_A_3;Registra entre 1 y 3 inmuebles en RPI, Catastro o Impuesto Municipal Nacional o Provincial. Debe combinarse con INMUEBLES = 1. | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;INMUEBLES_CANT_4_O_MAS;Registra más de 4 inmuebles en RPI, Catastro o Impuesto Municipal Nacional o Provincial. Debe combinarse con INMUEBLES = 1. | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;MONTO_CBT;Monto Referencia CBT Hogar 2 para cálculos. | Tipo declarado por SINTyS: NUMBER (15,2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;INGRESOS_CBTH2_RANGO_0_A_2;Rango Ingresos entre 0 y 2 CBT Hogar 2 (MONTO_CBT <= MONTO_CBT * 2) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;INGRESOS_CBTH2_RANGO_MAYOR_2_HASTA_4;Rango Ingresos entre 2 y 4 CBT Hogar 2 (MONTO_CBT >= MONTO_CBT * 2 y <= MONTO_CBT * 4) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;INGRESOS_CBTH2_RANGO_MAYOR_4_HASTA_6;Rango Ingresos entre 4 y 6 CBT Hogar 2 (MONTO_CBT >= MONTO_CBT * 4 y <= MONTO_CBT * 6) | Tipo declarado por SINTyS: NUMBER (2)
+SINTYS (sin organismo asignado);(sin programa asignado);sintys;INGRESOS_CBTH2_RANGO_MAYOR_6;Rango Ingresos mayor a 6 CBT Hogar 2 (MONTO_CBT >= MONTO_CBT * 6) | Tipo declarado por SINTyS: NUMBER (2)
+SUMAR;Apellido del afiliado;;;
+SUMAR;Nombre del afiliado;;;
+SUMAR;Ver tabla 1.1;;;
+SUMAR;P-“Propio”   A-“Ajeno”;;;
+SUMAR;Número de Documento;;;
+SUMAR;M-“Masculino”   F-“Femenino”;;;
+SUMAR;1-”Embarazada”  2- “Puérpera”  3-“Recién Nacido”  4-“de 1 a 6 años” (campo no utilizado en la actualidad);;;
+SUMAR;Fecha de Nacimiento del afiliado;;;
+SUMAR;S-“Si declara pertenecer a alguna Población Originaria”  N-“No declara”;;;
+SUMAR;Lengua de Población Originaria ;;;
+SUMAR;Tribu de Población Originaria ;;;
+SUMAR;Tipo Documento de la Madre (ver tabla 1.1);;;
+SUMAR;Número de Documento de la Madre;;;
+SUMAR;Apellido de la Madre;;;
+SUMAR;Nombre de la Madre;;;
+SUMAR;Tipo Documento del Padre (ver tabla 1.1);;;
+SUMAR;Número de Documento del Padre;;;
+SUMAR;Apellido del Padre;;;
+SUMAR;Nombre del Padre;;;
+SUMAR;Tipo Documento del Tutor (ver tabla 1.1);;;
+SUMAR;Número de Documento del Tutor;;;
+SUMAR;Apellido del Tutor;;;
+SUMAR;Nombre del Tutor;;;
+SUMAR;Fecha en que se inscribió al Afiliado;;;
+SUMAR;Fecha de Diagnóstico Médico del Embarazo;;;
+SUMAR;Semanas de gestación del Embarazo al momento del Diagnóstico;;;
+SUMAR;Fecha Médica Probable de Parto;;;
+SUMAR;Fecha Efectiva de Parto;;;
+SUMAR;S-“ Beneficiario del Plan Nacer”  N-“Inscripto NO Beneficiario”;;;
+SUMAR;Calle donde vive el afiliado;;;
+SUMAR;Número de la calle donde vive el afiliado;;;
+SUMAR;Manzana donde vive el afiliado;;;
+SUMAR;Piso donde vive el afiliado (en caso de ser un edificio);;;
+SUMAR;Número de Puerta de la casa del afiliado;;;
+SUMAR;Calle entre la cual queda el domicilio del afiliado;;;
+SUMAR;Calle entre la cual queda el domicilio del afiliado;;;
+SUMAR;Barrio o Paraje donde vive el afiliado;;;
+SUMAR;Municipio donde vive el afiliado;;;
+SUMAR;Departamento provincial donde vive el afiliado;;;
+SUMAR;Localidad donde vive el afiliado;;;
+SUMAR;Código con el cual se identifica a la Provincia ( ver tabla 2.1) (campo No Utilizado, ver campo Nº 52);;;
+SUMAR;Código Postal del Correo Argentino del domicilio del afiliado;;;
+SUMAR;Numero Telefónico del afiliado.;;;
+SUMAR;Centro de Salud donde el afiliado declara que se atiende habitualmente;;;
+SUMAR;Código con el cual se identifica a la Provincia Utilizar éste campo ( ver tabla 2.1);;;
+SUMAR;Código con el cual se identifica el motivo de la Baja del afiliado (ver tabla SMICodMotivosBaja);;;
+SUMAR;Detalle del Motivo de la Baja del afiliado (ver tabla SMICodMotivosBaja);;;
+SUMAR;Código del Efector asignado al afiliado por la UGP;;;
+SUMAR;Código del Efector que el afiliado declaró como Lugar de Atención.;;;
+SUMAR;Score de Riesgo (Valor resultante de una encuesta realizada por Remediar+Redes);;;
+SUMAR;Alfabetización del Beneficiario - (Ver tabla 4.1);;;
+SUMAR;Años cursados (Ver tabla 4.1);;;
+SUMAR;Alfabetización de la Madre (Ver tabla 4.1);;;
+SUMAR;Años cursados (Ver tabla 4.1);;;
+SUMAR;Alfabetización del Padre (Ver tabla 4.1);;;
+SUMAR;Años cursados (Ver tabla 4.1);;;
+SUMAR;Alfabetización del Tutor (Ver tabla 4.1);;;
+SUMAR;Años cursados (Ver tabla 4.1);;;
+SUMAR;E-Mail del afiliado;;;
+SUMAR;Celular del afiliado;;;
+SUMAR;Discapacidades del Beneficiario;;;
+SUMAR;País del Beneficiario;;;
+SUMAR;S o N si está cursando o no un embarazo a partir de una función a partir de  FPP, FUM y semanas de embarazo;;;
+SUMAR;S o N si tiene o no Cobertura Efectiva Basica en ese periodo;;;
+SUMAR;CUIE del ultimo efector donde se realizó la prestación que dio CEB;;;
+SUMAR;Fecha de la ultima prestacion que dio CEB;;;
+SUMAR;Codigo de la Prestacion que dio CEB;;;
+SUMAR;S o N si devenga o no capita en ese periodo;;;
+SUMAR;Numero de capitas devengadas (hasta 4);;;
+SUMAR;Grupo al que pertenece A = 0 a 5 años / B = 6 a 9 años / C = 10 a 19 años / D = mujeres de 20 a 64 años;;;
+SUMAR;Latitud de la ubicación del domicilio del beneficiario;;;
+SUMAR;Longitud de la ubicación del domicilio del beneficiario;;;
+SUMAR;Código del establecimiento de salud a cargo del área de responsabilidad sanitaria del beneficiario.;;;
+;;;;
+PUCO;Tipo de documento del beneficiario;;;
+PUCO;Número de documento. Se ignoran los registros que no tengan un número entero en este campo.;;;
+PUCO;Apellido y nombre del beneficiario.;;;
+PUCO;Código de obra social;;;
+PUCO;Carácter que indica si el beneficiario es titular de la cobertura y extiende la misma a sus hijos;;;
+;;;;
+NOMIVAC;ID_SNI_APLICACION;;;
+NOMIVAC;ID_SNI_TIPO_VACUNA;;;
+NOMIVAC;ID_CMDB_PERSONA;;;
+NOMIVAC;ID_SNI_VACUNA;;;
+NOMIVAC;ID_SNI_DOSIS;;;
+NOMIVAC;ID_ORIGEN;;;
+NOMIVAC;FECHA_APLICACION;;;
+NOMIVAC;LOTE;;;
+NOMIVAC;FECHA_VENCIMIENTO;;;
+NOMIVAC;CALENDARIO;;;
+NOMIVAC;DIAS_VIDA;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_SNI_VACUNADOR;;;
+NOMIVAC;ID_SNI_VACUNA_ESQUEMA;;;
+NOMIVAC;ID_SNI_APLICACION_CONDICION;;;
+NOMIVAC;ID_CMDB_DOMICILIO;;;
+NOMIVAC;ID_CMDB_CS;;;
+NOMIVAC;ID_CMDB_NF;;;
+NOMIVAC;ID_CMDB_SL;;;
+NOMIVAC;HABILITADO;;;
+NOMIVAC;ID_SNI_TIPO_VACUNA;;;
+NOMIVAC;NOMBRE;;;
+NOMIVAC;HABILITADO;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;ID_SNI_VACUNA;;;
+NOMIVAC;NOMBRE;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;HABILITADO;;;
+NOMIVAC;VIGENCIA_DESDE;;;
+NOMIVAC;VIGENCIA_HASTA;;;
+NOMIVAC;NOMENCLADOR;;;
+NOMIVAC;ORDEN;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;CALENDARIO_NACIONAL;;;
+NOMIVAC;ID_SNI_VACUNA_SUMAR;;;
+NOMIVAC;VALIDA_LOTE;;;
+NOMIVAC;FAD;;;
+NOMIVAC;ID_SNI_DOSIS;;;
+NOMIVAC;ID_SNI_VACUNA;;;
+NOMIVAC;ID_SNI_DOSIS_REMP;;;
+NOMIVAC;ID_SNI_EDAD_CALENDARIO;;;
+NOMIVAC;NOMBRE;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;LIMITE_MIN;;;
+NOMIVAC;ORDEN;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;ID_SNI_VACUNA_ESQUEMA;;;
+NOMIVAC;LIMITE_MAX;;;
+NOMIVAC;TIEMPO_COBERTURA;;;
+NOMIVAC;REPITE;;;
+NOMIVAC;LIM_MIN_IDEAL;;;
+NOMIVAC;LIM_MAX_IDEAL;;;
+NOMIVAC;TIEMPO_INTERDOSIS;;;
+NOMIVAC;HABILITADO;;;
+NOMIVAC;ANUAL;;;
+NOMIVAC;REFUERZO;;;
+NOMIVAC;ID_SNI_DOSIS_GENERICA;;;
+NOMIVAC;ID_SNI_VACUNADOR;;;
+NOMIVAC;ID_PROFESIONAL;;;
+NOMIVAC;ID_TIPODOC;;;
+NOMIVAC;NRODOC;;;
+NOMIVAC;NOMBRE;;;
+NOMIVAC;APELLIDO;;;
+NOMIVAC;SEXO;;;
+NOMIVAC;FECHA_NACIMIENTO;;;
+NOMIVAC;REGISTRO_LOCAL;;;
+NOMIVAC;ID_TIPO_TE1;;;
+NOMIVAC;TE1;;;
+NOMIVAC;EMAIL;;;
+NOMIVAC;CUIL;;;
+NOMIVAC;ID_SNI_VACUNADOR_TIPO;;;
+NOMIVAC;SNI_VACUNADOR_TIPO_OTRO;;;
+NOMIVAC;CAPACITADO;;;
+NOMIVAC;CAPACITADO_FECHA;;;
+NOMIVAC;HABILITADO;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;ID_SNI_VACUNA_ESQUEMA;;;
+NOMIVAC;ID_SNI_VACUNA;;;
+NOMIVAC;NOMBRE;;;
+NOMIVAC;ID_SNI_APLICACION_CONDICION;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;HABILITADO;;;
+NOMIVAC;LIM_MIN_REAL;;;
+NOMIVAC;LIM_MAX_REAL;;;
+NOMIVAC;LIM_MIN_IDEAL;;;
+NOMIVAC;LIM_MAX_IDEAL;;;
+NOMIVAC;ID_SNI_CAMPANIA;;;
+NOMIVAC;EXCEPCION;;;
+NOMIVAC;REGULAR;;;
+NOMIVAC;EMBARAZO;;;
+NOMIVAC;ID_SNI_APLICACION_CONDICION;;;
+NOMIVAC;NOMBRE;;;
+NOMIVAC;SEXO;;;
+NOMIVAC;ORDEN;;;
+NOMIVAC;HABILITADO;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;ID_ORIGEN;;;
+NOMIVAC;ID_TIPO_ORIGEN;;;
+NOMIVAC;ID_DEPENDENCIA;;;
+NOMIVAC;NOMBRE;;;
+NOMIVAC;RAZON_SOCIAL;;;
+NOMIVAC;CUIT;;;
+NOMIVAC;IVA;;;
+NOMIVAC;DOMICILIO;;;
+NOMIVAC;ID_PROVINCIA;;;
+NOMIVAC;ID_LOCALIDAD;;;
+NOMIVAC;CP;;;
+NOMIVAC;ID_TIPO_TE1;;;
+NOMIVAC;ID_TIPO_TE2;;;
+NOMIVAC;ID_TIPO_TE3;;;
+NOMIVAC;ID_TIPO_TE4;;;
+NOMIVAC;TE1;;;
+NOMIVAC;TE2;;;
+NOMIVAC;TE3;;;
+NOMIVAC;TE4;;;
+NOMIVAC;MAIL1;;;
+NOMIVAC;MAIL2;;;
+NOMIVAC;SITE;;;
+NOMIVAC;HABILITADO;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_CATEGORIA;;;
+NOMIVAC;ID_SUBCATEGORIA;;;
+NOMIVAC;RESPONSABLE;;;
+NOMIVAC;GOOGLEMAP;;;
+NOMIVAC;ID_ESPECIALIDAD;;;
+NOMIVAC;CODIGO;;;
+NOMIVAC;LOGO_ORIGEN;;;
+NOMIVAC;ID_ESTADO;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;TIENE_TELEFONO;;;
+NOMIVAC;REGISTRO_HPGD;;;
+NOMIVAC;PROGRAMA_REMEDIAR;;;
+NOMIVAC;MEDICOS_COMUNITARIOS;;;
+NOMIVAC;VIGILANCIA_EPIDEMIOLOGICA;;;
+NOMIVAC;PLAN_NACER;;;
+NOMIVAC;ID_CCC_TIPO_PARTICIPACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;ID_BARRIO;;;
+NOMIVAC;ANIO_INICIO;;;
+NOMIVAC;CONECTIVIDAD;;;
+NOMIVAC;ID_CONECTIVIDAD_FINANCIA;;;
+NOMIVAC;ID_CONECTIVIDAD_PROVEEDOR;;;
+NOMIVAC;SANGRE;;;
+NOMIVAC;ID_TIPO_SISTEMA_SANGRE;;;
+NOMIVAC;ID_DESARROLLO_INFORMATICO;;;
+NOMIVAC;UNIDAD_CENT_SIVILE;;;
+NOMIVAC;NOMIVAC;;;
+NOMIVAC;RED_DIR_HTALES;;;
+NOMIVAC;REDES;;;
+NOMIVAC;RESAM;;;
+NOMIVAC;GLN;;;
+NOMIVAC;ID_ORIGEN_FARMACIA;;;
+NOMIVAC;FECHA_MODIFICACION_GRAL;;;
+NOMIVAC;ID_USUARIO_MODIFICACION_GRAL;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION_GRAL;;;
+NOMIVAC;ID_FARM_MODALIDAD_TURNO;;;
+NOMIVAC;ID_FARMACIA_EXIMIDO;;;
+NOMIVAC;HORARIO_ATENCION_PUB;;;
+NOMIVAC;ERC;;;
+NOMIVAC;PNT;;;
+NOMIVAC;REHABILITACION;;;
+NOMIVAC;ID_DEPENDENCIA_SUBCATEGORIA;;;
+NOMIVAC;ID_TIPO_HUESPED_ESPECIAL;;;
+NOMIVAC;REFECV;;;
+NOMIVAC;BNDO;;;
+NOMIVAC;SNVS;;;
+NOMIVAC;RESIDENCIA;;;
+NOMIVAC;PNH;;;
+NOMIVAC;SIP;;;
+NOMIVAC;TELESALUD;;;
+NOMIVAC;CIRUGIA_BARIATRICA;;;
+NOMIVAC;FLAP;;;
+NOMIVAC;PROSANE;;;
+NOMIVAC;SVIH;;;
+NOMIVAC;RED_QUNITA;;;
+NOMIVAC;CONE;;;
+NOMIVAC;CATEGORIA_CONE;;;
+NOMIVAC;PRONAHEP;;;
+NOMIVAC;NOMIVAC_ABIERTO;;;
+NOMIVAC;RENAC;;;
+NOMIVAC;CRONICAS_NO_TRANS;;;
+NOMIVAC;ID_REFES_MOTIVO_PUBLICADO;;;
+NOMIVAC;EPF;;;
+NOMIVAC;RENACEL;;;
+NOMIVAC;RNH;;;
+NOMIVAC;RNH_REFAR;;;
+NOMIVAC;UFIS_SA;;;
+NOMIVAC;CALIDAD;;;
+NOMIVAC;CALIDAD_VINC;;;
+NOMIVAC;ID_REGION_SANITARIA;;;
+NOMIVAC;ID_CMDB_PERSONA;;;
+NOMIVAC;APELLIDO;;;
+NOMIVAC;NOMBRE;;;
+NOMIVAC;SEXO;;;
+NOMIVAC;FECHA_NACIMIENTO;;;
+NOMIVAC;ID_TIPODOC;;;
+NOMIVAC;ID_TIPODOC_MADRE;;;
+NOMIVAC;NRODOC_MADRE;;;
+NOMIVAC;ID_PAIS;;;
+NOMIVAC;NACIONALIDAD;;;
+NOMIVAC;ID_PROVINCIA;;;
+NOMIVAC;ID_LOCALIDAD;;;
+NOMIVAC;NN;;;
+NOMIVAC;FALLECIDO;;;
+NOMIVAC;FECHA_FALLECIDO;;;
+NOMIVAC;ID_CMDB_ESTADO_REGISTRO;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;CUIL;;;
+NOMIVAC;CODIGO;;;
+NOMIVAC;ID_CMDB_ETNIA;;;
+NOMIVAC;COMPARTIDO;;;
+NOMIVAC;ID_CMDB_ESTADO;;;
+NOMIVAC;ID_CMDB_GRUPO;;;
+NOMIVAC;ID_CMDB_FACTOR;;;
+NOMIVAC;SE_DECLARA_PUEBLO_INDIGENA;;;
+NOMIVAC;CODIGO_EXTERNO;;;
+NOMIVAC;ID_ESTADO_CIVIL;;;
+NOMIVAC;ID_REGISTRO_ORIGEN;;;
+NOMIVAC;FECHA_MODIFICACION_GRAL;;;
+NOMIVAC;ID_USUARIO_MODIFICACION_GRAL;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION_GRAL;;;
+NOMIVAC;ID_SINTYS;;;
+NOMIVAC;CELULAR;;;
+NOMIVAC;EMAIL;;;
+NOMIVAC;FECHA_SINTYS;;;
+NOMIVAC;INFORMADO_SINTYS;;;
+NOMIVAC;FECHA_INFORMADO_SINTYS;;;
+NOMIVAC;FALLECIDO_SINTYS;;;
+NOMIVAC;FECHA_FALLECIDO_SINTYS;;;
+NOMIVAC;NRODOC;;;
+NOMIVAC;FECHA_FALLEC_SINTYS_INF;;;
+NOMIVAC;FECHA_RENAPER;;;
+NOMIVAC;ID_RENAPER;;;
+NOMIVAC;FALLECIDO_RENAPER;;;
+NOMIVAC;FECHA_FALLECIDO_RENAPER;;;
+NOMIVAC;ID_ACTO_ADMINISTRATIVO;;;
+NOMIVAC;ID_AGENCIA_RENAPER;;;
+NOMIVAC;ID_AGENCIA_RENAPER_DONANTE;;;
+NOMIVAC;DONANTE;;;
+NOMIVAC;FECHA_DONANTE;;;
+NOMIVAC;ID_PROVINCIA_AGENCIA_RENAPER;;;
+NOMIVAC;EDAD_GESTACIONAL_EN_SEMANAS;;;
+NOMIVAC;PESO_AL_NACER;;;
+NOMIVAC;ID_INSTITUCION_DE_OCURRENCIA;;;
+NOMIVAC;FECHA_IDENTIFICACION_RENAPER;;;
+NOMIVAC;ID_ORIGEN_RENAPER;;;
+NOMIVAC;ID_ESTADO_RENAPER;;;
+NOMIVAC;AXE;;;
+NOMIVAC;PUCO;;;
+NOMIVAC;COMBINADO;;;
+NOMIVAC;SEXO_AL_NACER;;;
+NOMIVAC;ID_IDENTIDAD_GENERO;;;
+NOMIVAC;AUH;;;
+NOMIVAC;NOMIVAC;;;
+NOMIVAC;ID_VINCULO_A_CARGO;;;
+NOMIVAC;FECHA_AUH;;;
+NOMIVAC;ID_CMDB_SUBESTADO_RENAPER;;;
+NOMIVAC;ID_CMDB_INTERFAZ_IDENTIF;;;
+NOMIVAC;ID_AGENCIA_RENAPER_FALLECIDO;;;
+NOMIVAC;ID_PROVINCIA_AGENCIA_RENAPER_F;;;
+NOMIVAC;ID_CMDB_PERSONA_A_CARGO;;;
+NOMIVAC;ID_PAIS_EMISION_TIPODOC;;;
+NOMIVAC;REIDENTIFICAR;;;
+NOMIVAC;CUIL_RENAPER;;;
+NOMIVAC;ID_TRAMITE_TARJETA_REIMPRESA;;;
+NOMIVAC;VENCIMIENTO_DNI_RENAPER;;;
+NOMIVAC;EJEMPLAR_DNI_RENAPER;;;
+NOMIVAC;ID_CMDB_DOMICILIO;;;
+NOMIVAC;CALLE;;;
+NOMIVAC;ID_PROVINCIA;;;
+NOMIVAC;ID_LOCALIDAD;;;
+NOMIVAC;CP;;;
+NOMIVAC;ID_TIPO_TE1;;;
+NOMIVAC;TE1;;;
+NOMIVAC;ID_TIPO_TE2;;;
+NOMIVAC;TE2;;;
+NOMIVAC;ID_TIPO_TE3;;;
+NOMIVAC;TE3;;;
+NOMIVAC;ID_TIPO_TE4;;;
+NOMIVAC;TE4;;;
+NOMIVAC;ID_CMDB_PERSONA;;;
+NOMIVAC;ID_CMDB_ESTADO_REGISTRO;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;CALLE_NRO;;;
+NOMIVAC;CALLE_PISO;;;
+NOMIVAC;CALLE_DPTO;;;
+NOMIVAC;TIENE_TELEFONO;;;
+NOMIVAC;LATITUD;;;
+NOMIVAC;LONGITUD;;;
+NOMIVAC;NIVEL_ZOOM;;;
+NOMIVAC;QUADTILE;;;
+NOMIVAC;ID_DEPARTAMENTO;;;
+NOMIVAC;ID_PAIS_RESIDENCIA;;;
+NOMIVAC;ID_REGISTRO_ORIGEN;;;
+NOMIVAC;ID_CMDB_DOMICILIO_TIPO;;;
+NOMIVAC;SITUACION_CALLE;;;
+NOMIVAC;GEOREF;;;
+NOMIVAC;ID_SERVICIO_PENITENCIARIO;;;
+NOMIVAC;DOMICILIO_PPL;;;
+NOMIVAC;DESCRIPCION;;;
+NOMIVAC;ID_BARRIO_POPULAR;;;
+NOMIVAC;DOMICILIO_BP;;;
+NOMIVAC;ID_CMDB_CS;;;
+NOMIVAC;ID_TIPO_COBERTURA_SOCIAL;;;
+NOMIVAC;ID_COBERTURA_SOCIAL;;;
+NOMIVAC;COBERTURA_DESDE;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;ID_CMDB_PERSONA;;;
+NOMIVAC;ID_CMDB_ESTADO_REGISTRO;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;ID_CS_ORIGEN_PADRON;;;
+NOMIVAC;FECHA_ACTUALIZACION_PADRON;;;
+NOMIVAC;ID_CS_TIPO_BENEFICIARIO;;;
+NOMIVAC;ID_CMDB_NF;;;
+NOMIVAC;ID_CMDB_PERSONA;;;
+NOMIVAC;ID_CMDB_ESTADO_REGISTRO;;;
+NOMIVAC;ID_TIPO_NF;;;
+NOMIVAC;LEE_Y_ESCRIBE;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;
+NOMIVAC;ID_CMDB_SL;;;
+NOMIVAC;ID_CMDB_PERSONA;;;
+NOMIVAC;ID_CMDB_ESTADO_REGISTRO;;;
+NOMIVAC;ID_TIPO_SL;;;
+NOMIVAC;ID_OCUPACION;;;
+NOMIVAC;COMENTARIO;;;
+NOMIVAC;FECHA_REGISTRO;;;
+NOMIVAC;FECHA_MODIFICACION;;;
+NOMIVAC;ID_USUARIO_REGISTRO;;;
+NOMIVAC;ID_USUARIO_MODIFICACION;;;
+NOMIVAC;ID_INTERFAZ_REGISTRO;;;
+NOMIVAC;ID_INTERFAZ_MODIFICACION;;;

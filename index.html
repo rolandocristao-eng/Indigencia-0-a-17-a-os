@@ -1370,7 +1370,7 @@ footer {
       <div class="kpi-card" style="--card-accent: #a855f7;">
         <div class="kpi-header"><span class="kpi-title">Ingreso Promedio del Hogar</span><div class="kpi-icon">💵</div></div>
         <div class="kpi-value" id="kpi6-ingreso">$ 684.500</div>
-        <div class="kpi-subtext" id="kpi6-ingreso-sub">Estimaci&oacute;n mensual ponderada EPH</div>
+        <div class="kpi-subtext" id="kpi6-ingreso-sub">Estimaci&oacute;n mensual (Bases SIIS)</div>
       </div>
     </div>
 
@@ -1378,12 +1378,13 @@ footer {
     <div class="doc-item" style="margin-bottom:1.5rem; background:#1e293b; border-color:#a855f7;">
       <h4 style="color:#c084fc;">Indicador 6: Configuración socioeconómica del hogar</h4>
       <p style="font-size:0.825rem; color:var(--text-muted); line-height:1.6; margin-bottom:0.5rem;">
-        <strong>Modelo Predictivo CPGI (MCO + Lasso):</strong> <span class="field-code" style="color:#e9d5ff;">ln(CPGI) = &beta;₀ + &beta;₁·(Cant_personas) + &beta;₂·(Jefa_mujer_menores) + &beta;₃·(Jubilados_pensionados) + &beta;₄·(Saneamiento_deficiente) + &beta;₅·(Tenencia_regular) + &beta;₆·(Tasa_dependencia) + &beta;₇·(Tasa_menores) + &beta;₈·(Piso_precario) + &beta;₉·(Techo_precario) + &beta;₁₀·(Asalariados_registrados) + &beta;₁₁·(Clima_educativo&sup2;) + &beta;₁₂·(Jefe_superior_completo) + &beta;₁₃·(Edad_jefe) + &beta;₁₄·(Ingreso_real_medio_provincial)</span>
+        <strong>Modelo Predictivo CPGI Exclusivo con Bases Administrativas (MCO + Lasso):</strong><br>
+        <span class="field-code" style="color:#e9d5ff;">ln(CPGI) = &beta;₀ + &beta;₁·(Cant_personas) + &beta;₂·(Jefa_mujer_menores) + &beta;₃·(Jubilados_pensionados) + &beta;₄·(Sin_Patrimonio_SINTYS) + &beta;₅·(Cat_Monotributo_ARCA) + &beta;₆·(Tasa_dependencia) + &beta;₇·(Tasa_menores) + &beta;₈·(Monto_Adicional_ANSES) + &beta;₉·(Asalariados_registrados) + &beta;₁₀·(Clima_educativo&sup2;) + &beta;₁₁·(Jefe_superior_completo) + &beta;₁₂·(Edad_jefe) + &beta;₁₃·(Ingreso_real_medio_provincial)</span>
       </p>
       <p style="font-size:0.825rem; color:var(--text-muted); line-height:1.6;">
         <strong>Clasificaci&oacute;n Binaria:</strong> Hogar Pobre (LP): CPGI &lt; 1,0 (ITF predicho &lt; CBT regionalizada) | Hogar No Pobre: CPGI &ge; 1,0<br>
         <strong>F&oacute;rmula:</strong> <span class="field-code">% Hogares en vulnerabilidad = (Hogares con CPGI &lt; 1,0 / Total hogares bases SIIS) &times; 100</span> | 
-        <strong>Fuentes Integradas:</strong> Registros Administrativos (ANSES, ARCA, STESS, SINTYS, RASE, SENAF) y Encuesta Permanente de Hogares (EPH-INDEC).
+        <strong>Fuentes Integradas Exclusivas:</strong> Registros Administrativos SIIS (ANSES, ARCA ex-AFIP, STESS, SINTYS, RASE, SENAF).
       </p>
     </div>
 
@@ -1954,7 +1955,7 @@ function applyFilters() {
   const sinRegFactVal = activeFilters.vuln === 'INDIGENTE' ? 0.642 : (activeFilters.vuln === 'VULNERABLE' ? 0.148 : 0.365);
 
   let ingPromHogar = 684500;
-  let ingSubText = "Estimación mensual ponderada EPH";
+  let ingSubText = "Estimación mensual (Bases SIIS)";
   if (activeFilters.vuln === 'INDIGENTE') {
     ingPromHogar = 397000;
     ingSubText = "Estrato Indigencia (CBA)";
