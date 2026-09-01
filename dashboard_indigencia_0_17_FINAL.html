@@ -786,7 +786,7 @@ footer {
   <button class="tab-btn" onclick="switchTab('tab-3')">⚡ 3. Subsidios Energ&eacute;ticos <span class="badge">MEC</span></button>
   <button class="tab-btn" onclick="switchTab('tab-4')">🎓 4. Becas Educativas <span class="badge">EDUCACI&Oacute;N</span></button>
   <button class="tab-btn" onclick="switchTab('tab-5')">🏫 5. Escolarizaci&oacute;n Formal <span class="badge">EDUCACI&Oacute;N</span></button>
-  <button class="tab-btn" onclick="switchTab('tab-6')">🏠 6. Configuración Socioecon&oacute;mica <span class="badge" style="background:#a855f7; color:#fff;">SIIS / CPGI</span></button>
+  <button class="tab-btn" onclick="switchTab('tab-6')">🏠 6. Configuración socioeconómica del hogar <span class="badge" style="background:#a855f7; color:#fff;">SIIS / CPGI</span></button>
   <button class="tab-btn" onclick="switchTab('tab-alerts')">🚨 Monitoreo de Alertas <span class="badge" style="background:#ef4444; color:#fff;">SISTEMA</span></button>
   <button class="tab-btn" onclick="switchTab('tab-7')">🔬 Diccionarios y Muestras Sint&eacute;ticas</button>
 </nav>
@@ -1376,7 +1376,7 @@ footer {
 
     <!-- Indicator Formula Tag & Details -->
     <div class="doc-item" style="margin-bottom:1.5rem; background:#1e293b; border-color:#a855f7;">
-      <h4 style="color:#c084fc;">Indicador 6: Configuraci&oacute;n socioecon&oacute;mica del hogar — Capacidad Potencial de Generaci&oacute;n de Ingresos (CPGI)</h4>
+      <h4 style="color:#c084fc;">Indicador 6: Configuración socioeconómica del hogar</h4>
       <p style="font-size:0.825rem; color:var(--text-muted); line-height:1.6; margin-bottom:0.5rem;">
         <strong>Modelo Predictivo CPGI (MCO + Lasso):</strong> <span class="field-code" style="color:#e9d5ff;">ln(CPGI) = &beta;₀ + &beta;₁·(Cant_personas) + &beta;₂·(Jefa_mujer_menores) + &beta;₃·(Jubilados_pensionados) + &beta;₄·(Saneamiento_deficiente) + &beta;₅·(Tenencia_regular) + &beta;₆·(Tasa_dependencia) + &beta;₇·(Tasa_menores) + &beta;₈·(Piso_precario) + &beta;₉·(Techo_precario) + &beta;₁₀·(Asalariados_registrados) + &beta;₁₁·(Clima_educativo&sup2;) + &beta;₁₂·(Jefe_superior_completo) + &beta;₁₃·(Edad_jefe) + &beta;₁₄·(Ingreso_real_medio_provincial)</span>
       </p>
@@ -1591,8 +1591,8 @@ footer {
         </div>
 
         <div class="doc-item">
-          <h4>6. Configuraci&oacute;n Socioecon&oacute;mica del Hogar (Modelo Predictivo CPGI / RSH)</h4>
-          <p><strong>F&oacute;rmula:</strong> <span class="field-code">% Hogares CPGI &lt; 1,0 = (Hogares CPGI &lt; 1,0 / Total Hogares RSH) * 100</span></p>
+          <h4>6. Configuración socioeconómica del hogar</h4>
+          <p><strong>F&oacute;rmula:</strong> <span class="field-code">% Hogares CPGI &lt; 1,0 = (Hogares CPGI &lt; 1,0 / Total Hogares Bases SIIS) * 100</span></p>
           <p><strong>Campos Clave:</strong> <span class="field-code">cuil_cuit_jefe</span>, <span class="field-code">Relacion_F[n]_Id</span>, <span class="field-code">Decil_CPGI</span>, <span class="field-code">CPGI_Valor</span>, <span class="field-code">Clasificacion_LP</span>, <span class="field-code">Jefatura_Femenina_Fl</span>, <span class="field-code">Empleo_Registrado_Fl</span>, <span class="field-code">Calidad_Habitacional_Cd</span></p>
         </div>
       </div>
