@@ -1365,9 +1365,9 @@ footer {
         <div class="kpi-subtext">Sin asalariados formales ni monotributo</div>
       </div>
       <div class="kpi-card" style="--card-accent: #a855f7;">
-        <div class="kpi-header"><span class="kpi-title">Sensibilidad Modelo (EPH + Admin)</span><div class="kpi-icon">🎯</div></div>
-        <div class="kpi-value" id="kpi6-sensibilidad">91.4%</div>
-        <div class="kpi-subtext">Precisi&oacute;n &ge; 90.2% | Error Exclusi&oacute;n &le; 8.6%</div>
+        <div class="kpi-header"><span class="kpi-title">Ingreso Promedio del Hogar</span><div class="kpi-icon">💵</div></div>
+        <div class="kpi-value" id="kpi6-ingreso">$ 684.500</div>
+        <div class="kpi-subtext" id="kpi6-ingreso-sub">Estimaci&oacute;n mensual ponderada EPH</div>
       </div>
     </div>
 
@@ -1944,18 +1944,32 @@ function applyFilters() {
   if(document.getElementById('kpi5-matriculados')) document.getElementById('kpi5-matriculados').innerText = fmtN(totalPop * (avgEsc/100));
   if(document.getElementById('kpi5-brecha')) document.getElementById('kpi5-brecha').innerText = `${avgBrecha.toFixed(1)} pp`;
 
-  // Update Tab 6 KPIs (Configuración Socioeconómica CPGI / RSH)
+  // Update Tab 6 KPIs (Configuración Socioeconómica CPGI / Bases SIIS)
   const totalHogaresVal = (totalPop / 3.4);
   const pobrFactVal = activeFilters.vuln === 'INDIGENTE' ? 0.895 : (activeFilters.vuln === 'POBRE' ? 0.682 : (activeFilters.vuln === 'VULNERABLE' ? 0.245 : 0.548));
   const jefatFactVal = activeFilters.sexo === 'F' ? 0.582 : (activeFilters.sexo === 'M' ? 0.315 : 0.412);
   const sinRegFactVal = activeFilters.vuln === 'INDIGENTE' ? 0.642 : (activeFilters.vuln === 'VULNERABLE' ? 0.148 : 0.365);
+
+  let ingPromHogar = 684500;
+  let ingSubText = "Estimación mensual ponderada EPH";
+  if (activeFilters.vuln === 'INDIGENTE') {
+    ingPromHogar = 397000;
+    ingSubText = "Estrato Indigencia (CBA)";
+  } else if (activeFilters.vuln === 'POBRE') {
+    ingPromHogar = 561000;
+    ingSubText = "Estrato Pobreza No Indigente (CBT)";
+  } else if (activeFilters.vuln === 'VULNERABLE') {
+    ingPromHogar = 924000;
+    ingSubText = "Estrato Vulnerable No Pobre";
+  }
 
   if(document.getElementById('kpi6-hogares')) document.getElementById('kpi6-hogares').innerText = fmtN(totalHogaresVal);
   if(document.getElementById('kpi6-pobreza')) document.getElementById('kpi6-pobreza').innerText = fmtPct(pobrFactVal * 100);
   if(document.getElementById('kpi6-pobreza-count')) document.getElementById('kpi6-pobreza-count').innerText = `${fmtN(totalHogaresVal * pobrFactVal)} hogares bajo LP`;
   if(document.getElementById('kpi6-jefatura')) document.getElementById('kpi6-jefatura').innerText = fmtPct(jefatFactVal * 100);
   if(document.getElementById('kpi6-sin-registro')) document.getElementById('kpi6-sin-registro').innerText = fmtPct(sinRegFactVal * 100);
-  if(document.getElementById('kpi6-sensibilidad')) document.getElementById('kpi6-sensibilidad').innerText = '91.4%';
+  if(document.getElementById('kpi6-ingreso')) document.getElementById('kpi6-ingreso').innerText = `$ ${fmtN(ingPromHogar)}`;
+  if(document.getElementById('kpi6-ingreso-sub')) document.getElementById('kpi6-ingreso-sub').innerText = ingSubText;
 
   // Update Tab Alerts KPIs (Reactivos a Jurisdicción, Tramo, Sexo y Vulnerabilidad)
   let dropVal = -3.8;
