@@ -1,0 +1,171 @@
+Secretaria / Organismo;Programa Operativo;Archivo Fuente;Campo Disponible;Descripcion del campo
+ANSES;ANSES;anses;Archivo_id;Identificador único del archivo generado por ANSES.
+ANSES;ANSES;anses;Fecha_Ejecucion_Fc;Fecha de ejecución del proceso.
+ANSES;ANSES;anses;Order_Nu;Identificador único de la fila.
+ANSES;ANSES;anses;Cuil_Cuit_Nu;CUIL/CUIT de la persona. Identificador válido y vigente.
+ANSES;ANSES;anses;Nacimiento_Fc;Fecha de nacimiento de la persona correspondiente al CUIL.
+ANSES;ANSES;anses;Sexo_Cd;Sexo registrado para la persona. Opciones: M (masculino) / F (femenino) / X (no binario).
+ANSES;ANSES;anses;Provincia_Cd;Código de provincia del domicilio de la persona.
+ANSES;ANSES;anses;Localidad_Tx;Localidad del domicilio de la persona.
+ANSES;ANSES;anses;Codigo_Postal_Nu;Código postal del domicilio de la persona.
+ANSES;ANSES;anses;Actualizacion_Domicilio_Fc;Fecha de actualización del domicilio de la persona.
+ANSES;ANSES;anses;Cuil_Cuit_Titular_Cobro_Prestacion_Nu;CUIL/CUIT del titular para el cobro de las prestaciones del CUIL original.
+ANSES;ANSES;anses;Cuil_Cuit_F1_Nu;CUIL/CUIT del familiar 1.
+ANSES;ANSES;anses;Relacion_F1_Id;Código de relación del familiar 1. Tipo de relación: Hijo (hijo, curatela, etc.).
+ANSES;ANSES;anses;Cuil_Cuit_F2_Nu;CUIL/CUIT del familiar 2.
+ANSES;ANSES;anses;Relacion_F2_Id;Código de relación del familiar 2.
+ANSES;ANSES;anses;Cuil_Cuit_F3_Nu;CUIL/CUIT del familiar 3.
+ANSES;ANSES;anses;Relacion_F3_Id;Código de relación del familiar 3.
+ANSES;ANSES;anses;Cuil_Cuit_F4_Nu;CUIL/CUIT del familiar 4.
+ANSES;ANSES;anses;Relacion_F4_Id;Código de relación del familiar 4.
+ANSES;ANSES;anses;Cuil_Cuit_F5_Nu;CUIL/CUIT del familiar 5.
+ANSES;ANSES;anses;Relacion_F5_Id;Código de relación del familiar 5.
+ANSES;ANSES;anses;Cuil_Cuit_F6_Nu;CUIL/CUIT del familiar 6.
+ANSES;ANSES;anses;Relacion_F6_Id;Código de relación del familiar 6.
+ANSES;ANSES;anses;Cuil_Cuit_F7_Nu;CUIL/CUIT del familiar 7.
+ANSES;ANSES;anses;Relacion_F7_Id;Código de relación del familiar 7.
+ANSES;ANSES;anses;Cuil_Cuit_F8_Nu;CUIL/CUIT del familiar 8.
+ANSES;ANSES;anses;Relacion_F8_Id;Código de relación del familiar 8.
+ANSES;ANSES;anses;Cuil_Cuit_F9_Nu;CUIL/CUIT del familiar 9.
+ANSES;ANSES;anses;Relacion_F9_Id;Código de relación del familiar 9.
+ANSES;ANSES;anses;Cuil_Cuit_F10_Nu;CUIL/CUIT del familiar 10.
+ANSES;ANSES;anses;Relacion_F10_Id;Código de relación del familiar 10.
+ANSES;ANSES;anses;Udai_Asociada_Tx;Última Unidad de Atención Integral (UDAI) a la que concurrió el titular para el cobro, si aplica.
+ANSES;ANSES;anses;Visita_Udai_Fc;Fecha de la última visita a una UDAI del titular para el cobro.
+ANSES;ANSES;anses;Cantidad_Tramite_Udai_Vl;Cantidad de trámites a una UDAI por parte del titular para el cobro, desde 01/01/2024.
+ANSES;ANSES;anses;Cantidad_Visita_Udai_Vl;Cantidad de visitas a una UDAI por parte del titular para el cobro, desde 01/01/2024.
+ANSES;ANSES;anses;Tramite_Virtual_FC;Fecha del último trámite virtual por parte del titular para el cobro, desde 01/01/2024.
+ANSES;ANSES;anses;Cantidad_Tramite_Virtual_Vl;Cantidad de trámites virtuales por parte del titular para el cobro, desde 01/01/2024.
+ANSES;ANSES;anses;Monto_Adicional_Vl;Monto adicional por prestación AUH y AUD (si corresponde).
+ANSES;ANSES;anses;Monto_Descuento_Vl;Descuento del monto por prestación AUH o AUD (si corresponde) para analizar diferencia entre monto neto y bruto.
+ANSES;ANSES;anses;Metodo_Cobro_Tx;Tipo de entidad de pago (banco, correo, billetera virtual, etc.).
+ANSES;ANSES;anses;Prestacion_AUH_Fl;Indica si el CUIL es beneficiario de AUH en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AUH_Vl;Monto bruto de AUH.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AUH_Nu;Período de la primera liquidación de AUH, a partir de 01/01/2024. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AUH_Nu;Período de la última liquidación de AUH. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Cantidad_Liquidaciones_AUH_Vl;Cantidad de liquidaciones de AUH, a partir de 01/01/2024.
+ANSES;ANSES;anses;DU_LE_LC_Fl;Tipo de documento distinto de DU, LE y LC del CUIL original.
+ANSES;ANSES;anses;Ano_Libreta_Completa_Activo_Nu;Año de Libreta AUH que están todavía abiertas para el cobro del 20%.
+ANSES;ANSES;anses;Sin_Libreta_AUH_Fl;Sin libreta del año anterior (año -2). En caso de haber cobrado AUH o AUD, se evalúa si cobró el complemento del 20%.
+ANSES;ANSES;anses;Sin_Libreta_AUH_Ano_Anterior_Fl;Sin libreta del año anterior (año -1). En caso de haber cobrado AUH o AUD, se evalúa si cobró el complemento del 20%.
+ANSES;ANSES;anses;Sin_Libreta_AUH_ano_Actual_Fl;Sin libreta del año actual. En caso de haber cobrado AUH o AUD, se evalúa si cobró el complemento del 20%.
+ANSES;ANSES;anses;CUE_Anexo_Ano_Anterior_Nu;Código Único de Establecimiento Educativo del NNYA AUH y AUD que figura en la Libreta del año anterior.
+ANSES;ANSES;anses;Hospital_Control_Ano_Anterior_Tx;Descripción de la institución donde se realizó el control de salud del NNYA AUH y AUD que figura en la Libreta del año anterior.
+ANSES;ANSES;anses;Hospital_Vacunacion_Ano_Anterior_Tx;Descripción de la institución donde se realizó la vacunación del NNYA AUH y AUD que figura en la Libreta del año anterior.
+ANSES;ANSES;anses;Sin_Padres_Fl;No tiene adulto responsable en ADP en el período.
+ANSES;ANSES;anses;Unico_Padre_Fl;Código Único Progenitor inválido en el período.
+ANSES;ANSES;anses;Asignacion_Universal_Por_Hijo_Fl;Marca que indica los niños que perciben Asignaciones Familiares en el período.
+ANSES;ANSES;anses;Relacion_Dependencia_Fl;Marca que indica los niños que perciben Asignaciones Familiares en el período.
+ANSES;ANSES;anses;Monotributista_Fl;Marca que indica los niños que perciben Asignaciones Familiares en el período.
+ANSES;ANSES;anses;Seguro_Desempleo_Fl;Marca que indica los niños que perciben Asignaciones Familiares en el período.
+ANSES;ANSES;anses;Sistema_Integrado_Previsional_Argentino_Fl;Marca que indica los niños que perciben Asignaciones Familiares en el período.
+ANSES;ANSES;anses;EX_Combatientes_Malvinas_Fl;Marca que indica los niños que perciben Asignaciones Familiares en el período.
+ANSES;ANSES;anses;Pension_No_Contributiva_Fl;Marca que indica los niños que perciben Asignaciones Familiares en el período.
+ANSES;ANSES;anses;Actividad_Supera_Ingresos_Maximos_Fl;Marca que indica los niños no alcanzados por la norma nacional en el período.
+ANSES;ANSES;anses;Actividad_Por_Debajo_Del_Ingreso_Minimo_Fl;Marca que indica los niños no alcanzados por la norma nacional en el período.
+ANSES;ANSES;anses;Trabajadores_Independientes_Fl;Marca que indica los niños no alcanzados por la norma nacional en el período.
+ANSES;ANSES;anses;Beneficiarios_Otros_Planes_Sociales_O_Activo_O_Pasivos_Provincias_Fl;Marca que indica los niños no alcanzados por la norma nacional en el período.
+ANSES;ANSES;anses;Extranjeros_Sin_Residencia_Minima_Fl;Marca que indica los niños no alcanzados por la norma nacional en el período.
+ANSES;ANSES;anses;Falta_Presentacion_Libreta_Fl;Marca que indica los niños no alcanzados por la norma nacional en el período.
+ANSES;ANSES;anses;Suspensiones_Fl;Marca que indica los niños no alcanzados por la norma nacional en el período.
+ANSES;ANSES;anses;Otras_Incompatibilidades_Nino_Titular_Fl;Marca que indica los niños no alcanzados por la norma nacional en el período.
+ANSES;ANSES;anses;Prestacion_AUH_Embarazo_Fl;Indica si el CUIL es beneficiario de AUH por Embarazo en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AUH_Embarazo_Vl;Monto bruto de AUH por Embarazo.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AUH_Embrazo_Nu;Período de la primera liquidación de AUH por Embarazo, a partir de 01/01/2024. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AUH_Embrazo_Nu;Período de la última liquidación de AUH por Embarazo. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Cantidad_Liquidaciones_AUH_Embrazo_Vl;Cantidad de liquidaciones de AUH por Embarazo, a partir de 01/01/2024.
+ANSES;ANSES;anses;Prestacion_AUH_Discapacidad_Fl;Indica si el CUIL es beneficiario de AUH por Discapacidad en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AUH_Discapacidad_Vl;Monto bruto de AUH por Discapacidad.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AUH_Discapacidad_Nu;Período de la primera liquidación de AUH por Discapacidad, a partir de 01/01/2024. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AUH_Discapacidad_Nu;Período de la última liquidación de AUH por Discapacidad. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Cantidad_Liquidaciones_AUH_Discapacidad_Vl;Cantidad de liquidaciones de AUH por Discapacidad, a partir de 01/01/2024.
+ANSES;ANSES;anses;Prestacion_AAFF_Fl;Indica si el CUIL es beneficiario de Asignaciones Familiares en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AAFF_Vl;Monto bruto de Asignaciones Familiares.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AAFF_Nu;Período de la primera liquidación de AAFF, a partir de 01/01/2024. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AAFF_Nu;Período de la última liquidación de AAFF. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Cantidad_Liquidaciones_AAFF_Vl;Cantidad de liquidaciones de AAFF, a partir de 01/01/2024.
+ANSES;ANSES;anses;Prestacion_AAFF_Maternidad_Fl;Indica si el CUIL es beneficiario de AAFF por Maternidad en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AAFF_Maternidad_Vl;Monto bruto de AAFF por Maternidad.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AAFF_Maternidad_Nu;Período de la primera liquidación de AAFF por Maternidad. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AAFF_Maternidad_Nu;Período de la última liquidación de AAFF por Maternidad. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_AAFF_Discapacidad_Fl;Indica si el CUIL es beneficiario de AAFF por Discapacidad en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AAFF_Discapacidad_Vl;Monto bruto de AAFF por Discapacidad.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AAFF_Discapacidad_Nu;Período de la primera liquidación de AAFF por Discapacidad, a partir de 01/01/2024. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AAFF_Discapacidad_Nu;Período de la última liquidación de AAFF por Discapacidad. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Cantidad_Liquidaciones_AAFF_Discapacidad_Vl;Cantidad de liquidaciones de AAFF por Discapacidad, a partir de 01/01/2024.
+ANSES;ANSES;anses;Prestacion_AAFF_Conyuge_Fl;Indica si el CUIL es beneficiario de AAFF por Cónyuge en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AAFF_Conyuge_Vl;Monto bruto de AAFF por Cónyuge.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AAFF_Conyuge_Nu;Período de la primera liquidación de AAFF por Cónyuge. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AAFF_Conyuge_Nu;Período de la última liquidación de AAFF por Cónyuge. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_AAFF_Ayuda_Escolar_Fl;Indica si el CUIL es beneficiario de AAFF Ayuda Escolar en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AAFF_Ayuda_Escolar_Vl;Monto bruto de AAFF Ayuda Escolar.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AAFF_Ayuda_Escolar_Nu;Período de la primera liquidación de AAFF Ayuda Escolar. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AAFF_Ayuda_Escolar_Nu;Período de la última liquidación de AAFF Ayuda Escolar. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_AAFF_Prenatal_Fl;Indica si el CUIL es beneficiario de AAFF Prenatal en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AAFF_Prenatal_Vl;Monto bruto de AAFF Prenatal.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AAFF_Prenatal_Nu;Período de la primera liquidación de AAFF Prenatal. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AAFF_Prenatal_Nu;Período de la última liquidación de AAFF Prenatal. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_AAFF_Plan_Mil_Dias_Fl;Indica si el CUIL es beneficiario de AAFF Plan Mil Días en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AAFF_Plan_Mil_Dias_Vl;Monto bruto de AAFF Plan Mil Días.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AAFF_Plan_Mil_Dias_Nu;Período de la primera liquidación de AAFF Plan Mil Días. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AAFF_Plan_Mil_Dias_Nu;Período de la última liquidación de AAFF Plan Mil Días. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_PUAM_Fl;Indica si el CUIL es beneficiario de PUAM en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_PUAM_Vl;Monto bruto de PUAM.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_PUAM_Nu;Período de la primera liquidación de PUAM. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_PUAM_Nu;Período de la última liquidación de PUAM. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_PNC_Madres_7_Hijos_Fl;Indica si el CUIL es beneficiario de PNC Madres de 7 Hijos en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_PNC_Madres_7_Hijos_Vl;Monto bruto de PNC Madres de 7 Hijos.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_PNC_Madres_7_Hijos_Nu;Período de la primera liquidación de PNC Madres de 7 Hijos. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_PNC_Madres_7_Hijos_Nu;Período de la última liquidación de PNC Madres de 7 Hijos. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_PNC_Vejez_Fl;Indica si el CUIL es beneficiario de PNC por Vejez en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_PNC_Vejez_Vl;Monto bruto de PNC por Vejez.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_PNC_Vejez_Nu;Período de la primera liquidación de PNC por Vejez. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_PNC_Vejez_Nu;Período de la última liquidación de PNC por Vejez. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_PNC_Familiares_Desaparecidos_Fl;Indica si el CUIL es beneficiario de PNC Familiares de Desaparecidos en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_PNC_Familiares_Desaparecidos_Vl;Monto bruto de PNC Familiares de Desaparecidos.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_PNC_Familiares_Desaparecidos_Nu;Período de la primera liquidación de PNC Familiares de Desaparecidos. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_PNC_Familiares_Desaparecidos_Nu;Período de la última liquidación de PNC Familiares de Desaparecidos. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_PNC_Personas_VIH_Hepatitis_Fl;Indica si el CUIL es beneficiario de PNC Personas VIH/Hepatitis en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_PNC_Personas_VIH_Hepatitis_Vl;Monto bruto de PNC Personas VIH/Hepatitis.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_PNC_Personas_VIH_Hepatitis_Nu;Período de la primera liquidación de PNC Personas VIH/Hepatitis. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_PNC_Personas_VIH_Hepatitis_Nu;Período de la última liquidación de PNC Personas VIH/Hepatitis. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_PNC_Congreso_Fl;Indica si el CUIL es beneficiario de PNC Congreso en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_PNC_Congreso_Vl;Monto bruto de PNC Congreso.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_PNC_Congreso_Nu;Período de la primera liquidación de PNC Congreso. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_PNC_Congreso_Nu;Período de la última liquidación de PNC Congreso. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_PNC_Veteranos_Fl;Indica si el CUIL es beneficiario de PNC Veteranos en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_PNC_Veteranos_Vl;Monto bruto de PNC Veteranos.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_PNC_Veteranos_Nu;Período de la primera liquidación de PNC Veteranos. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_PNC_Veteranos_Nu;Período de la última liquidación de PNC Veteranos. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_Jubilacion_Fl;Indica si el CUIL es beneficiario de Jubilación en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_Jubilacion_Vl;Monto bruto de Jubilación.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_Jubilacion_Nu;Período de la primera liquidación de Jubilación. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_Jubilacion_Nu;Período de la última liquidación de Jubilación. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_Jubilacion_Anticipada_Fl;Indica si el CUIL es beneficiario de Jubilación Anticipada en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_Jubilacion_Anticipada_Vl;Monto bruto de Jubilación Anticipada.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_Jubilacion_Anticipada_Nu;Período de la primera liquidación de Jubilación Anticipada. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_Jubilacion_Anticipada_Nu;Período de la última liquidación de Jubilación Anticipada. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_Moratoria_Fl;Indica si el CUIL es beneficiario de Moratoria en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_Moratoria_Vl;Monto bruto de Moratoria.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_Moratoria_Nu;Período de la primera liquidación de Moratoria. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_Moratoria_Nu;Período de la última liquidación de Moratoria. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_Contencion_Fl;Indica si el CUIL es beneficiario de Contención en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_Contencion_Vl;Monto bruto de Contención.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_Contencion_Nu;Período de la primera liquidación de Contención. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_Contencion_Nu;Período de la última liquidación de Contención. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_PC_Fl;Indica si el CUIL es beneficiario de Pensión con Componente (PC) en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_PC_Vl;Monto bruto de Pensión con Componente.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_PC_Nu;Período de la primera liquidación de Pensión con Componente. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_PC_Nu;Período de la última liquidación de Pensión con Componente. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_Pensiones_Derivadas_Fl;Indica si el CUIL es beneficiario de Pensiones Derivadas en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_Pensiones_Derivadas_Vl;Monto bruto de Pensiones Derivadas.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_Pensiones_Derivadas_Nu;Período de la primera liquidación de Pensiones Derivadas. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_Pensiones_Derivadas_Nu;Período de la última liquidación de Pensiones Derivadas. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_AAFF_Desempleo_Fl;Indica si el CUIL es beneficiario de AAFF por Desempleo en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_AAFF_Desempleo_Vl;Monto bruto de AAFF por Desempleo.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_AAFF_Desempleo_Nu;Período de la primera liquidación de AAFF por Desempleo. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_AAFF_Desempleo_Nu;Período de la última liquidación de AAFF por Desempleo. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.
+ANSES;ANSES;anses;Prestacion_Deuda_Previsional_Fl;Indica si el CUIL es beneficiario de Deuda Previsional en el período. 0: no beneficiario, 1: beneficiario.
+ANSES;ANSES;anses;Monto_Deuda_Previsional_Vl;Monto bruto de Deuda Previsional.
+ANSES;ANSES;anses;Primer_Periodo_Cobro_Deuda_Previsional_Nu;Período de la primera liquidación de Deuda Previsional. Formato: AAAAMM.
+ANSES;ANSES;anses;Ultimo_Periodo_Cobro_Deuda_Previsional_Nu;Período de la última liquidación de Deuda Previsional. Toma el valor del período actual en caso de ser beneficiario. Formato: AAAAMM.

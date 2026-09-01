@@ -783,7 +783,7 @@ footer {
   <button class="tab-btn" onclick="switchTab('tab-3')">⚡ 3. Subsidios Energ&eacute;ticos <span class="badge">MEC</span></button>
   <button class="tab-btn" onclick="switchTab('tab-4')">🎓 4. Becas Educativas <span class="badge">EDUCACI&Oacute;N</span></button>
   <button class="tab-btn" onclick="switchTab('tab-5')">🏫 5. Escolarizaci&oacute;n Formal <span class="badge">EDUCACI&Oacute;N</span></button>
-  <button class="tab-btn" onclick="switchTab('tab-6')">🏠 6. Configuración Socioecon&oacute;mica <span class="badge" style="background:#a855f7; color:#fff;">RSH / CPGI</span></button>
+  <button class="tab-btn" onclick="switchTab('tab-6')">🏠 6. Configuración Socioecon&oacute;mica <span class="badge" style="background:#a855f7; color:#fff;">SIIS / CPGI</span></button>
   <button class="tab-btn" onclick="switchTab('tab-alerts')">🚨 Monitoreo de Alertas <span class="badge" style="background:#ef4444; color:#fff;">SISTEMA</span></button>
   <button class="tab-btn" onclick="switchTab('tab-7')">🔬 Diccionarios y Muestras Sint&eacute;ticas</button>
 </nav>
@@ -1340,14 +1340,14 @@ footer {
     </div>
   </section>
 
-  <!-- ==================== TAB 6: CONFIGURACIÓN SOCIOECONÓMICA DEL HOGAR (CPGI / RSH) ==================== -->
+  <!-- ==================== TAB 6: CONFIGURACIÓN SOCIOECONÓMICA DEL HOGAR (CPGI / BASES SIIS) ==================== -->
   <section id="tab-6" class="tab-panel">
     <!-- 5 KPIs in Single Row -->
     <div class="kpi-grid">
       <div class="kpi-card" style="--card-accent: #a855f7;">
         <div class="kpi-header"><span class="kpi-title">Hogares c/ N&Ntilde;A (0-17)</span><div class="kpi-icon">🏠</div></div>
         <div class="kpi-value" id="kpi6-hogares">3.764.705</div>
-        <div class="kpi-subtext">Hogares evaluados en Registro Social (RSH)</div>
+        <div class="kpi-subtext">Hogares evaluados en bases SIIS</div>
       </div>
       <div class="kpi-card" style="--card-accent: #a855f7;">
         <div class="kpi-header"><span class="kpi-title">% Bajo L&iacute;nea Pobreza (CPGI &lt; 1,0)</span><div class="kpi-icon">📉</div></div>
@@ -1365,7 +1365,7 @@ footer {
         <div class="kpi-subtext">Sin asalariados formales ni monotributo</div>
       </div>
       <div class="kpi-card" style="--card-accent: #a855f7;">
-        <div class="kpi-header"><span class="kpi-title">Sensibilidad Modelo CPGI</span><div class="kpi-icon">🎯</div></div>
+        <div class="kpi-header"><span class="kpi-title">Sensibilidad Modelo (EPH + Admin)</span><div class="kpi-icon">🎯</div></div>
         <div class="kpi-value" id="kpi6-sensibilidad">91.4%</div>
         <div class="kpi-subtext">Precisi&oacute;n &ge; 90.2% | Error Exclusi&oacute;n &le; 8.6%</div>
       </div>
@@ -1379,8 +1379,8 @@ footer {
       </p>
       <p style="font-size:0.825rem; color:var(--text-muted); line-height:1.6;">
         <strong>Clasificaci&oacute;n Binaria:</strong> Hogar Pobre (LP): CPGI &lt; 1,0 (ITF predicho &lt; CBT regionalizada) | Hogar No Pobre: CPGI &ge; 1,0<br>
-        <strong>F&oacute;rmula:</strong> <span class="field-code">% Hogares en vulnerabilidad = (Hogares con CPGI &lt; 1,0 / Total hogares RSH) &times; 100</span> | 
-        <strong>Fuentes:</strong> SIIS (RSH / SIEMPRO), EPH-INDEC, ANSES, ARCA/STESS, SINTYS, RASE, SENAF.
+        <strong>F&oacute;rmula:</strong> <span class="field-code">% Hogares en vulnerabilidad = (Hogares con CPGI &lt; 1,0 / Total hogares bases SIIS) &times; 100</span> | 
+        <strong>Fuentes Integradas:</strong> Registros Administrativos (ANSES, ARCA, STESS, SINTYS, RASE, SENAF) y Encuesta Permanente de Hogares (EPH-INDEC).
       </p>
     </div>
 
@@ -1418,10 +1418,10 @@ footer {
 
       <div class="card-box">
         <div class="card-title-bar">
-          <h3>🎯 Desempe&ntilde;o y M&eacute;tricas de Calibraci&oacute;n del Modelo Predictivo CPGI</h3>
+          <h3>💵 Ingreso Promedio Mensual Estimado por Hogar por Decil CPGI ($ ARS)</h3>
         </div>
         <div class="chart-container">
-          <canvas id="chart-t6-modelo-gauge"></canvas>
+          <canvas id="chart-t6-ingreso-promedio"></canvas>
         </div>
       </div>
     </div>
@@ -1429,24 +1429,24 @@ footer {
     <!-- Microdata Table 6 -->
     <div class="card-box">
       <div class="card-title-bar">
-        <h3>🔬 Muestra de Microdatos Sint&eacute;ticos: CPGI / Registro Social de Hogares (RSH / SIIS)</h3>
+        <h3>🔬 Muestra de Microdatos Sint&eacute;ticos: CPGI / Sistema de Informaci&oacute;n Integrado Social (Bases SIIS)</h3>
         <button class="btn-reset" style="background:#334155; color:#fff;" onclick="exportTableCSV('tbl-t6-micro')">📥 Exportar CSV</button>
       </div>
       <div class="table-responsive">
         <table class="data-table" id="tbl-t6-micro">
           <thead>
             <tr>
-              <th>cuit_jefe_hogar</th>
-              <th>vinculo_parentesco</th>
-              <th>provincia_residencia</th>
-              <th>municipio_localidad</th>
+              <th>cuil_cuit_jefe</th>
+              <th>relacion_f_id</th>
+              <th>provincia_cd</th>
+              <th>localidad_tx</th>
               <th>decil_cpgi</th>
               <th>cpgi_valor</th>
               <th>clasificacion_lp</th>
-              <th>jefatura_femenina</th>
-              <th>empleo_registrado</th>
-              <th>calidad_habitacional</th>
-              <th>clima_educativo</th>
+              <th>jefatura_femenina_fl</th>
+              <th>empleo_registrado_fl</th>
+              <th>prestacion_auh_aaff_fl</th>
+              <th>sin_libreta_auh_fl</th>
             </tr>
           </thead>
           <tbody id="tbody-t6-micro">
@@ -2203,27 +2203,27 @@ function generateSyntheticMicrodata() {
     `).join('');
   }
 
-  // Table 6: Configuración Socioeconómica del Hogar (CPGI / RSH)
+  // Table 6: Configuración Socioeconómica del Hogar (CPGI / Bases SIIS)
   const tb6 = document.getElementById('tbody-t6-micro');
   if(tb6) {
     const rows = [
-      { cuit: "27-38910284-4", vinc: "Jefa de Hogar", prov: sampleProv(), loc: "La Matanza", decil: "Decil 1", cpgi: "0.48", clasif: "Hogar Pobre (LP)", jefFem: "SÍ (3 menores)", reg: "NO", hab: "Déficit Saneamiento / Techo", educ: "Primaria Incompleta" },
-      { cuit: "20-41029481-3", vinc: "Jefe de Hogar", prov: sampleProv(), loc: "Resistencia", decil: "Decil 2", cpgi: "0.62", clasif: "Hogar Pobre (LP)", jefFem: "NO", reg: "NO", hab: "Piso Precario", educ: "Secundaria Incompleta" },
-      { cuit: "27-42918204-9", vinc: "Jefa de Hogar", prov: sampleProv(), loc: "Rosario", decil: "Decil 3", cpgi: "0.85", clasif: "Hogar Pobre (LP)", jefFem: "SÍ (2 menores)", reg: "SÍ (Monotributo Social)", hab: "Regular", educ: "Secundaria Completa" }
+      { cuit: "27-38910284-4", rel: "Relacion_F1_Id (Hijo)", prov: sampleProv(), loc: "La Matanza", decil: "Decil 1", cpgi: "0.48", clasif: "Hogar Pobre (LP)", jefFem: "1 (SÍ - 3 NÑyA)", reg: "0 (Informal)", auh: "1 (AUH Activa)", sinLib: "1 (Pendiente)" },
+      { cuit: "20-41029481-3", rel: "Relacion_F2_Id (Conviviente)", prov: sampleProv(), loc: "Resistencia", decil: "Decil 2", cpgi: "0.62", clasif: "Hogar Pobre (LP)", jefFem: "0 (NO)", reg: "0 (Informal)", auh: "1 (AUH Activa)", sinLib: "0 (Al día)" },
+      { cuit: "27-42918204-9", rel: "Relacion_F1_Id (Hijo)", prov: sampleProv(), loc: "Rosario", decil: "Decil 3", cpgi: "0.85", clasif: "Hogar Pobre (LP)", jefFem: "1 (SÍ - 2 NÑyA)", reg: "1 (Monotributo)", auh: "1 (AAFF Activa)", sinLib: "0 (Al día)" }
     ];
     tb6.innerHTML = rows.map(r => `
       <tr>
         <td><span class="field-code">${r.cuit}</span></td>
-        <td>${r.vinc}</td>
+        <td>${r.rel}</td>
         <td>${r.prov}</td>
         <td>${r.loc}</td>
         <td><span class="badge-pill badge-warn">${r.decil}</span></td>
         <td><strong>${r.cpgi}</strong></td>
         <td><span class="badge-pill badge-warn">${r.clasif}</span></td>
         <td>${r.jefFem}</td>
-        <td><span class="badge-pill ${r.reg==='NO'?'badge-warn':'badge-good'}">${r.reg}</span></td>
-        <td>${r.hab}</td>
-        <td>${r.educ}</td>
+        <td><span class="badge-pill ${r.reg.startsWith('0')?'badge-warn':'badge-good'}">${r.reg}</span></td>
+        <td><span class="badge-pill badge-good">${r.auh}</span></td>
+        <td><span class="badge-pill ${r.sinLib.startsWith('1')?'badge-warn':'badge-good'}">${r.sinLib}</span></td>
       </tr>
     `).join('');
   }
@@ -2899,7 +2899,7 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
   createChart('chart-t6-deciles', 'bar', {
     labels: decilLabels,
     datasets: [{
-      label: `% Distribución de Hogares RSH - ${vulnLabel}`,
+      label: `% Distribución de Hogares (Bases SIIS) - ${vulnLabel}`,
       data: decilVals,
       backgroundColor: ['#ef4444', '#f97316', '#fbbf24', '#facc15', '#a3e635', '#34d399', '#2dd4bf', '#38bdf8', '#818cf8', '#a855f7']
     }]
@@ -2933,20 +2933,25 @@ function renderCharts(list, avgAUH, avgAli, avgRASE, avgBecas, avgEsc) {
     }
   });
 
-  // 20. Indicador 6: Desempeño y Métricas de Calibración del Modelo Predictivo CPGI
-  createChart('chart-t6-modelo-gauge', 'bar', {
-    labels: ['Sensibilidad (>= 90,2%)', 'Precisión Global', 'Especificidad', 'Error de Exclusión (<= 9,8%)'],
+  // 20. Indicador 6: Ingreso Promedio Mensual Estimado por Hogar por Decil CPGI ($ ARS)
+  let baseIngresos = [215000, 340000, 480000, 620000, 790000, 980000, 1250000, 1620000, 2100000, 3150000];
+  if(vuln === 'INDIGENTE') baseIngresos = baseIngresos.map(v => Math.round(v * 0.58));
+  else if(vuln === 'POBRE') baseIngresos = baseIngresos.map(v => Math.round(v * 0.82));
+  else if(vuln === 'VULNERABLE') baseIngresos = baseIngresos.map(v => Math.round(v * 1.35));
+
+  createChart('chart-t6-ingreso-promedio', 'bar', {
+    labels: ['Decil 1', 'Decil 2', 'Decil 3', 'Decil 4', 'Decil 5', 'Decil 6', 'Decil 7', 'Decil 8', 'Decil 9', 'Decil 10'],
     datasets: [{
-      label: 'Métrica del Modelo (%)',
-      data: [91.4, 90.2, 88.6, 8.6],
-      backgroundColor: ['#34d399', '#38bdf8', '#818cf8', '#ef4444']
+      label: `Ingreso Promedio Estimado ($ ARS) - ${vulnLabel}`,
+      data: baseIngresos,
+      backgroundColor: '#a855f7'
     }]
   }, {
     plugins: {
       datalabels: Object.assign({}, datalabelsDefault, {
         anchor: 'end', align: 'top',
-        font: { family: 'Inter', size: 10, weight: '700' },
-        formatter: (val) => val.toFixed(1) + '%'
+        font: { family: 'Inter', size: 8.5, weight: '600' },
+        formatter: (val) => '$' + (val >= 1000000 ? (val/1000000).toFixed(2)+'M' : (val/1000).toFixed(0)+'k')
       })
     }
   });
